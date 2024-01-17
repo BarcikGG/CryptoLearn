@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 
-export default function firstTab() {
+export default function tradingTab() {
     return (
         <View>
-            <Text>First</Text>
+            <Text>trading</Text>
         </View>
     )
 }
