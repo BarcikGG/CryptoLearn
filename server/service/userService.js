@@ -29,8 +29,8 @@ class UserService {
 
         const activationLink = uuid.v4();
         const user = await db.query(
-            'INSERT INTO "User" (email, username, fullname, avatar, completedCourses, boughtCourses, balance, password) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-            [email, username, "", "", [], [], 100.00, password]
+            'INSERT INTO "User" (email, username, fullname, avatar, completedCourses, boughtCourses, balance, password, activationLink) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+            [email, username, "", "", [], [], 100.00, password, activationLink]
         );
 
         const Query = 'SELECT * FROM "User" WHERE username = $1';
@@ -42,7 +42,7 @@ class UserService {
             id: Result.rows[0].id,
         }
 
-        await mailService.sendActivationMail(username, email, `${process.env.API_URL}/api/activation/${activationLink}`);
+        //await mailService.sendActivationMail(username, email, `${process.env.API_URL}/api/activation/${activationLink}`);
         
         return this.generateToken(userDTO);
     }
@@ -150,18 +150,28 @@ class UserService {
             throw ApiError.UnauthorizedError('Unauthorized user');
         }
 
-        const user = await User.findById(userData.id);
-        return this.generateToken(user);
+        const Query = 'SELECT * FROM "User" WHERE id = $1';
+        const Result = await db.query(Query, [userData.id]);
+
+        const userDTO = {
+            email: Result.rows[0].email,
+            username: Result.rows[0].username,
+            id: Result.rows[0].id,
+        }
+
+        return this.generateToken({...userDTO});
     }
 
     async getAllUsers(loggedUserId) {
-        const users = await User.find({ _id: { $ne: loggedUserId}});
-        return users;
+        // const users = await User.find({ _id: { $ne: loggedUserId}});
+        // return users;
     }
 
     async getUser(userId) {
-        const user = await User.findById(userId);
-        return user;
+        const Query = 'SELECT * FROM "User" WHERE id = $1';
+        const Result = await db.query(Query, [userId]);
+
+        return Result.rows[0];
     }
 }
 

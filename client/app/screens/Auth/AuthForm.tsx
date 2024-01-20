@@ -22,14 +22,9 @@ const AuthForm = ({ navigation }: any) => {
       try {
         const refreshToken = await AsyncStorage.getItem('authToken');
         if (refreshToken) {
-          const token = await AsyncStorage.getItem('authToken');
-          const decodedToken = decodeToken(token);
-          const userId = decodedToken.userId;
-          
           const response = await axios.post(`${BASE_URL}/refresh`, { refreshToken });
           AsyncStorage.setItem('token', response.data.userData.accessToken);
-          AsyncStorage.setItem('userID', userId);
-          
+          AsyncStorage.setItem('userID', response.data.userData.user.id);
           navigation.replace('Main');
         }
       } catch (error) {
@@ -43,12 +38,7 @@ const AuthForm = ({ navigation }: any) => {
   }, []);
   
   const handleAuthorize = () => {
-    const user = {
-      name: username,
-      password: hashPassword(password)
-    }
-
-    $api.post('/login', user).then(async response => {
+    $api.post('/login', {username: username, password: hashPassword(password)}).then(async response => {
       if (response.data) {
         AsyncStorage.setItem("authToken", response.data.userData.refreshToken);
         AsyncStorage.setItem("token", response.data.userData.accessToken);
@@ -124,7 +114,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginTop: 20
   },
   Text: {
     fontSize: 50,

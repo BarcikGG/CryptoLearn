@@ -4,7 +4,7 @@ const client = new Client({
     user: 'postgres',
     password: '2507',
     host: 'localhost',
-    port: 5050,
+    port: 5432,
     database: 'cryptoLearn'
 });
 

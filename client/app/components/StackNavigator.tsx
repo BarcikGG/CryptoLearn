@@ -10,6 +10,7 @@ import RegistrationForm from '../screens/Auth/RegistrationForm';
 import AuthForm from '../screens/Auth/AuthForm';
 import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
+import { primaryColor } from '../constants/Colors';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -24,22 +25,22 @@ export default function StackNavigator() {
               var iconName;
     
               if (route.name === 'News') {
-                iconName = focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline';
+                iconName = focused ? 'newspaper-sharp' : 'newspaper-outline';
               } else if (route.name === 'Trading') {
-                iconName = focused ? 'ios-map' : 'ios-map-outline';
+                iconName = focused ? 'podium' : 'podium-outline';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
               }
     
               return <Ionicons name={iconName as any} size={size} color={color} />;
             },
-            tabBarActiveTintColor: 'green',
+            tabBarActiveTintColor: primaryColor,
             tabBarInactiveTintColor: 'gray',
           })}
         >
           <Tab.Screen name="News" component={NewsScreen} />
-          <Tab.Screen name="Trading" component={TradingScreen} options={{headerShown: false}}/>
-          <Tab.Screen name="Profile" component={ProfileScreen}/>
+          <Tab.Screen name="Trading" component={TradingScreen} />
+          <Tab.Screen name="Profile" component={ProfileScreen} />
         </Tab.Navigator>
       );
     };
@@ -50,7 +51,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Main" component={BottomTabs} options={{headerShown: false}}/>
             <Stack.Screen name="Login" component={AuthForm} options={{headerShown: false}}/>
             <Stack.Screen name="Register" component={RegistrationForm} options={{headerShown: false}}/>
-            <Stack.Screen name="EditProfile" component={EditProfileScreen}/>
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
           </Stack.Navigator>
       </NavigationContainer>
     );

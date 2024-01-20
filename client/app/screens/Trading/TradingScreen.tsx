@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const TradingScreen = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text>Trading</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
