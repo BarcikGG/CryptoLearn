@@ -1,14 +1,15 @@
 import { Pressable, StyleSheet, Text, Image, Dimensions } from 'react-native';
-import React, { PureComponent } from 'react';
+import React from 'react';
 import INews from '../models/Response/INews';
 
 interface NewsProps {
   news: INews;
+  navigation: any
 }
 
-const News: React.FC<NewsProps> = ({ news }) => {
+const News: React.FC<NewsProps> = ({ news, navigation }) => {
   return (
-    <Pressable onPress={() => {}} style={styles.container}>
+    <Pressable onPress={() => navigation.navigate("CurrentNews", {news: news})} style={styles.container}>
       <Text style={styles.title}>{news.title}</Text>
       <Text style={styles.author}>Автор: {news.author}</Text>
       <Image source={{ uri: news.urlToImage }} style={styles.img} />

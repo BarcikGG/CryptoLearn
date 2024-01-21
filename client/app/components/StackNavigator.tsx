@@ -11,6 +11,7 @@ import AuthForm from '../screens/Auth/AuthForm';
 import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
 import { primaryColor } from '../constants/Colors';
+import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -51,6 +52,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Main" component={BottomTabs} options={{headerShown: false}}/>
             <Stack.Screen name="Login" component={AuthForm} options={{headerShown: false}}/>
             <Stack.Screen name="Register" component={RegistrationForm} options={{headerShown: false}}/>
+            <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
           </Stack.Navigator>
       </NavigationContainer>

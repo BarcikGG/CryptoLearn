@@ -5,5 +5,5 @@ export default interface INews {
     title?: string;
     urlToImage?: string;
     url?: string;
-    publishedAt?: string;
+    publishedAt?: Date;
 }

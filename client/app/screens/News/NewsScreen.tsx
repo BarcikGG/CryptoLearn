@@ -19,7 +19,7 @@ export default function NewsScreen ({navigation}: any) {
   const query = 'crypto';
 
   useEffect(() => {
-    //fetchNews();
+    fetchNews();
   }, [refreshing]);
 
   const fetchNews = async() => {
@@ -59,7 +59,7 @@ export default function NewsScreen ({navigation}: any) {
           <FlatList
           data={news?.map((news, index) => ({ key: index, news: news }))}
           keyExtractor={(item) => item.key.toString()}
-          renderItem={({ item }) => <News news={item.news} />}
+          renderItem={({ item }) => <News news={item.news} navigation={navigation} />}
           contentContainerStyle={{ padding: 10, alignItems: 'center' }}
           showsVerticalScrollIndicator={true}
           refreshControl={
