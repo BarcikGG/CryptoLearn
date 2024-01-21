@@ -19,7 +19,7 @@ export default function NewsScreen ({navigation}: any) {
   const query = 'crypto';
 
   useEffect(() => {
-    //fetchNews();
+    fetchNews();
   }, [refreshing]);
 
   const fetchNews = async() => {

@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Ionicons } from '@expo/vector-icons'; 
-import { View, Text, Pressable, Image, Linking, Alert, RefreshControl, ScrollView, StyleSheet} from "react-native";
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'; 
+import { View, Text, Pressable, Image, Alert, RefreshControl, ScrollView, StyleSheet} from "react-native";
 import $api from "../../http";
 import Loading from "../../components/elements/Loading";
 import { useAuth } from "../../contexts/AuthContext";
-import { SafeAreaView } from "react-native";
 import IUser from "../../models/IUser";
+import { primaryColor } from "../../constants/Colors";
+import CustomButton from "../../components/Profile/CustomButton";
 
 export default function ProfileScreen({navigation}: any) {
   const { userId } = useAuth();
@@ -75,18 +76,103 @@ export default function ProfileScreen({navigation}: any) {
   }
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white' }}>
+      <ScrollView
+          contentContainerStyle={styles.ScrollContainer}>
+        <View style={styles.UserInfo}>
+          <Image 
+            style={styles.Avatar} 
+            source={{uri:user?.avatar || 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png'}} />
+          <View style={styles.UserInfoTextBlock}>
+            <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{user?.fullname ? user?.fullname  : 'name surname'}</Text>
+            <Text style={{ fontSize: 16, marginBottom: 5 }}>{user?.email}</Text>
+            {user?.isVerified 
+              ?  <View style={styles.VerifyBlock}>
+                  <MaterialIcons name="verified" size={20} color="green"/>
+                  <Text style={styles.textVerify}>Верифицирован</Text>
+              </View>
+              : <View style={styles.VerifyBlock}>
+                  <MaterialIcons name="cancel" size={20} color="red"/>
+                  <Text style={styles.textVerify}>Не верифицирован</Text>
+              </View>
+            } 
+          </View>
+        </View>
         
-        <Text style={styles.text}>{user?.email}</Text>
+        <View style={styles.Balance}>
+            <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
+            <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
+        </View>
+
+        <CustomButton IconName="attach-money" ButtonName="Уроки по криптовалюте"/>
+        <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"/>
+        <CustomButton IconName="menu-book" ButtonName="Другие курсы"/>
+        <CustomButton IconName="show-chart" ButtonName="Курсы валют"/>
+
+        <View style={styles.Bar}></View>
+
+        <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"/>
+        <CustomButton IconName="settings" ButtonName="Настройки"/>
+
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  ScrollContainer: {
+    flexDirection: 'column', 
+    alignItems: 'center', 
+    paddingVertical: 10
+  },
+  UserInfo: {
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 10,
+    gap: 20,
+    marginBottom: 25,
+    paddingBottom: 25,
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderColor: primaryColor
+  },
+  UserInfoTextBlock: {
+    flexDirection: 'column'
+  },
+  Avatar: {
+    height: 85, 
+    width: 85, 
+    resizeMode: 'cover', 
+    borderRadius: 43
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
     fontWeight: '600',
     marginBottom: 10
+  },
+  VerifyBlock: {
+    flexDirection: 'row', 
+    gap: 5, 
+    alignItems: 'center'
+  },
+  textVerify: {
+    textAlignVertical: 'center', 
+    fontSize: 16
+  },
+  Balance: {
+    alignItems: 'flex-start',
+    paddingHorizontal: 20,
+    width: '95%', 
+    padding: 10,
+    borderWidth: 2,
+    borderColor: primaryColor,
+    borderRadius: 20,
+  },
+  Bar: {
+    backgroundColor: 'gray',
+    width: '100%',
+    height: 1,
+    marginTop: 20
   }
 })
