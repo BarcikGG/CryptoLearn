@@ -6,10 +6,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import $api from "../../http";
 //import * as ImagePicker from 'expo-image-picker';
 import { BASE_URL } from "../../utils/config";
+import IUser from "../../models/IUser";
 
 function EditProfileScreen({navigation, route}: any) {
     const { userId } = useAuth();
-    const [ user ] = useState(route.params.user);
+    const [ user ] = useState(route.params.user as IUser);
     const [username, setUsername] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [firstname, setFirstname] = useState<string>('');
@@ -18,7 +19,7 @@ function EditProfileScreen({navigation, route}: any) {
     const [pickedImage, setPickedImage] = useState<string>('');
 
     const randomKey = new Date().getTime().toString();
-    const imageUri = pickedImage || user?.profileImage;
+    const imageUri = pickedImage || user?.avatar;
 
     // useLayoutEffect(() => {
     //     navigation.setOptions({
@@ -145,7 +146,7 @@ function EditProfileScreen({navigation, route}: any) {
                 </Text> */}
                 
                 <TextInput
-                        placeholder={user.name ? user.name : "Username"}
+                        placeholder={user.username ? user.username : "Username"}
                         value={username}
                         onChangeText={text => setUsername(text)}
                         style={[styles.inputContainer]}
@@ -175,32 +176,7 @@ function EditProfileScreen({navigation, route}: any) {
                         fontSize: 16, 
                         marginBottom: 20}}
                         >
-                        Please provide your first and last name 
-                        for the convenience of other users.
-                </Text>
-                
-                {/* <View style={{
-                        borderRadius: 15, 
-                        borderColor: 'gray', 
-                        borderWidth: 2,
-                        width: '85%',
-                        marginBottom: 10}}>
-                    <CityAutocomplete city={user.city}/>
-                </View> */}
-                <TextInput
-                        placeholder={user.city ? user.city : "City"}
-                        value={city}
-                        onChangeText={text => setCity(text)}
-                        style={[styles.inputContainer, {color: 'black'}]}
-                />
-                <Text
-                    style={{width: '75%', 
-                        color: 'gray', 
-                        fontSize: 16,
-                        marginTop: -10, 
-                        marginBottom: 30}}
-                        >
-                        Select your city.
+                        Введите имя для полного заполнения профиля.
                 </Text>
                 
                 <TextInput
@@ -213,11 +189,11 @@ function EditProfileScreen({navigation, route}: any) {
                     {user.isVerified 
                         ?  <View style={{flexDirection: 'row', gap: 5}}>
                             <MaterialIcons name="verified" size={24} color="green"/>
-                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Email is already verified!</Text>
+                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Почта подтверждена!</Text>
                         </View>
                         : <View style={{flexDirection: 'row', gap: 5}}>
                             <MaterialIcons name="cancel" size={24} color="red"/>
-                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Email isn't verified</Text>
+                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Почта не подтверждена</Text>
                         </View>
                     } 
                 </View>

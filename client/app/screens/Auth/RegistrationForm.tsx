@@ -34,8 +34,9 @@ const RegistrationForm = ({ navigation }: any) => {
           
           AsyncStorage.setItem('authToken', response.data.userData.refreshToken);
           AsyncStorage.setItem("token", response.data.userData.accessToken);
-          
+          AsyncStorage.setItem('userID', response.data.userData.user.id.toString());    
           setUserId(response.data.userData.user.id);
+          
           navigation.replace('Login');
         }
       })

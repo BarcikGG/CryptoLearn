@@ -24,7 +24,8 @@ const AuthForm = ({ navigation }: any) => {
         if (refreshToken) {
           const response = await axios.post(`${BASE_URL}/refresh`, { refreshToken });
           AsyncStorage.setItem('token', response.data.userData.accessToken);
-          AsyncStorage.setItem('userID', response.data.userData.user.id);
+          AsyncStorage.setItem('userID', response.data.userData.user.id.toString());
+          
           navigation.replace('Main');
         }
       } catch (error) {
@@ -42,13 +43,11 @@ const AuthForm = ({ navigation }: any) => {
       if (response.data) {
         AsyncStorage.setItem("authToken", response.data.userData.refreshToken);
         AsyncStorage.setItem("token", response.data.userData.accessToken);
-        AsyncStorage.setItem('userID', response.data.userData.user.id);
+        AsyncStorage.setItem('userID', response.data.userData.user.id.toString());
+        setUserId(response.data.userData.user.id);
 
         setUsername("");
         setPassword("");
-
-        const userId = await AsyncStorage.getItem('userID');
-        setUserId(userId);
 
         navigation.replace('Main');
       } else {
