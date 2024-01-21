@@ -3,7 +3,7 @@ const db = require('../db');
 
 class tokenService {
     generateToken(payload) {
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '15m'});
+        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {expiresIn: '30m'});
         const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN, {expiresIn: '60d'});
 
         return {
@@ -51,12 +51,12 @@ class tokenService {
         return result;
     }
 
-    async findToken(refreshToken) {
-        const query = 'SELECT * FROM "Token" WHERE refreshtoken = $1';
-        const values = [refreshToken];
-        const { rows } = await db.query(query, values);
+    async findToken(userId) {
+        const query = 'SELECT * FROM "Token" WHERE userid = $1';
+        const values = [userId];
+        const result = await db.query(query, values);
 
-        return rows[0];
+        return result.rows[0].refreshtoken;
     }
 }
 

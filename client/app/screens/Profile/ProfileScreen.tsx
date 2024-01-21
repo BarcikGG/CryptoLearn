@@ -15,6 +15,8 @@ export default function ProfileScreen({navigation}: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [T, setT] = useState('');
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: user?.username,
@@ -35,6 +37,7 @@ export default function ProfileScreen({navigation}: any) {
     try {
       const response = await $api.get(`/user/${userId}`);
       setUser(response.data);
+      setT(response.data.username);
     } catch (error) {
       console.error('Error getting user:', error);
       Alert.alert('Error', 'Failed to get user information');
@@ -114,6 +117,9 @@ export default function ProfileScreen({navigation}: any) {
         <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"/>
         <CustomButton IconName="settings" ButtonName="Настройки"/>
 
+        <Text>{T}</Text>
+        <Pressable onPress={() => fetchUser()}><Text>update</Text></Pressable>
+        <Pressable onPress={() => setT('')}><Text>clear</Text></Pressable>
       </ScrollView>
     </View>
   );

@@ -87,6 +87,7 @@ class UserService {
         const tokens = tokenService.generateToken({...user});
         await tokenService.saveToken(user.id, tokens.refreshToken);
 
+        //console.log(tokens.accessToken);
         return {
             ...tokens,
             user: user
@@ -144,10 +145,13 @@ class UserService {
         }
 
         const userData = tokenService.validateRefreshToken(refreshToken);
-        const tokenFromDB = tokenService.findToken(refreshToken);
-        
+        const tokenFromDB = tokenService.findToken(userData.id);
+
         if(!userData || !tokenFromDB) {
-            throw ApiError.UnauthorizedError('Unauthorized user');
+            return {
+                error: true,
+                message: "сессия авторизации устарела"
+            };
         }
 
         const Query = 'SELECT * FROM "User" WHERE id = $1';
@@ -159,7 +163,7 @@ class UserService {
             id: Result.rows[0].id,
         }
 
-        return this.generateToken({...userDTO});
+        return this.generateToken(userDTO);
     }
 
     async getAllUsers(loggedUserId) {
