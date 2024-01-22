@@ -166,9 +166,11 @@ class UserService {
         return this.generateToken(userDTO);
     }
 
-    async getAllUsers(loggedUserId) {
-        // const users = await User.find({ _id: { $ne: loggedUserId}});
-        // return users;
+    async getHistory(userId) {
+        const Query = 'SELECT * FROM "balance_history" WHERE user_id = $1';
+        const Result = await db.query(Query, [userId]);
+
+        return Result.rows;
     }
 
     async getUser(userId) {

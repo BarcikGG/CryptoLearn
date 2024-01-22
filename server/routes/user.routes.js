@@ -13,9 +13,9 @@ router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
 
 router.get('/activation/:link', userController.activate);
-router.get('/users/:userId', 
+router.get('/balance/:userId', 
     authMiddleware,
-    userController.getUsers);
+    userController.getHostoryBalance);
 router.get('/user/:userId',
     authMiddleware, 
     userController.getUser);

@@ -12,6 +12,7 @@ import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
 import { primaryColor } from '../constants/Colors';
 import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
+import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -54,6 +55,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Register" component={RegistrationForm} options={{headerShown: false}}/>
             <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="Balance history" component={BalanceHistoryScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     );

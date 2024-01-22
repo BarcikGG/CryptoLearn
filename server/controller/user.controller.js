@@ -96,12 +96,12 @@ class UserController {
         }
     }
 
-    async getUsers(req, res, next) {
+    async getHostoryBalance(req, res, next) {
         try {
-            const loggedUserId = req.params.userId;
-            const users = await userService.getAllUsers(loggedUserId);
+            const userId = req.params.userId;
+            const history = await userService.getHistory(userId);
             
-            return res.json(users);
+            return res.json(history);
         } catch(e) {
             next(e);
         }

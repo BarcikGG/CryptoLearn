@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'; 
-import { View, Text, Pressable, Image, Alert, RefreshControl, ScrollView, StyleSheet} from "react-native";
+import { View, Text, Pressable, Image, Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
 import $api from "../../http";
 import Loading from "../../components/elements/Loading";
 import { useAuth } from "../../contexts/AuthContext";
@@ -14,8 +14,6 @@ export default function ProfileScreen({navigation}: any) {
   const [ user, setUser ] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
-  const [T, setT] = useState('');
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -37,7 +35,6 @@ export default function ProfileScreen({navigation}: any) {
     try {
       const response = await $api.get(`/user/${userId}`);
       setUser(response.data);
-      setT(response.data.username);
     } catch (error) {
       console.error('Error getting user:', error);
       Alert.alert('Error', 'Failed to get user information');
@@ -102,10 +99,10 @@ export default function ProfileScreen({navigation}: any) {
           </View>
         </View>
         
-        <View style={styles.Balance}>
+        <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history")}>
             <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
             <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
-        </View>
+        </TouchableOpacity>
 
         <CustomButton IconName="attach-money" ButtonName="Уроки по криптовалюте"/>
         <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"/>
@@ -117,9 +114,6 @@ export default function ProfileScreen({navigation}: any) {
         <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"/>
         <CustomButton IconName="settings" ButtonName="Настройки"/>
 
-        <Text>{T}</Text>
-        <Pressable onPress={() => fetchUser()}><Text>update</Text></Pressable>
-        <Pressable onPress={() => setT('')}><Text>clear</Text></Pressable>
       </ScrollView>
     </View>
   );
