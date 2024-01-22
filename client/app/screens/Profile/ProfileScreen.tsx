@@ -79,6 +79,7 @@ export default function ProfileScreen({navigation}: any) {
     <View style={{ backgroundColor: 'white' }}>
       <ScrollView
           contentContainerStyle={styles.ScrollContainer}>
+          
         <View style={styles.UserInfo}>
           <Image 
             style={styles.Avatar} 

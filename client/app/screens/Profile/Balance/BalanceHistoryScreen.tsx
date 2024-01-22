@@ -46,7 +46,7 @@ export default function BalanceHistoryScreen({navigation}: any) {
                 <FlatList
                 data={balanceHistory?.map((trans, index) => ({ key: index, trans: trans }))}
                 keyExtractor={(item) => item.key.toString()}
-                renderItem={({ item }) => <BalanceHistory navigation={navigation} transcation={item.trans}/>}
+                renderItem={({ item }) => <BalanceHistory transcation={item.trans}/>}
                 contentContainerStyle={{ padding: 10, alignContent: 'center' }}
                 showsVerticalScrollIndicator={true}
                 refreshControl={
