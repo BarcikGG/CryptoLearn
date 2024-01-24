@@ -7,5 +7,5 @@ export default interface IUser {
     email: string;
     boughtcourses?: number[];
     completedcourses?: number[];
-    isVerified: boolean;
+    isverified: boolean;
 }

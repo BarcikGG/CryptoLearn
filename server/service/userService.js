@@ -7,6 +7,7 @@ const ApiError = require('../exceptions/apiError');
 
 class UserService {
     async registration(email, password, username) {
+        const defaultAvatar = 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png';
         const checkEmailQuery = 'SELECT * FROM "User" WHERE email = $1';
         const checkEmailResult = await db.query(checkEmailQuery, [email]);
 
@@ -30,7 +31,7 @@ class UserService {
         const activationLink = uuid.v4();
         const user = await db.query(
             'INSERT INTO "User" (email, username, fullname, avatar, completedCourses, boughtCourses, balance, password, activationLink, isVerified) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-            [email, username, "", "", [], [], 100.00, password, activationLink, false]
+            [email, username, "", defaultAvatar, [], [], 100.00, password, activationLink, false]
         );
 
         const Query = 'SELECT * FROM "User" WHERE username = $1';

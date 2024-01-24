@@ -75,11 +75,16 @@ export default function ProfileScreen({navigation}: any) {
     );
   }
 
+  console.log(user?.isverified);
+
   return (
     <View style={{ backgroundColor: 'white' }}>
       <ScrollView
-          contentContainerStyle={styles.ScrollContainer}>
-          
+          contentContainerStyle={styles.ScrollContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          >
         <View style={styles.UserInfo}>
           <Image 
             style={styles.Avatar} 
@@ -87,7 +92,7 @@ export default function ProfileScreen({navigation}: any) {
           <View style={styles.UserInfoTextBlock}>
             <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{user?.fullname ? user?.fullname  : 'name surname'}</Text>
             <Text style={{ fontSize: 16, marginBottom: 5 }}>{user?.email}</Text>
-            {user?.isVerified 
+            {user?.isverified 
               ?  <View style={styles.VerifyBlock}>
                   <MaterialIcons name="verified" size={20} color="green"/>
                   <Text style={styles.textVerify}>Верифицирован</Text>
@@ -100,7 +105,7 @@ export default function ProfileScreen({navigation}: any) {
           </View>
         </View>
         
-        <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history")}>
+        <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history", {balance: user?.balance})}>
             <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
             <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
         </TouchableOpacity>
@@ -122,6 +127,7 @@ export default function ProfileScreen({navigation}: any) {
 
 const styles = StyleSheet.create({
   ScrollContainer: {
+    height: '100%',
     flexDirection: 'column', 
     alignItems: 'center', 
     paddingVertical: 10
@@ -131,8 +137,8 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 10,
     gap: 20,
-    marginBottom: 25,
-    paddingBottom: 25,
+    marginBottom: 20,
+    paddingBottom: 10,
     flexDirection: "row",
     borderBottomWidth: 1,
     borderColor: primaryColor
@@ -164,11 +170,12 @@ const styles = StyleSheet.create({
   Balance: {
     alignItems: 'flex-start',
     paddingHorizontal: 20,
-    width: '95%', 
+    width: '90%', 
     padding: 10,
     borderWidth: 2,
     borderColor: primaryColor,
     borderRadius: 20,
+    marginBottom: 10
   },
   Bar: {
     backgroundColor: 'gray',

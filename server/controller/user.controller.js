@@ -32,13 +32,12 @@ class UserController {
     // async update(req, res, next) {
     //     try {
     //         const id = req.body.id;
-    //         const name = req.body.name;
+    //         const username = req.body.name;
     //         const fullname = req.body.fullname;
-    //         const city = req.body.city;
     //         const email = req.body.email;
     //         const imageUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
-    //         const updateUser = await userService.update(id, name, fullname, city, email, imageUrl);
+    //         const updateUser = await userService.update(id, username, fullname, email, imageUrl);
 
     //         return res.json(updateUser);
     //     } catch(e) {
@@ -53,10 +52,10 @@ class UserController {
     //             return next(ApiError.BadRequest('Validation error', errors.array()));
     //         }
             
-    //         const {id, name, fullname, city, email } = req.body;
+    //         const {id, usernname, fullname, email } = req.body;
     //         const imageUrl = null;
 
-    //         const updateUser = await userService.update(id, name, fullname, city, email, imageUrl);
+    //         const updateUser = await userService.update(id, name, fullname, email, imageUrl);
 
     //         return res.json(updateUser);
     //     } catch(e) {

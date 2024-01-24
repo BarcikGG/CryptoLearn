@@ -7,9 +7,9 @@ export default function CustomButton({IconName, ButtonName}: {IconName: any, But
     return (
         <View style={styles.Container}>
           <View style={styles.IconBlock}>
-            <MaterialIcons name={IconName} size={24} color='white'/>
+            <MaterialIcons name={IconName} size={20} color='white'/>
           </View>
-          <Text style={{fontSize: 24}}>{ButtonName}</Text>
+          <Text style={{fontSize: 20}}>{ButtonName}</Text>
         </View>
     )
 }
@@ -18,13 +18,9 @@ const styles = StyleSheet.create({
     Container: {
         flexDirection: 'row', 
         paddingHorizontal: 20,
-        marginTop: 20,
         alignItems: 'center',
         width: '95%', 
-        height: 60, 
-        borderColor: 'gray',
-        borderWidth: 2, 
-        borderRadius: 20,
+        height: 60,
         gap: 15,
     },
     IconBlock: {

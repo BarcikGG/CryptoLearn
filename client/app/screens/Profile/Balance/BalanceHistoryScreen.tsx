@@ -6,8 +6,10 @@ import IBalanceHistory from '../../../models/IBalanceHistory';
 import { primaryColor } from '../../../constants/Colors';
 import Loading from '../../../components/elements/Loading';
 import BalanceHistory from '../../../components/Profile/BalanceHistory';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function BalanceHistoryScreen({navigation}: any) {
+export default function BalanceHistoryScreen({navigation, route}: any) {
+    const { balance } = route.params;
     const { userId } = useAuth();
     const [balanceHistory, setBalanceHistory] = useState<IBalanceHistory[]>();
     const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +43,11 @@ export default function BalanceHistoryScreen({navigation}: any) {
     }
     
     return (
-        <View style={{ width: '100%'}}>
+        <View style={{ width: '100%', height: '100%'}}>
+            <View style={styles.balance}>
+                <Text style={styles.text}>${balance}</Text>
+                <MaterialCommunityIcons name="wallet-plus" size={24} color="black" />
+            </View>
             {balanceHistory ? 
                 <FlatList
                 data={balanceHistory?.map((trans, index) => ({ key: index, trans: trans }))}
@@ -70,6 +76,15 @@ export default function BalanceHistoryScreen({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+    balance: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: '600'
+    },
     container: {
         alignItems: 'center',
         gap: 20,
