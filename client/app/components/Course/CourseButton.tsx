@@ -1,24 +1,36 @@
-import { StyleSheet, Text, Image, View } from 'react-native'
+import { StyleSheet, Text, Image, View, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 import { primaryColor } from '../../constants/Colors';
+import ShadowView from 'react-native-shadow-view';
+import ICourse from '../../models/ICourse';
 
-export default function CourseButton() {
+export default function CourseButton({isBought, course}: {isBought: boolean, course: ICourse}) {
   return (
-    <View style={styles.container}>
-      <View style={styles.info}>
-        <Image source={{uri: "https://cryptologos.cc/logos/bitcoin-btc-logo.png"}} style={styles.img}/>
-        <View style={styles.about}>
-            <Text style={{ fontWeight: '600', fontSize: 18 }}>Course name</Text>
-            <Text>Amount of lessons</Text>
+    <ShadowView style={styles.shadowContainer}>
+        <View style={styles.container}>
+            <View style={styles.info}>
+                <Image source={{uri: "https://cryptologos.cc/logos/bitcoin-btc-logo.png"}} style={styles.img}/>
+                <View style={styles.about}>
+                    <Text style={{ fontWeight: '600', fontSize: 18 }}>Course name</Text>
+                    <Text>Amount of lessons</Text>
+                </View>
+            </View>
+            {isBought ? 
+                <Pressable style={styles.button}>
+                    <Ionicons name="play" size={24} color={primaryColor} />
+                    <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Продолжить учиться</Text>
+                    <View style={{ width: 24 }}></View>
+                </Pressable> 
+                : 
+                <Pressable style={styles.button}>
+                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>$199</Text>
+                    <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
+                    <View style={{ width: 24 }}></View>
+                </Pressable>
+            }
         </View>
-      </View>
-      <View style={styles.button}>
-        <Ionicons name="play" size={24} color={primaryColor} />
-        <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Продолжить учиться</Text>
-        <View style={{ width: 24 }}></View>
-      </View>
-    </View>
+    </ShadowView>
   )
 }
 
@@ -28,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         height: 'auto',
         width: '100%',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     info: {
         flexDirection: 'row',
@@ -54,5 +66,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'space-between'
-    }
+    },
+    shadowContainer: {
+        width: '100%',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+    },
 })

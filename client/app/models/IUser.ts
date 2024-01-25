@@ -5,7 +5,5 @@ export default interface IUser {
     balance: number;
     fullname?: string;
     email: string;
-    boughtcourses?: number[];
-    completedcourses?: number[];
     isverified: boolean;
 }

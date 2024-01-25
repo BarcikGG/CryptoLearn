@@ -30,8 +30,8 @@ class UserService {
 
         const activationLink = uuid.v4();
         const user = await db.query(
-            'INSERT INTO "User" (email, username, fullname, avatar, completedCourses, boughtCourses, balance, password, activationLink, isVerified) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
-            [email, username, "", defaultAvatar, [], [], 100.00, password, activationLink, false]
+            'INSERT INTO "User" (email, username, fullname, avatar, balance, password, activationLink, isVerified) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [email, username, "", defaultAvatar, 100.00, password, activationLink, false]
         );
 
         const Query = 'SELECT * FROM "User" WHERE username = $1';

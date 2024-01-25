@@ -16,6 +16,17 @@ export default function CustomButton({IconName, ButtonName, navigation, to, Type
 }
 
 const styles = StyleSheet.create({
+    shadowContainer: {
+        width: '100%',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+    },
     Container: {
         flexDirection: 'row', 
         paddingHorizontal: 20,

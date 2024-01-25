@@ -113,8 +113,8 @@ export default function ProfileScreen({navigation}: any) {
                       navigation={navigation} to={"Courses"} Type={"crypto"}/>
         <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"
                       navigation={navigation} to={"Courses"} Type={"trading"}/>
-        <CustomButton IconName="menu-book" ButtonName="Другие курсы"
-                      navigation={navigation} to={"Courses"} Type={"other"}/>
+        <CustomButton IconName="menu-book" ButtonName="Все курсы"
+                      navigation={navigation} to={"Courses"} Type={"all"}/>
         <CustomButton IconName="show-chart" ButtonName="Курсы валют"
                       navigation={navigation} to={"ExchangeCourse"} Type={"exchange"}/>
 
