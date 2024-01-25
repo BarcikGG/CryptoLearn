@@ -1,16 +1,17 @@
-import { Text, StyleSheet, View } from 'react-native'
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
 import React, { Component } from 'react'
 import { primaryColor } from '../../constants/Colors'
 import { MaterialIcons } from '@expo/vector-icons'; 
 
-export default function CustomButton({IconName, ButtonName}: {IconName: any, ButtonName: string}) {
+export default function CustomButton({IconName, ButtonName, navigation, to, Type}: {IconName: any, ButtonName: string, navigation: any, to: string, Type: string}) {
     return (
-        <View style={styles.Container}>
+        <TouchableOpacity style={styles.Container}
+            onPress={() => navigation.navigate(to, {type: Type})}>
           <View style={styles.IconBlock}>
             <MaterialIcons name={IconName} size={20} color='white'/>
           </View>
           <Text style={{fontSize: 20}}>{ButtonName}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 

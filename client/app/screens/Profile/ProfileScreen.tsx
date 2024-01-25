@@ -19,12 +19,12 @@ export default function ProfileScreen({navigation}: any) {
     navigation.setOptions({
       headerTitle: user?.username,
       headerRight: () => (
-        <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingEnd: 10}}>
+        <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingEnd: 20}}>
           <Ionicons onPress={() => handleLogout()} name="ios-exit-outline" size={24} color="black" />
         </View>
       ),
       headerLeft: () => (
-        <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingStart: 10}}>
+        <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingStart: 20}}>
           <Ionicons onPress={() => navigation.navigate('EditProfile', {user: user})} name="create-outline" size={24} color="black" />
         </View>
       )
@@ -40,6 +40,7 @@ export default function ProfileScreen({navigation}: any) {
       Alert.alert('Error', 'Failed to get user information');
     } finally {
       setIsLoading(false);
+      setRefreshing(false);
     }
   };
   
@@ -75,8 +76,6 @@ export default function ProfileScreen({navigation}: any) {
     );
   }
 
-  console.log(user?.isverified);
-
   return (
     <View style={{ backgroundColor: 'white' }}>
       <ScrollView
@@ -110,15 +109,21 @@ export default function ProfileScreen({navigation}: any) {
             <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
         </TouchableOpacity>
 
-        <CustomButton IconName="attach-money" ButtonName="Уроки по криптовалюте"/>
-        <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"/>
-        <CustomButton IconName="menu-book" ButtonName="Другие курсы"/>
-        <CustomButton IconName="show-chart" ButtonName="Курсы валют"/>
+        <CustomButton IconName="attach-money" ButtonName="Уроки по криптовалюте"
+                      navigation={navigation} to={"Courses"} Type={"crypto"}/>
+        <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"
+                      navigation={navigation} to={"Courses"} Type={"trading"}/>
+        <CustomButton IconName="menu-book" ButtonName="Другие курсы"
+                      navigation={navigation} to={"Courses"} Type={"other"}/>
+        <CustomButton IconName="show-chart" ButtonName="Курсы валют"
+                      navigation={navigation} to={"ExchangeCourse"} Type={"exchange"}/>
 
         <View style={styles.Bar}></View>
 
-        <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"/>
-        <CustomButton IconName="settings" ButtonName="Настройки"/>
+        <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"
+                      navigation={navigation} to={"Chat"} Type={"chat"}/>
+        <CustomButton IconName="settings" ButtonName="Настройки"
+                      navigation={navigation} to={"Settings"} Type={"settings"}/>
 
       </ScrollView>
     </View>
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
   UserInfo: {
     alignItems: 'center',
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     gap: 20,
     marginBottom: 20,
     paddingBottom: 10,
