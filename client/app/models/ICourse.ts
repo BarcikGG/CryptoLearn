@@ -5,4 +5,5 @@ export default interface ICourse {
     lessonscount: number;
     about: string;
     theme: string;
+    avatar: string;
 }

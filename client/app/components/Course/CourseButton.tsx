@@ -10,10 +10,10 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
     <ShadowView style={styles.shadowContainer}>
         <View style={styles.container}>
             <View style={styles.info}>
-                <Image source={{uri: "https://cryptologos.cc/logos/bitcoin-btc-logo.png"}} style={styles.img}/>
+                <Image source={{uri: course.avatar}} style={styles.img}/>
                 <View style={styles.about}>
-                    <Text style={{ fontWeight: '600', fontSize: 18 }}>Course name</Text>
-                    <Text>Amount of lessons</Text>
+                    <Text style={{ fontWeight: '600', fontSize: 18 }}>{course.title}</Text>
+                    <Text>{course.lessonscount.toString()} уроков</Text>
                 </View>
             </View>
             {isBought ? 
@@ -24,7 +24,7 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
                 </Pressable> 
                 : 
                 <Pressable style={styles.button}>
-                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>$199</Text>
+                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>${course.price.toString()}</Text>
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
                     <View style={{ width: 24 }}></View>
                 </Pressable>

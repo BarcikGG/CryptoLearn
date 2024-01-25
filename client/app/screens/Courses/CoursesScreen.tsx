@@ -36,6 +36,7 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
           headerTitle: title,
         }, [])
     });
+
     //в зависимости от type отправлять гет запрос на нужный сервер (ендпоинт == type)
     
     //добавить проверку на то куплен курс или нет, и если нет, 
@@ -50,9 +51,9 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     };
 
     if (isLoading) {
-    return (
-        <Loading/>
-    );
+        return (
+            <Loading/>
+        );
     }
 
     return (
