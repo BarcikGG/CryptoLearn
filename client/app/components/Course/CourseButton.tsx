@@ -30,7 +30,7 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
                 <Pressable style={styles.button}>
                     <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>{price}</Text>
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
-                    <Text style={{fontWeight: '600', color: "white", fontSize: 18}}>{price}</Text>
+                    <Text style={{fontWeight: '600', color: 'rgba(255, 255, 255, 0)', fontSize: 18}}>{price}</Text>
                 </Pressable>
             }
         </View>
