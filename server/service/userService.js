@@ -180,6 +180,13 @@ class UserService {
 
         return Result.rows[0];
     }
+
+    async getCourses(type) {
+        const Query = 'SELECT * FROM "Course" WHERE theme = $1';
+        const Result = await db.query(Query, [type]);
+
+        return Result.rows;
+    }
 }
 
 module.exports = new UserService();

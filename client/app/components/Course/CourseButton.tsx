@@ -1,4 +1,4 @@
-import { StyleSheet, Text, Image, View, Pressable } from 'react-native'
+import { StyleSheet, Text, Image, View, Pressable, Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 import { primaryColor } from '../../constants/Colors';
@@ -6,8 +6,10 @@ import ShadowView from 'react-native-shadow-view';
 import ICourse from '../../models/ICourse';
 
 export default function CourseButton({isBought, course}: {isBought: boolean, course: ICourse}) {
+  const screenWidth = Dimensions.get('window').width;
+
   return (
-    <ShadowView style={styles.shadowContainer}>
+    <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.90}]}>
         <View style={styles.container}>
             <View style={styles.info}>
                 <Image source={{uri: course.avatar}} style={styles.img}/>
@@ -68,7 +70,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     shadowContainer: {
-        width: '100%',
         shadowColor: '#000',
         shadowOffset: {
           width: 0,

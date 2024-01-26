@@ -1,12 +1,13 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { Alert, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import CourseButton from '../../components/Course/CourseButton'
 import ICourse from '../../models/ICourse';
 import Loading from '../../components/elements/Loading';
+import $api from '../../http';
 
 export default function CoursesScreen({navigation, route}: {navigation: any, route: any}) {
     const { type } = route.params;
-    const [ courses, setCourses ] = useState<ICourse[]>();
+    const [ courses, setCourses ] = useState<ICourse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -42,8 +43,21 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     //добавить проверку на то куплен курс или нет, и если нет, 
     //то отображать другой блок с переходом на страницу о курсе
 
+    const fetchCourses = async() => {
+        try {
+            const response = await $api.get(`/courses/${type}`);
+            setCourses(response.data);
+        } catch (error) {
+            console.error('Error getting courses:', error);
+            Alert.alert('Ошибка', 'Не удалось загрузить курсы');
+        } finally {
+            setIsLoading(false);
+            setRefreshing(false);
+        }
+    }
+
     useEffect(() => {
-        //fetchCourses();
+        fetchCourses();
     }, [refreshing]);
 
     const onRefresh = () => {
@@ -57,26 +71,35 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     }
 
     return (
-        <FlatList
-          data={courses?.map((news, index) => ({ key: index, news: news }))}
-          keyExtractor={(item) => item.key.toString()}
-          renderItem={({ item }) => <CourseButton course={item.news} isBought={false} />}
-          contentContainerStyle={styles.container}
-          showsVerticalScrollIndicator={true}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <View style={{backgroundColor: 'white', width: '100%'}}>
+            {courses ? 
+                <FlatList
+                data={courses?.map((news, index) => ({ key: index, news: news }))}
+                keyExtractor={(item) => item.key.toString()}
+                renderItem={({ item }) => <CourseButton course={item.news} isBought={false} />}
+                contentContainerStyle={styles.container}
+                showsVerticalScrollIndicator={true}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                />
+            :
+                <View>
+                    <Text style={{ 
+                        textAlign: 'center', 
+                        fontSize: 20, 
+                        marginTop: 10}}>
+                            На данный момент курсов нет
+                    </Text>
+                </View>
             }
-        />
-        // <View style={styles.container}>
-        //     <CourseButton isBought={true} course={}/>
-        //     <CourseButton isBought={false}/>
-        //     <CourseButton isBought={true}/>
-        // </View>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         height: '100%',
         flexDirection: 'column', 
         alignItems: 'center', 

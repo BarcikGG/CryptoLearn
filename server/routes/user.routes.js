@@ -19,6 +19,9 @@ router.get('/balance/:userId',
 router.get('/user/:userId',
     authMiddleware, 
     userController.getUser);
+router.get('/courses/:type',
+    authMiddleware, 
+    userController.getCourses);
 
 
 module.exports = router
