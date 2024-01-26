@@ -8,6 +8,8 @@ import ICourse from '../../models/ICourse';
 export default function CourseButton({isBought, course}: {isBought: boolean, course: ICourse}) {
   const screenWidth = Dimensions.get('window').width;
 
+  const price = course.price == 0 ? 'Free' : '$' + course.price.toString();
+
   return (
     <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.90}]}>
         <View style={styles.container}>
@@ -26,9 +28,9 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
                 </Pressable> 
                 : 
                 <Pressable style={styles.button}>
-                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>{course.price == 0 ? 'Free' : '$' + course.price.toString()}</Text>
+                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>{price}</Text>
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
-                    <View style={{ width: 24 }}></View>
+                    <Text style={{fontWeight: '600', color: "white", fontSize: 18}}>{price}</Text>
                 </Pressable>
             }
         </View>
