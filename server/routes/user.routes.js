@@ -26,5 +26,4 @@ router.get('/courses-bought/:userId',
     authMiddleware, 
     userController.getCoursesBought);
 
-
 module.exports = router

@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'; 
-import { View, Text, Pressable, Image, Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity} from "react-native";
+import { View, Text, Pressable, Image, Alert, RefreshControl, ScrollView, StyleSheet, TouchableOpacity, Dimensions} from "react-native";
 import $api from "../../http";
 import Loading from "../../components/elements/Loading";
 import { useAuth } from "../../contexts/AuthContext";
@@ -9,6 +9,7 @@ import IUser from "../../models/IUser";
 import { primaryColor } from "../../constants/Colors";
 import CustomButton from "../../components/Profile/CustomButton";
 import { useRole } from "../../contexts/RoleContext";
+import ShadowView from "react-native-shadow-view";
 
 export default function ProfileScreen({navigation}: any) {
   const { userId } = useAuth();
@@ -16,6 +17,7 @@ export default function ProfileScreen({navigation}: any) {
   const [ user, setUser ] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const screenWidth = Dimensions.get('window').width;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -109,14 +111,18 @@ export default function ProfileScreen({navigation}: any) {
           </View>
         </View>
         
-        <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history", {balance: user?.balance})}>
-            <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
-            <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
-        </TouchableOpacity>
+        <ShadowView style={[styles.shadowContainer, {width: screenWidth}]}>
+          <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history", {balance: user?.balance})}>
+              <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
+              <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
+          </TouchableOpacity>
+        </ShadowView>
 
-        <CustomButton IconName="attach-money" ButtonName="Уроки по криптовалюте"
+        <CustomButton IconName="menu-book" ButtonName="Мои курсы"
+                      navigation={navigation} to={"Courses"} Type={"my"}/>
+        <CustomButton IconName="attach-money" ButtonName="Курсы по криптовалюте"
                       navigation={navigation} to={"Courses"} Type={"crypto"}/>
-        <CustomButton IconName="waterfall-chart" ButtonName="Уроки по трейдингу"
+        <CustomButton IconName="waterfall-chart" ButtonName="Курсы по трейдингу"
                       navigation={navigation} to={"Courses"} Type={"trading"}/>
         <CustomButton IconName="menu-book" ButtonName="Все курсы"
                       navigation={navigation} to={"Courses"} Type={"all"}/>
@@ -136,6 +142,17 @@ export default function ProfileScreen({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+  shadowContainer: {
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 3,
+  },
   ScrollContainer: {
     height: '100%',
     flexDirection: 'column', 
@@ -182,15 +199,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     width: '90%', 
     padding: 10,
-    borderWidth: 2,
-    borderColor: primaryColor,
-    borderRadius: 20,
+    backgroundColor: 'white',
+    borderRadius: 15,
     marginBottom: 10
   },
   Bar: {
     backgroundColor: 'gray',
     width: '100%',
-    height: 1,
-    marginTop: 20
+    height: 1
   }
 })

@@ -27,7 +27,7 @@ export default function NewsScreen ({navigation}: any) {
       params: {
         q: query,
         apiKey: apiKey,
-        page: 2
+        page: 1
       },
     })
       .then(response => {
@@ -54,13 +54,13 @@ export default function NewsScreen ({navigation}: any) {
   }
 
   return (
-    <View>
+    <View style={{backgroundColor: 'white'}}>
       {news ? 
           <FlatList
           data={news?.map((news, index) => ({ key: index, news: news }))}
           keyExtractor={(item) => item.key.toString()}
           renderItem={({ item }) => <News news={item.news} navigation={navigation} />}
-          contentContainerStyle={{ padding: 10, alignItems: 'center' }}
+          contentContainerStyle={{ padding: 10, alignItems: 'center', gap: 20 }}
           showsVerticalScrollIndicator={true}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

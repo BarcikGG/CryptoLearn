@@ -9,7 +9,7 @@ import { useRole } from '../../contexts/RoleContext';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function CoursesScreen({navigation, route}: {navigation: any, route: any}) {
-    const { type } = route.params;
+    let { type } = route.params;
     const { userRole } = useRole();
     const { userId } = useAuth();
     const [ courses, setCourses ] = useState<ICourse[]>([]);
@@ -17,11 +17,14 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
+    let onlyOwner = type === 'my' ? true : false;
+
     let title = '';
     enum Type {
         Crypto = 'crypto',
         Trading = 'trading',
         All = 'all',
+        My = 'my'
     }
 
     switch (type) {
@@ -33,6 +36,9 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
           break;
         case Type.All:
             title = 'Все курсы';
+          break;
+        case Type.My:
+            title = 'Мои курсы';
           break;
         default:
             title = 'Курсы';
@@ -52,8 +58,6 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
           },
         }, [navigation, title])
     });
-    
-    //добавить проверку на то куплен курс или нет
 
     const fetchCourses = async() => {
         try {
@@ -82,8 +86,10 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     }
 
     useEffect(() => {
-        fetchCourses();
         fetchCoursesBought();
+
+        if(type === 'my') type = 'all'
+        fetchCourses();
     }, [refreshing]);
 
     const onRefresh = () => {
@@ -109,11 +115,16 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
         <View style={{backgroundColor: 'white', width: '100%'}}>
             {courses ? 
                 <FlatList
-                data={courses?.map((course, index) => ({ key: index, course: course }))}
+                data={courses.map((course, index) => ({ key: index, course: course }))}
                 keyExtractor={(item) => item.key.toString()}
-                renderItem={({ item }) =>
-                    <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />
-                }
+                renderItem={({ item }) => {
+                    if (onlyOwner && checkIsBought(item.course.id)) {
+                      return <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />;
+                    } else if (!onlyOwner) {
+                      return <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />;
+                    }
+                    return null;
+                  }}
                 contentContainerStyle={styles.container}
                 showsVerticalScrollIndicator={true}
                 refreshControl={

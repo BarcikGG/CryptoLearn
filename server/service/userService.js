@@ -182,6 +182,14 @@ class UserService {
     }
 
     async getCourses(type) {
+        if(type == 'all') 
+        {
+            const Query = 'SELECT * FROM "Course"';
+            const Result = await db.query(Query);
+
+            return Result.rows;
+        }
+
         const Query = 'SELECT * FROM "Course" WHERE theme = $1';
         const Result = await db.query(Query, [type]);
 
