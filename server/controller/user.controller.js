@@ -127,6 +127,17 @@ class UserController {
             next(e);
         }
     }
+
+    async getCoursesBought(req, res, next) {
+        try {
+            const userId = req.params.userId;
+            const coursesId = await userService.getCoursesBought(userId);
+            
+            return res.json(coursesId);
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new UserController();

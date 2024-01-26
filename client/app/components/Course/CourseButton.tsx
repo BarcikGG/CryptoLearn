@@ -26,7 +26,7 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
                 </Pressable> 
                 : 
                 <Pressable style={styles.button}>
-                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>${course.price.toString()}</Text>
+                    <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>{course.price == 0 ? 'Free' : '$' + course.price.toString()}</Text>
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
                     <View style={{ width: 24 }}></View>
                 </Pressable>

@@ -24,6 +24,7 @@ export default function BalanceHistoryScreen({navigation, route}: any) {
           Alert.alert('Error', 'Failed to get balance history');
         } finally {
           setIsLoading(false);
+          setRefreshing(false);
         }
     };
 

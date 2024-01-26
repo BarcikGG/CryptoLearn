@@ -30,8 +30,8 @@ class UserService {
 
         const activationLink = uuid.v4();
         const user = await db.query(
-            'INSERT INTO "User" (email, username, fullname, avatar, balance, password, activationLink, isVerified) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-            [email, username, "", defaultAvatar, 100.00, password, activationLink, false]
+            'INSERT INTO "User" (email, username, fullname, avatar, balance, password, activationLink, isVerified, role) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+            [email, username, "", defaultAvatar, 100.00, password, activationLink, false, "user"]
         );
 
         const Query = 'SELECT * FROM "User" WHERE username = $1';
@@ -186,6 +186,15 @@ class UserService {
         const Result = await db.query(Query, [type]);
 
         return Result.rows;
+    }
+
+    async getCoursesBought(userId) {
+        const Query = 'SELECT * FROM "UserBoughtCourses" WHERE userid = $1';
+        const Result = await db.query(Query, [userId]);
+
+        const courseIds = Result.rows.map(row => row.courseid);
+
+        return courseIds;
     }
 }
 

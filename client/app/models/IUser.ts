@@ -6,4 +6,5 @@ export default interface IUser {
     fullname?: string;
     email: string;
     isverified: boolean;
+    role: 'user' | 'admin';
 }

@@ -3,15 +3,18 @@ import { SocketProvider } from './app/contexts/SocketContext';
 import { AuthProvider } from './app/contexts/AuthContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StackNavigator from './app/components/StackNavigator';
+import { RoleProvider } from './app/contexts/RoleContext';
 
 export default function App() {
   return (
     <>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <AuthProvider>
-          <SocketProvider>
-            <StackNavigator></StackNavigator>
-          </SocketProvider>
+          <RoleProvider>
+            <SocketProvider>
+              <StackNavigator></StackNavigator>
+            </SocketProvider>
+          </RoleProvider>
         </AuthProvider>
       </GestureHandlerRootView>
     </>

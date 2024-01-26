@@ -1,13 +1,19 @@
-import { Alert, FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
+import { Alert, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import CourseButton from '../../components/Course/CourseButton'
 import ICourse from '../../models/ICourse';
 import Loading from '../../components/elements/Loading';
 import $api from '../../http';
+import { Ionicons } from '@expo/vector-icons';
+import { useRole } from '../../contexts/RoleContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function CoursesScreen({navigation, route}: {navigation: any, route: any}) {
     const { type } = route.params;
+    const { userRole } = useRole();
+    const { userId } = useAuth();
     const [ courses, setCourses ] = useState<ICourse[]>([]);
+    const [ coursesBought, setCoursesBought ] = useState<number[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -35,13 +41,19 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
     useLayoutEffect(() => {
         navigation.setOptions({
           headerTitle: title,
-        }, [])
+          headerRight: () => {
+            if (userRole === 'admin') {
+                return (
+                    <TouchableOpacity style={{flexDirection: "row", gap: 16, alignItems: "center"}}>
+                    <Ionicons onPress={() => {}} name="add-circle-outline" size={24} color="black" />
+                    </TouchableOpacity>
+                )
+            } else return null;
+          },
+        }, [navigation, title])
     });
-
-    //в зависимости от type отправлять гет запрос на нужный сервер (ендпоинт == type)
     
-    //добавить проверку на то куплен курс или нет, и если нет, 
-    //то отображать другой блок с переходом на страницу о курсе
+    //добавить проверку на то куплен курс или нет
 
     const fetchCourses = async() => {
         try {
@@ -56,8 +68,22 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
         }
     }
 
+    const fetchCoursesBought = async() => {
+        try {
+            const response = await $api.get(`/courses-bought/${userId}`);
+            setCoursesBought(response.data);
+        } catch (error) {
+            console.error('Error getting courses:', error);
+            Alert.alert('Ошибка', 'Не удалось загрузить курсы');
+        } finally {
+            setIsLoading(false);
+            setRefreshing(false);
+        }
+    }
+
     useEffect(() => {
         fetchCourses();
+        fetchCoursesBought();
     }, [refreshing]);
 
     const onRefresh = () => {
@@ -69,14 +95,25 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
             <Loading/>
         );
     }
+    
+    function checkIsBought(id: number) {
+        let isBought = false;
+        isBought = coursesBought.includes(id);
+
+        if(userRole === 'admin') return true;
+
+        return isBought;
+    }
 
     return (
         <View style={{backgroundColor: 'white', width: '100%'}}>
             {courses ? 
                 <FlatList
-                data={courses?.map((news, index) => ({ key: index, news: news }))}
+                data={courses?.map((course, index) => ({ key: index, course: course }))}
                 keyExtractor={(item) => item.key.toString()}
-                renderItem={({ item }) => <CourseButton course={item.news} isBought={false} />}
+                renderItem={({ item }) =>
+                    <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />
+                }
                 contentContainerStyle={styles.container}
                 showsVerticalScrollIndicator={true}
                 refreshControl={

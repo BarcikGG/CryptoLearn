@@ -8,9 +8,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import IUser from "../../models/IUser";
 import { primaryColor } from "../../constants/Colors";
 import CustomButton from "../../components/Profile/CustomButton";
+import { useRole } from "../../contexts/RoleContext";
 
 export default function ProfileScreen({navigation}: any) {
   const { userId } = useAuth();
+  const { setUserRole } = useRole();
   const [ user, setUser ] = useState<IUser>();
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -35,6 +37,9 @@ export default function ProfileScreen({navigation}: any) {
     try {
       const response = await $api.get(`/user/${userId}`);
       setUser(response.data);
+      
+      AsyncStorage.setItem("userRole", response.data.role);
+      setUserRole(response.data.role);
     } catch (error) {
       console.error('Error getting user:', error);
       Alert.alert('Error', 'Failed to get user information');
