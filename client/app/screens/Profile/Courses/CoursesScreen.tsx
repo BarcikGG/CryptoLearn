@@ -1,12 +1,12 @@
 import { Alert, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import CourseButton from '../../components/Course/CourseButton'
-import ICourse from '../../models/ICourse';
-import Loading from '../../components/elements/Loading';
-import $api from '../../http';
+import CourseButton from '../../../components/Course/CourseButton'
+import ICourse from '../../../models/ICourse';
+import Loading from '../../../components/elements/Loading';
+import $api from '../../../http';
 import { Ionicons } from '@expo/vector-icons';
-import { useRole } from '../../contexts/RoleContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { useRole } from '../../../contexts/RoleContext';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function CoursesScreen({navigation, route}: {navigation: any, route: any}) {
     let { type } = route.params;

@@ -13,7 +13,8 @@ import NewsScreen from '../screens/News/NewsScreen';
 import { primaryColor } from '../constants/Colors';
 import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
 import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScreen';
-import CoursesScreen from '../screens/Courses/CoursesScreen';
+import CoursesScreen from '../screens/Profile/Courses/CoursesScreen';
+import ValuesScreen from '../screens/Profile/Courses/ValuesScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -59,6 +60,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Balance history" component={BalanceHistoryScreen}/>
 
             <Stack.Screen name="Courses" component={CoursesScreen}/>
+            <Stack.Screen name="Values" component={ValuesScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     );

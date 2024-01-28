@@ -8,13 +8,11 @@ const TradingScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [ coins, setCoins ] = useState<ICoin[]>([]);
+  const key = '9e9d173e8aa8a75746c7000f1aa6692ee141dc85cbac9725c9a527d7e375';
 
   const fetchCoins = async() => {
     try {
-      fetch("https://api.coincap.io/v2/assets", {
-        method: 'GET',
-        redirect: 'follow'
-      })
+      fetch(`https://api.cryptorank.io/v1/currencies?api_key=${key}`)
         .then(response => response.json())
         .then(result => setCoins(result.data))
         .catch(error => console.log('error', error));

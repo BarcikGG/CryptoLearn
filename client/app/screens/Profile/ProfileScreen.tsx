@@ -127,7 +127,7 @@ export default function ProfileScreen({navigation}: any) {
         <CustomButton IconName="menu-book" ButtonName="Все курсы"
                       navigation={navigation} to={"Courses"} Type={"all"}/>
         <CustomButton IconName="show-chart" ButtonName="Курсы валют"
-                      navigation={navigation} to={"ExchangeCourse"} Type={"exchange"}/>
+                      navigation={navigation} to={"Values"} Type={"exchange"}/>
 
         <View style={styles.Bar}></View>
 
