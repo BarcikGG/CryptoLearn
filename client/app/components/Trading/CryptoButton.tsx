@@ -46,7 +46,7 @@ export default function CryptoButton({coin}: {coin: ICoin}) {
                 </View>
                 <View style={{flexDirection: 'column', gap: 5}}>
                     <Text style={{ fontSize: 18, textAlign: 'right' }}>${formatNumber(coin.values.USD.price)}</Text>
-                    <Text style={{ fontSize: 16, color: 'gray', textAlign: 'right' }}>${formatMarketCap(coin.values.USD.marketCap)}</Text>
+                    <Text style={{ fontSize: 16, color: 'gray', textAlign: 'right' }}>Mcap: ${formatMarketCap(coin.values.USD.marketCap)}</Text>
                 </View>
             </View>
         </ShadowView>

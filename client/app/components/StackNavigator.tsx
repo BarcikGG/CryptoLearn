@@ -15,6 +15,8 @@ import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
 import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScreen';
 import CoursesScreen from '../screens/Profile/Courses/CoursesScreen';
 import ValuesScreen from '../screens/Profile/Courses/ValuesScreen';
+import SettingsScreen from '../screens/Profile/SettingsScreen';
+import ChatScreen from '../screens/Profile/Chat/ChatScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -61,6 +63,8 @@ export default function StackNavigator() {
 
             <Stack.Screen name="Courses" component={CoursesScreen}/>
             <Stack.Screen name="Values" component={ValuesScreen}/>
+            <Stack.Screen name="Settings" component={SettingsScreen}/>
+            <Stack.Screen name="Chat" component={ChatScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     );

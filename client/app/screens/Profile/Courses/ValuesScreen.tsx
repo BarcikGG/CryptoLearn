@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import Loading from '../../../components/elements/Loading';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Ionicons } from '@expo/vector-icons';
 import { primaryColor } from '../../../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ValuesScreen() {
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [data, setData] = useState<Array<{ currency: string; rate: string }>>([]);
   const [to, setTo] = useState('RUB');
   const [from, setFrom] = useState('USD');
   const [valuesNames, setValuesNames] = useState<Array<string>>([]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Курсы валют',
+    })
+  });
 
   useEffect(() => {
     fetchCurrencyRates();
