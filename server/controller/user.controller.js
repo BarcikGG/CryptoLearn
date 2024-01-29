@@ -138,6 +138,18 @@ class UserController {
             next(e);
         }
     }
+
+    async buyCourse(req, res, next) {
+        try {
+            const { userId, courseId, balance, price } = req.body;
+            if (!courseId || !balance) return res.status(400).json({ error: 'Missing fields'});
+
+            const newBalance = await userService.buyCourse(courseId, balance, userId, price);
+            return res.json({newBalance});
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new UserController();

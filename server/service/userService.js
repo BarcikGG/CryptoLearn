@@ -204,6 +204,20 @@ class UserService {
 
         return courseIds;
     }
+
+    async buyCourse(courseId, balance, userId, price) {
+        await db.query(
+            'INSERT INTO "UserBoughtCourses" (userid, courseid) values ($1, $2) RETURNING *',
+            [userId, courseId]
+        );
+
+        const newBalance = balance - price;
+
+        const updateQuery = 'UPDATE "User" SET balance = $1 WHERE id = $2';
+        await db.query(updateQuery, [newBalance, userId]);
+
+        return newBalance.toString();
+    }
 }
 
 module.exports = new UserService();

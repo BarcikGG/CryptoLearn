@@ -4,8 +4,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { primaryColor } from '../../../constants/Colors';
 import ShadowView from 'react-native-shadow-view'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import $api from '../../../http';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function BuyScreen({navigation, route}: any) {
+    const { userId } = useAuth();
     const { course } = route.params;
     const [balance, setBalance] = useState(0);
     const [canBuy, setCanBuy] = useState(true);
@@ -34,9 +37,19 @@ export default function BuyScreen({navigation, route}: any) {
             Alert.alert("Ошибка", "Недостаточно средств");
             return;
           }
-      
-
-          await navigation.replace("Courses", { type: "my" });
+          
+          $api.post('/buy-course', {userId: userId, courseId: course.id, balance: balance, price: course.price})
+            .then(response => {
+                console.log(response.data.newBalance);
+                AsyncStorage.setItem("userBalance", response.data.newBalance);
+                navigation.replace("Courses", { type: "my" });
+            })
+            .catch(error => {
+                Alert.alert(
+                'Ошибка покупки',
+                `${error.response.data.message}`
+            );
+            });
         } catch (error) {
           console.error("Ошибка при покупке курса:", error);
         }

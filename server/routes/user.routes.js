@@ -11,6 +11,7 @@ router.post('/registration',
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
+router.post('/buy-course', userController.buyCourse);
 
 router.get('/activation/:link', userController.activate);
 router.get('/balance/:userId', 
