@@ -5,7 +5,7 @@ import { primaryColor } from '../../constants/Colors';
 import ShadowView from 'react-native-shadow-view';
 import ICourse from '../../models/ICourse';
 
-export default function CourseButton({isBought, course}: {isBought: boolean, course: ICourse}) {
+export default function CourseButton({navigation, isBought, course}: {navigation: any, isBought: boolean, course: ICourse}) {
   const screenWidth = Dimensions.get('window').width;
 
   const price = course.price == 0 ? 'Free' : '$' + course.price.toString();
@@ -13,21 +13,21 @@ export default function CourseButton({isBought, course}: {isBought: boolean, cou
   return (
     <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.90}]}>
         <View style={styles.container}>
-            <View style={styles.info}>
+            <Pressable style={styles.info} onPress={() => navigation.navigate("AboutCourse", {course: course})}>
                 <Image source={{uri: course.avatar}} style={styles.img}/>
                 <View style={styles.about}>
                     <Text style={{ fontWeight: '600', fontSize: 18 }}>{course.title}</Text>
                     <Text>{course.lessonscount.toString()} уроков</Text>
                 </View>
-            </View>
+            </Pressable>
             {isBought ? 
-                <Pressable style={styles.button}>
+                <Pressable style={styles.button} >
                     <Ionicons name="play" size={24} color={primaryColor} />
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Продолжить учиться</Text>
                     <View style={{ width: 24 }}></View>
                 </Pressable> 
                 : 
-                <Pressable style={styles.button}>
+                <Pressable style={styles.button} onPress={() => navigation.navigate("Buy", {course: course})}>
                     <Text style={{fontWeight: '600', color: primaryColor, fontSize: 18}}>{price}</Text>
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Купить</Text>
                     <Text style={{fontWeight: '600', color: 'rgba(255, 255, 255, 0)', fontSize: 18}}>{price}</Text>

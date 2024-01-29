@@ -1,5 +1,5 @@
 import { Alert, FlatList, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useAuth } from '../../../contexts/AuthContext';
 import $api from '../../../http';
 import IBalanceHistory from '../../../models/IBalanceHistory';
@@ -14,6 +14,12 @@ export default function BalanceHistoryScreen({navigation, route}: any) {
     const [balanceHistory, setBalanceHistory] = useState<IBalanceHistory[]>();
     const [isLoading, setIsLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          headerTitle: 'История баланса',
+        })
+    });
 
     const fetchHistory = async() => {
         try {

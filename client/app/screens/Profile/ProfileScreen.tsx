@@ -41,6 +41,7 @@ export default function ProfileScreen({navigation}: any) {
       setUser(response.data);
       
       AsyncStorage.setItem("userRole", response.data.role);
+      AsyncStorage.setItem("userBalance", response.data.balance);
       setUserRole(response.data.role);
     } catch (error) {
       console.error('Error getting user:', error);

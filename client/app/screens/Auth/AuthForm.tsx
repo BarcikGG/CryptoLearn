@@ -57,7 +57,7 @@ const AuthForm = ({ navigation }: any) => {
     }).catch((error) => {
       Alert.alert(
         "Invalid credentails",
-        "Wrong username or password"
+        "Неверный логин или пароль"
       );
       console.log(error);
     });

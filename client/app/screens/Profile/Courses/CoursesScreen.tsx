@@ -119,9 +119,13 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
                 keyExtractor={(item) => item.key.toString()}
                 renderItem={({ item }) => {
                     if (onlyOwner && checkIsBought(item.course.id)) {
-                      return <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />;
+                      return <CourseButton navigation={navigation} 
+                                        course={item.course} 
+                                        isBought={checkIsBought(item.course.id)} />;
                     } else if (!onlyOwner) {
-                      return <CourseButton course={item.course} isBought={checkIsBought(item.course.id)} />;
+                      return <CourseButton navigation={navigation}
+                                        course={item.course} 
+                                        isBought={checkIsBought(item.course.id)} />;
                     }
                     return null;
                   }}
