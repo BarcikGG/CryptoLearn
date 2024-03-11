@@ -26,6 +26,7 @@ export default function NewsScreen ({navigation}: any) {
     axios.get(apiUrl, {
       params: {
         q: query,
+        language: 'ru',
         apiKey: apiKey,
         page: 1
       },
