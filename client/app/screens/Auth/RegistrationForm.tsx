@@ -19,13 +19,13 @@ const RegistrationForm = ({ navigation }: any) => {
       .then(response => {
         if (response.status === 400) {
           Alert.alert(
-            'Wrong data',
+            'Неверные данные',
             `${response.data.message}`
         );
         } else {
           Alert.alert(
-            'Registration done!',
-            'Open latter on your email'
+            'Регистрация выполнена!',
+            'Откройте письмо на почте'
           );
   
           setEmail('');
@@ -42,7 +42,7 @@ const RegistrationForm = ({ navigation }: any) => {
       })
       .catch(error => {
         Alert.alert(
-          'Registration error',
+          'Ошибка регистрации',
           `${error.response.data.message}`
       );
       });
@@ -52,7 +52,7 @@ const RegistrationForm = ({ navigation }: any) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.Text}>
-          {"Create account!"}
+          {"Создание аккаунта"}
         </Text>
         <TextInput
           placeholder="Username"
@@ -75,14 +75,14 @@ const RegistrationForm = ({ navigation }: any) => {
         />
         <Pressable onPress={() => navigation.navigate('Login')}>
           <Text style={{ textAlign: 'center', color: 'gray' }}>
-            Already have account?{' '}
-            <Text style={{ color: 'blue' }}>Sign in</Text>
+            Уже есть аккаунт?{' '}
+            <Text style={{ color: 'blue' }}>Войти</Text>
           </Text>
         </Pressable>
       </View>
       <View style={styles.formContainer}>
         <Button
-            title="SIGN UP"
+            title="РЕГИСТРАЦИЯ"
             buttonStyle={styles.button}
             onPress={handleRegistration}
           />
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   Text: {
-    fontSize: 40,
+    fontSize: 32,
     fontWeight: '800',
     textAlign: 'center',
     marginBottom: 50,

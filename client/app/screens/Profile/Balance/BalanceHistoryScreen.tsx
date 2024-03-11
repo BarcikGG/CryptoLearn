@@ -57,7 +57,7 @@ export default function BalanceHistoryScreen({navigation, route}: any) {
             </View>
             {balanceHistory ? 
                 <FlatList
-                data={balanceHistory?.map((trans, index) => ({ key: index, trans: trans }))}
+                data={balanceHistory?.sort((a,b) => Number(b.transaction_date) - Number(a.transaction_date)).map((trans, index) => ({ key: index, trans: trans }))}
                 keyExtractor={(item) => item.key.toString()}
                 renderItem={({ item }) => <BalanceHistory transcation={item.trans}/>}
                 contentContainerStyle={{ padding: 10, alignContent: 'center' }}

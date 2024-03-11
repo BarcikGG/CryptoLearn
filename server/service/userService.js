@@ -216,7 +216,10 @@ class UserService {
         const updateQuery = 'UPDATE "User" SET balance = $1 WHERE id = $2';
         await db.query(updateQuery, [newBalance, userId]);
 
-        //TODO: update history of balance
+        await db.query(
+            'INSERT INTO "balance_history" (user_id, amount, description, operation_type) values ($1, $2, $3, $4) RETURNING *',
+            [userId, price, "Покупка курса", "debit"]
+        );
 
         return newBalance.toString();
     }

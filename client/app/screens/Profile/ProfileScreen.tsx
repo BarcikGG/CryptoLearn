@@ -97,7 +97,7 @@ export default function ProfileScreen({navigation}: any) {
             style={styles.Avatar} 
             source={{uri:user?.avatar || 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png'}} />
           <View style={styles.UserInfoTextBlock}>
-            <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{user?.fullname ? user?.fullname  : 'name surname'}</Text>
+            <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{user?.fullname ? user?.fullname  : 'Имя Фамилия'}</Text>
             <Text style={{ fontSize: 16, marginBottom: 5 }}>{user?.email}</Text>
             {user?.isverified 
               ?  <View style={styles.VerifyBlock}>
@@ -114,7 +114,7 @@ export default function ProfileScreen({navigation}: any) {
         
         <ShadowView style={[styles.shadowContainer, {width: screenWidth}]}>
           <TouchableOpacity style={styles.Balance} onPress={() => navigation.navigate("Balance history", {balance: user?.balance})}>
-              <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Balance: </Text>
+              <Text style={[styles.text, {color: 'gray', marginBottom: 5}]}>Баланс: </Text>
               <Text style={[styles.text, {fontWeight: '500', marginBottom: 0}]}>${user?.balance.toString()}</Text>
           </TouchableOpacity>
         </ShadowView>

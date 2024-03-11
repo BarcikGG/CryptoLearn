@@ -26,12 +26,12 @@ function EditProfileScreen({navigation, route}: any) {
             headerTitle: '',
             headerRight: () => (
             <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingEnd: 10}}>
-                <Text onPress={UpdateProfile} style={{fontSize: 20, color: primaryColor, fontWeight: '600'}}>Save</Text>           
+                <Text onPress={UpdateProfile} style={{fontSize: 20, color: primaryColor, fontWeight: '600'}}>Сохранить</Text>           
             </View>
             ),
             headerLeft: () => (
             <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingStart: 10}}>
-                <Text onPress={() => navigation.goBack()} style={{fontSize: 20, color: primaryColor, fontWeight: '400'}}>Back</Text>
+                <Text onPress={() => navigation.goBack()} style={{fontSize: 20, color: primaryColor, fontWeight: '400'}}>Назад</Text>
             </View>
             )
         }, [])
@@ -50,7 +50,7 @@ function EditProfileScreen({navigation, route}: any) {
     const ensurePermissions = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
-          alert('Sorry, we need media library permissions to make this work.');
+          alert('Необходимо разрешение на использование фото.');
         }
     };
 
@@ -136,11 +136,11 @@ function EditProfileScreen({navigation, route}: any) {
                 <Text 
                     onPress={pickImage}
                     style={{fontSize: 20, color: primaryColor, fontWeight: '400', marginBottom: 20}}
-                    >Select new photo
+                    >Выбрать новое фото
                 </Text>
                 
                 <TextInput
-                        placeholder={user.username ? user.username : "Username"}
+                        placeholder={user.username ? user.username : "Никнейм"}
                         value={username}
                         onChangeText={text => setUsername(text)}
                         style={[styles.inputContainer]}
@@ -153,13 +153,13 @@ function EditProfileScreen({navigation, route}: any) {
                         width: '85%',
                         marginBottom: 10}}>
                     <TextInput
-                        placeholder={user.fullname ? firstname : "Name"}
+                        placeholder={user.fullname ? firstname : "Имя"}
                         value={firstname}
                         onChangeText={text => setFirstname(text)}
                         style={styles.input}
                     />
                     <TextInput
-                        placeholder={user.fullname ? surname : "Surname"}
+                        placeholder={user.fullname ? surname : "Фамилия"}
                         value={surname}
                         onChangeText={text => setSurname(text)}
                         style={styles.inputLast}
@@ -175,7 +175,7 @@ function EditProfileScreen({navigation, route}: any) {
                 </Text>
                 
                 <TextInput
-                        placeholder={user.email ? user.email : "Email"}
+                        placeholder={user.email ? user.email : "Почта"}
                         value={email}
                         onChangeText={text => setEmail(text)}
                         style={[styles.inputContainer]}

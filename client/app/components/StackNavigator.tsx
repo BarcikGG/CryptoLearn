@@ -32,11 +32,11 @@ export default function StackNavigator() {
             tabBarIcon: ({ focused, color, size }) => {
               var iconName;
     
-              if (route.name === 'News') {
+              if (route.name === 'Новости') {
                 iconName = focused ? 'newspaper-sharp' : 'newspaper-outline';
-              } else if (route.name === 'Trading') {
+              } else if (route.name === 'Трейдинг') {
                 iconName = focused ? 'podium' : 'podium-outline';
-              } else if (route.name === 'Profile') {
+              } else if (route.name === 'Профиль') {
                 iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
               }
     
@@ -46,9 +46,9 @@ export default function StackNavigator() {
             tabBarInactiveTintColor: 'gray',
           })}
         >
-          <Tab.Screen name="News" component={NewsScreen} />
-          <Tab.Screen name="Trading" component={TradingScreen} />
-          <Tab.Screen name="Profile" component={ProfileScreen} />
+          <Tab.Screen name="Новости" component={NewsScreen} />
+          <Tab.Screen name="Трейдинг" component={TradingScreen} />
+          <Tab.Screen name="Профиль" component={ProfileScreen} />
         </Tab.Navigator>
       );
     };

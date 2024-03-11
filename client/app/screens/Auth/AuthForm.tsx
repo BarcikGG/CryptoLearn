@@ -52,11 +52,11 @@ const AuthForm = ({ navigation }: any) => {
         navigation.replace('Main');
       } else {
         console.error("Invalid response format", response);
-        Alert.alert("Login error", "Invalid response format");
+        Alert.alert("Ошибка входа", "Неверный формат данных");
       }
     }).catch((error) => {
       Alert.alert(
-        "Invalid credentails",
+        "Ошибка входа",
         "Неверный логин или пароль"
       );
       console.log(error);
@@ -75,7 +75,7 @@ const AuthForm = ({ navigation }: any) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.Text}>
-          {"Welcome to crypto learn!"}
+          {"Crypto Learn"}
         </Text>
         <TextInput
           placeholder="Username"
@@ -92,14 +92,14 @@ const AuthForm = ({ navigation }: any) => {
         />
         <Pressable onPress={() => navigation.navigate('Register')}>
           <Text style={{ textAlign: 'center', color: 'gray' }}>
-            Don't have an account?{' '}
-            <Text style={{ color: 'blue' }}>Sign up</Text>
+            Нет аккаунта?{' '}
+            <Text style={{ color: 'blue' }}>Создать</Text>
           </Text>
         </Pressable>
       </View>
       <View style={styles.formContainer}>
         <Button
-            title="SIGN IN"
+            title="ВОЙТИ"
             buttonStyle={styles.button}
             onPress={handleAuthorize}
           />

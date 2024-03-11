@@ -113,7 +113,7 @@ export default function ValuesScreen() {
 
             <Pressable onPress={() => swap()} style={styles.swap}>
                 <Ionicons name="swap-horizontal-outline" size={20} color={primaryColor} />
-                <Text style={{fontSize: 18, marginBottom: 5, color: primaryColor}}>swap</Text>
+                <Text style={{fontSize: 18, marginBottom: 5, color: primaryColor}}>Обмен</Text>
             </Pressable>
           </View>
         )}
