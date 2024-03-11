@@ -216,6 +216,8 @@ class UserService {
         const updateQuery = 'UPDATE "User" SET balance = $1 WHERE id = $2';
         await db.query(updateQuery, [newBalance, userId]);
 
+        //TODO: update history of balance
+
         return newBalance.toString();
     }
 }

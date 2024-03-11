@@ -22,10 +22,12 @@ export default function BuyScreen({navigation, route}: any) {
     useEffect(() =>{
         const getBalance = async () => {
             const UserBalance = await AsyncStorage.getItem("userBalance");
-            setBalance(parseFloat(UserBalance));
+            if(UserBalance) {
+                setBalance(parseFloat(UserBalance));
 
-            if(parseFloat(UserBalance) < course.price) setCanBuy(false);
-            else setCanBuy(true);
+                if(parseFloat(UserBalance) < course.price) setCanBuy(false);
+                else setCanBuy(true);
+            }
         }
 
         getBalance();
@@ -122,8 +124,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     btn: {
-        minWidth: '70%',
-        width: 'auto',
+        width: '95%',
         paddingHorizontal: 20,
         flexDirection: 'column',
         height: 60,
