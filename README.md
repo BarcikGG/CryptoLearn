@@ -1,15 +1,15 @@
-## CryptoLearn project
+# CryptoLearn project
 
-# Start client: 
+## Start client: 
 - cd client
 - expo start --tunnel
 
-# Start server:
+## Start server:
 - cd server
 - npm run dev
-# CMD:
+## CMD:
 - cd server
 - ngrok http 8080
 
-# Update client/utils/config
+## Update client/utils/config
 - paste new BASE_URL from CMD
