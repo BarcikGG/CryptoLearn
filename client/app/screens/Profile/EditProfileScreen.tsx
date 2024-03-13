@@ -112,9 +112,7 @@ function EditProfileScreen({navigation, route}: any) {
     
             const data = await response.json();
 
-            if (data.updatedUser.status == 404) {
-                Alert.alert("Ошибка обновления", data.updatedUser.message);
-            } else if (data.updatedUser.status == 401) {
+            if (data.updatedUser.status == 404 ||  data.updatedUser.status == 401) {
                 Alert.alert("Ошибка обновления", data.updatedUser.message);
             } else {
                 navigation.replace('Main');
