@@ -30,8 +30,8 @@ class UserService {
 
         const activationLink = uuid.v4();
         const user = await db.query(
-            'INSERT INTO "User" (email, username, fullname, avatar, balance, password, activationLink, isVerified, role) values ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-            [email, username, "", defaultAvatar, 100.00, password, activationLink, false, "user"]
+            'INSERT INTO "User" (email, username, name, surname, avatar, balance, password, activationLink, isVerified, role) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
+            [email, username, "", "", defaultAvatar, 100.00, password, activationLink, false, "user"]
         );
 
         const Query = 'SELECT * FROM "User" WHERE username = $1';
@@ -43,17 +43,18 @@ class UserService {
             id: Result.rows[0].id,
         }
 
-        //await mailService.sendActivationMail(username, email, `${process.env.API_URL}/api/activation/${activationLink}`);
+        await mailService.sendActivationMail(username, email, `${process.env.API_URL}/api/activation/${activationLink}`);
         
         return this.generateToken(userDTO);
     }
 
     async activate(activationLink) {
-        const user = await User.findOne({activationLink})
-        if(!user) throw ApiError.BadRequest('Bad link')
+        const checkUserQuery = 'SELECT * FROM "User" WHERE activationlink = $1';
+        const Result = await db.query(checkUserQuery, [activationLink]);
+        const id = Result.rows[0].id;
 
-        user.isVerified = true;
-        await user.save()
+        const updateQuery = 'UPDATE "User" SET isverified = $1 WHERE id = $2';
+        await db.query(updateQuery, [true, id]);
     }
 
     async login(username, password) {
@@ -128,7 +129,7 @@ class UserService {
                 const _activationLink = uuid.v4();
                 activationLink = _activationLink;
                 userEmail = email;
-                //await mailService.sendActivationMail(name, email, `${process.env.API_URL}/api/activation/${activationLink}`);
+                await mailService.sendActivationMail(name, email, `${process.env.API_URL}/api/activation/${activationLink}`);
             }
 
             if(userUsername !== username) {

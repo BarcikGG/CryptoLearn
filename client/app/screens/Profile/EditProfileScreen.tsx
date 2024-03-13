@@ -1,15 +1,15 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { View, Text, Image, TextInput, StyleSheet, Platform, Alert, SafeAreaView } from "react-native"
+import { View, Text, Image, TextInput, StyleSheet, Alert, SafeAreaView } from "react-native"
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useAuth } from "../../contexts/AuthContext";
-import $api from "../../http";
 import * as ImagePicker from 'expo-image-picker';
 import { BASE_URL } from "../../utils/config";
 import IUser from "../../models/IUser";
 import { primaryColor } from "../../constants/Colors";
 
 function EditProfileScreen({navigation, route}: any) {
+    const url = BASE_URL.slice(0, BASE_URL.length - 4);
     const { userId } = useAuth();
     const [ user ] = useState(route.params.user as IUser);
     const [username, setUsername] = useState<string>(user?.username || '');
@@ -19,7 +19,7 @@ function EditProfileScreen({navigation, route}: any) {
     const [pickedImage, setPickedImage] = useState<string>('');
 
     const randomKey = new Date().getTime().toString();
-    const imageUri = pickedImage || user?.avatar;
+    const imageUri = pickedImage || url + user?.avatar;
 
     useLayoutEffect(() => {
         navigation.setOptions({

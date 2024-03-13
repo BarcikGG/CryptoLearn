@@ -5,11 +5,6 @@ const path = require('path');
 class UserController {
     async registration(req, res, next) {
         try {
-            // const errors = validationResult(req);
-            // if(!errors.isEmpty()) {
-            //     return next(ApiError.BadRequest('Validation error', errors.array()));
-            // }
-
             const { username, email, password} = req.body;
             if (!username || !email || !password) return res.status(400).json({ error: 'Missing fields'});
 
@@ -56,24 +51,6 @@ class UserController {
             next(e);
         }
     }
-
-    // async updateNoImg(req, res, next) {
-    //     try {
-    //         const errors = validationResult(req);
-    //         if(!errors.isEmpty()) {
-    //             return next(ApiError.BadRequest('Validation error', errors.array()));
-    //         }
-            
-    //         const {id, usernname, fullname, email } = req.body;
-    //         const imageUrl = null;
-
-    //         const updateUser = await userService.update(id, username, name, surname, email, imageUrl);
-
-    //         return res.json(updateUser);
-    //     } catch(e) {
-    //         next(e);
-    //     }
-    // }
 
     async logout(req, res, next) {
         try {
