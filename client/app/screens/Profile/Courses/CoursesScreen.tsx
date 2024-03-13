@@ -51,7 +51,7 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
             if (userRole === 'admin') {
                 return (
                     <TouchableOpacity style={{flexDirection: "row", gap: 16, alignItems: "center"}}>
-                    <Ionicons onPress={() => {}} name="add-circle-outline" size={24} color="black" />
+                    <Ionicons onPress={() => navigation.navigate("Add course")} name="add-circle-outline" size={24} color="black" />
                     </TouchableOpacity>
                 )
             } else return null;
@@ -152,12 +152,14 @@ export default function CoursesScreen({navigation, route}: {navigation: any, rou
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: '100%',
+        height: 'auto',
+        minHeight: '100%',
         flexDirection: 'column', 
         alignItems: 'center', 
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 20,
+        paddingBottom: 50,
         gap: 16
     },
 })

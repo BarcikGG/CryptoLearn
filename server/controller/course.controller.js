@@ -1,4 +1,7 @@
 const courseService = require('../service/courseService');
+const uuid = require('uuid');
+const fs = require('fs');
+const path = require('path');
 
 class CourseController {
     async getCourses(req, res, next) {
@@ -37,10 +40,23 @@ class CourseController {
 
     async addCourse(req, res, next) {
         try {
-            const { title, price, about, theme, avatar } = req.body;
+            const title = req.body.title;
+            const price = Number(req.body.price);
+            const about = req.body.about;
+            const theme = req.body.theme;
 
-            const course = await courseService.addCourse(title, price, about, theme, avatar);
-            return res.json(course);
+            var imageUrl = req.body.image;
+
+            if(req.file) {
+                const uploadedFileName = `${uuid.v4()}-${req.file.originalname}`;
+                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads\\courses', uploadedFileName);
+                fs.writeFileSync(uploadPath, req.file.buffer);
+                
+                imageUrl = `/uploads/courses/${uploadedFileName}`;
+            }
+
+            const course = await courseService.addCourse(title, price, about, theme, imageUrl);
+            return res.json({course});
         } catch(e) {
             next(e);
         }

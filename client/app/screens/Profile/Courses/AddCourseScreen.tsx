@@ -1,24 +1,22 @@
-import { useEffect, useLayoutEffect, useState, useMemo } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { View, Text, Image, TextInput, StyleSheet, Alert, SafeAreaView } from "react-native"
-import { MaterialIcons } from '@expo/vector-icons'; 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
-import { BASE_URL } from "../../utils/config";
-import IUser from "../../models/IUser";
-import { primaryColor } from "../../constants/Colors";
+import { BASE_URL } from "../../../utils/config";
+import { primaryColor } from "../../../constants/Colors";
+import SelectDropdown from "react-native-select-dropdown";
 
-function EditProfileScreen({navigation, route}: any) {
-    const url = BASE_URL.slice(0, BASE_URL.length - 4);
-    const [ user ] = useState(route.params.user as IUser);
-    const [username, setUsername] = useState<string>(user?.username || '');
-    const [email, setEmail] = useState<string>(user?.email || '');
-    const [firstname, setFirstname] = useState<string>(user?.name || '');
-    const [surname, setSurname] = useState<string>(user?.surname || '');
+function AddCourseScreen({navigation, route}: any) {
+    const themes = ['crypto', 'trading', 'all'];
+    const [title, setTitle] = useState<string>('');
+    const [price, setPrice] = useState<string>('');
+    const [about, setAbout] = useState<string>('');
+    const [theme, setTheme] = useState<string>('');
     const [pickedImage, setPickedImage] = useState<string>('');
     
     const imageUri = useMemo(() => {
-        return pickedImage || url + user?.avatar;
+        return pickedImage || "";
     }, [pickedImage]);
 
     useLayoutEffect(() => {
@@ -26,7 +24,7 @@ function EditProfileScreen({navigation, route}: any) {
             headerTitle: '',
             headerRight: () => (
             <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingEnd: 10}}>
-                <Text onPress={UpdateProfile} style={{fontSize: 20, color: primaryColor, fontWeight: '600'}}>Сохранить</Text>           
+                <Text onPress={AddCourse} style={{fontSize: 20, color: primaryColor, fontWeight: '600'}}>Создать</Text>           
             </View>
             ),
             headerLeft: () => (
@@ -78,7 +76,8 @@ function EditProfileScreen({navigation, route}: any) {
         }
     };
 
-    const UpdateProfile = async () => {
+    const AddCourse = async () => {
+        if (!title || !about || !price || !theme) return;
         try {
             const formData = new FormData();
     
@@ -90,30 +89,25 @@ function EditProfileScreen({navigation, route}: any) {
                 };
             
                 formData.append('image', imageBlob);
-            } else {
-                if (user.avatar) formData.append('image', user.avatar);
-            }
-    
-            formData.append('id', user.id.toString());
-            formData.append('username', username);
-            formData.append('name', firstname);
-            formData.append('surname', surname);
-            formData.append('email', email);
-    
-            const response = await fetch(`${BASE_URL}/user-update`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
-    
-            const data = await response.json();
-
-            if (data.updatedUser.status == 404 ||  data.updatedUser.status == 401) {
-                Alert.alert("Ошибка обновления", data.updatedUser.message);
-            } else {
-                navigation.replace('Main');
+                formData.append('title', title);
+                formData.append('about', about);
+                formData.append('price', price);
+                formData.append('theme', theme);
+        
+                const response = await fetch(`${BASE_URL}/add-course`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                });
+        
+                const data = await response.json();
+                if (data.course.status == 404 ||  data.course.status == 401) {
+                    Alert.alert("Ошибка добавления", data.course.message);
+                } else {
+                    navigation.replace('Courses', {type: 'all'});
+                }
             }
         } catch (error) {
             console.error('Error sending data to server:', error);
@@ -130,8 +124,15 @@ function EditProfileScreen({navigation, route}: any) {
                     marginTop: 20, 
                     justifyContent: 'center', 
                     alignItems: 'center'}}>
+                
+                <TextInput
+                    placeholder="Название курса"
+                    value={title}
+                    onChangeText={text => setTitle(text)}
+                    style={[styles.inputContainer]}
+                />
                 <Image
-                    style={{ height: 150, width: 150, 
+                    style={{ height: 200, width: 200,
                         resizeMode: 'cover', 
                         borderRadius: 75,
                         marginBottom: 10 }} 
@@ -139,68 +140,55 @@ function EditProfileScreen({navigation, route}: any) {
                 <Text 
                     onPress={pickImage}
                     style={{fontSize: 20, color: primaryColor, fontWeight: '400', marginBottom: 20}}
-                    >Выбрать новое фото
+                    >Выбрать фото
                 </Text>
                 
                 <TextInput
-                        placeholder={user.username ? user.username : "Никнейм"}
-                        value={username}
-                        onChangeText={text => setUsername(text)}
-                        style={[styles.inputContainer]}
+                    placeholder="Описание курса"
+                    value={about}
+                    onChangeText={text => setAbout(text)}
+                    style={[styles.inputContainer]}
                 />
-                <View style={{
-                        borderRadius: 15, 
-                        backgroundColor: 'white',
-                        borderColor: 'gray', 
-                        borderWidth: 2,
-                        width: '85%',
-                        marginBottom: 10}}>
-                    <TextInput
-                        placeholder={user.name ? firstname : "Имя"}
-                        value={firstname}
-                        onChangeText={text => setFirstname(text)}
-                        style={styles.input}
-                    />
-                    <TextInput
-                        placeholder={user.surname ? surname : "Фамилия"}
-                        value={surname}
-                        onChangeText={text => setSurname(text)}
-                        style={styles.inputLast}
-                    />
-                </View>
-                <Text
-                    style={{width: '75%', 
-                        color: 'gray', 
-                        fontSize: 16, 
-                        marginBottom: 20}}
-                        >
-                        Введите имя для полного заполнения профиля.
-                </Text>
-                
                 <TextInput
-                        placeholder={user.email ? user.email : "Почта"}
-                        value={email}
-                        onChangeText={text => setEmail(text)}
-                        style={[styles.inputContainer]}
+                    placeholder="Цена $"
+                    keyboardType="numeric"
+                    value={price}
+                    onChangeText={text => setPrice(text)}
+                    style={[styles.inputContainer]}
                 />
-                <View style={{marginTop: -5, width: '85%'}}>
-                    {user.isverified 
-                        ?  <View style={{flexDirection: 'row', gap: 5}}>
-                            <MaterialIcons name="verified" size={24} color="green"/>
-                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Почта подтверждена!</Text>
-                        </View>
-                        : <View style={{flexDirection: 'row', gap: 5}}>
-                            <MaterialIcons name="cancel" size={24} color="red"/>
-                            <Text style={{textAlignVertical: 'center', fontSize: 16}}>Почта не подтверждена</Text>
-                        </View>
-                    } 
-                </View>
+
+                <SelectDropdown
+                        defaultButtonText="Выберите тип курса"
+                        buttonStyle={styles.dropBtn}
+                        dropdownStyle={styles.drop}
+                        data={themes}
+                        onSelect={(selectedItem) => {
+                            setTheme(selectedItem);
+                        }}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            return selectedItem;
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            return item;
+                        }}
+                />
             </SafeAreaView>
         </KeyboardAwareScrollView>
     )
 };
 
 const styles = StyleSheet.create({
+    drop: {
+        marginTop: 5,
+        borderRadius: 15
+    },
+    dropBtn: {
+        backgroundColor: 'white', 
+        borderColor: 'gray',
+        borderWidth: 2,
+        borderRadius: 15,
+        width: '85%'
+    },
     Container: {
         fontWeight: '500',
         fontSize: 20,
@@ -245,4 +233,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default EditProfileScreen;
+export default AddCourseScreen;

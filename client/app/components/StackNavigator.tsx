@@ -21,6 +21,7 @@ import AboutScreen from '../screens/Profile/Courses/AboutScreen';
 import BuyScreen from '../screens/Profile/Courses/BuyScreen';
 import CoinScreen from '../screens/Trading/CoinScreen';
 import DepositScreen from '../screens/Profile/Balance/DepositScreen';
+import AddCourseScreen from '../screens/Profile/Courses/AddCourseScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -66,6 +67,7 @@ export default function StackNavigator() {
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
             <Stack.Screen name="Balance history" component={BalanceHistoryScreen}/>
             <Stack.Screen name="Deposit" component={DepositScreen}/>
+            <Stack.Screen name="Add course" component={AddCourseScreen} />
 
             <Stack.Screen name="Courses" component={CoursesScreen}/>
             <Stack.Screen name="AboutCourse" component={AboutScreen}/>

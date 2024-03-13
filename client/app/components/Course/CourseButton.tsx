@@ -4,17 +4,19 @@ import React from 'react'
 import { primaryColor } from '../../constants/Colors';
 import ShadowView from 'react-native-shadow-view';
 import ICourse from '../../models/ICourse';
+import { BASE_URL } from '../../utils/config';
 
 export default function CourseButton({navigation, isBought, course}: {navigation: any, isBought: boolean, course: ICourse}) {
   const screenWidth = Dimensions.get('window').width;
-
+  const isNewCourse = course.avatar.startsWith("/uploads") ? true : false;
+  const url = BASE_URL.slice(0, BASE_URL.length - 4);
   const price = course.price == 0 ? 'Free' : '$' + course.price.toString();
 
   return (
     <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.90}]}>
         <View style={styles.container}>
             <Pressable style={styles.info} onPress={() => navigation.navigate("AboutCourse", {course: course})}>
-                <Image source={{uri: course.avatar}} style={styles.img}/>
+                <Image source={{uri: isNewCourse ? url + course.avatar : course.avatar}} style={styles.img}/>
                 <View style={styles.about}>
                     <Text style={{ fontWeight: '600', fontSize: 18 }}>{course.title}</Text>
                     <Text>{course.lessonscount.toString()} уроков</Text>

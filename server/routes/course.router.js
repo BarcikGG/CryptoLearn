@@ -9,7 +9,7 @@ const courseController = require('../controller/course.controller');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/buy-course', courseController.buyCourse);
-router.post('/add-course', courseController.addCourse);
+router.post('/add-course', upload.single('image'), courseController.addCourse);
 
 router.get('/courses/:type',
     authMiddleware, 
