@@ -6,12 +6,15 @@ import ShadowView from 'react-native-shadow-view'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import $api from '../../../http';
 import { useAuth } from '../../../contexts/AuthContext';
+import { BASE_URL } from '../../../utils/config';
 
 export default function BuyScreen({navigation, route}: any) {
     const { userId } = useAuth();
     const { course } = route.params;
     const [balance, setBalance] = useState(0);
     const [canBuy, setCanBuy] = useState(true);
+    const isNewCourse = course.avatar.startsWith("/uploads") ? true : false;
+    const url = BASE_URL.slice(0, BASE_URL.length - 4);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -62,7 +65,7 @@ export default function BuyScreen({navigation, route}: any) {
                 <View style={{width: '100%'}}>
                     <ShadowView style={styles.shadowContainer}>
                         <View style={styles.courseCont}>
-                            <Image source={{uri: course.avatar}} style={styles.img}/>
+                            <Image source={{uri: isNewCourse ? url + course.avatar : course.avatar}} style={styles.img}/>
                             <Text style={styles.title}>{course.title}</Text>
                             <Text style={styles.title}>${course.price}</Text>
                         </View>
