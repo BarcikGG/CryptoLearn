@@ -39,6 +39,7 @@ const AuthForm = ({ navigation }: any) => {
   }, []);
   
   const handleAuthorize = () => {
+    if(!username || !password) return;
     $api.post('/login', {username: username, password: hashPassword(password)}).then(async response => {
       if (response.data) {
         AsyncStorage.setItem("authToken", response.data.userData.refreshToken);

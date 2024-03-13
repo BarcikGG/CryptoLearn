@@ -15,6 +15,7 @@ const RegistrationForm = ({ navigation }: any) => {
   const [password, setPassword] = useState<string>('');
   
   const handleRegistration = () => {
+    if(!username || !password || !email) return;
     $api.post('/registration', {username: username, email: email, password: hashPassword(password)})
       .then(response => {
         if (response.status === 400) {

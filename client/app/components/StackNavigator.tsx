@@ -29,7 +29,7 @@ export default function StackNavigator() {
     const BottomTabs = () => {
       return (
         <Tab.Navigator
-          initialRouteName='News'
+          initialRouteName='Профиль'
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               var iconName;

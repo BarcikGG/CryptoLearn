@@ -1,8 +1,8 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useMemo } from "react";
 import { View, Text, Image, TextInput, StyleSheet, Alert, SafeAreaView } from "react-native"
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useAuth } from "../../contexts/AuthContext";
+import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import { BASE_URL } from "../../utils/config";
 import IUser from "../../models/IUser";
@@ -10,7 +10,6 @@ import { primaryColor } from "../../constants/Colors";
 
 function EditProfileScreen({navigation, route}: any) {
     const url = BASE_URL.slice(0, BASE_URL.length - 4);
-    const { userId } = useAuth();
     const [ user ] = useState(route.params.user as IUser);
     const [username, setUsername] = useState<string>(user?.username || '');
     const [email, setEmail] = useState<string>(user?.email || '');
@@ -19,7 +18,10 @@ function EditProfileScreen({navigation, route}: any) {
     const [pickedImage, setPickedImage] = useState<string>('');
 
     const randomKey = new Date().getTime().toString();
-    const imageUri = pickedImage || url + user?.avatar;
+    
+    const imageUri = useMemo(() => {
+        return pickedImage || url + user?.avatar;
+    }, [pickedImage]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -48,6 +50,21 @@ function EditProfileScreen({navigation, route}: any) {
         }
     };
 
+    const compressImage = async (uri: string) => {
+        try {
+          const manipResult = await ImageManipulator.manipulateAsync(
+            uri,
+            [{ resize: { width: 600, height: 600 } }],
+            { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
+          );
+      
+          return manipResult.uri;
+        } catch (error) {
+          console.error('Error compressing image:', error);
+          return uri;
+        }
+      };
+
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -58,7 +75,8 @@ function EditProfileScreen({navigation, route}: any) {
         });
       
         if (!result.canceled) {
-          setPickedImage(result.assets[0].uri);
+            const compressedImg = await compressImage(result.assets[0].uri);
+            setPickedImage(compressedImg);
         }
     };
 
@@ -67,11 +85,13 @@ function EditProfileScreen({navigation, route}: any) {
             const formData = new FormData();
     
             if (pickedImage) {
-                formData.append('image', {
+                const imageBlob: Blob = {
                     uri: pickedImage,
                     type: 'image/jpeg',
                     name: 'photo.jpg',
-                });
+                };
+            
+                formData.append('image', imageBlob);
             } else {
                 if (user.avatar) formData.append('image', user.avatar);
             }
@@ -91,7 +111,6 @@ function EditProfileScreen({navigation, route}: any) {
             });
     
             const data = await response.json();
-            //console.log(data);
 
             if (data.updatedUser.status == 404) {
                 Alert.alert("Ошибка обновления", data.updatedUser.message);
@@ -115,8 +134,7 @@ function EditProfileScreen({navigation, route}: any) {
                     marginTop: 20, 
                     justifyContent: 'center', 
                     alignItems: 'center'}}>
-                <Image 
-                    key={randomKey}
+                <Image
                     style={{ height: 150, width: 150, 
                         resizeMode: 'cover', 
                         borderRadius: 75,
