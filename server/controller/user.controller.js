@@ -46,7 +46,7 @@ class UserController {
                 const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads', uploadedFileName);
                 fs.writeFileSync(uploadPath, req.file.buffer);
                 
-                imageUrl = `https://977a-95-24-151-180.ngrok-free.app/uploads/${uploadedFileName}`;
+                imageUrl = `/uploads/${uploadedFileName}`;
             }
             
             const updatedUser = await userService.update(id, username, name, surname, email, imageUrl);

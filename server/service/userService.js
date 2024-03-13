@@ -7,7 +7,7 @@ const ApiError = require('../exceptions/apiError');
 
 class UserService {
     async registration(email, password, username) {
-        const defaultAvatar = 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png';
+        const defaultAvatar = '';
         const checkEmailQuery = 'SELECT * FROM "User" WHERE email = $1';
         const checkEmailResult = await db.query(checkEmailQuery, [email]);
 

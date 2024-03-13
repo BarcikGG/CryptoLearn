@@ -10,6 +10,7 @@ import { primaryColor } from "../../constants/Colors";
 import CustomButton from "../../components/Profile/CustomButton";
 import { useRole } from "../../contexts/RoleContext";
 import ShadowView from "react-native-shadow-view";
+import { BASE_URL } from "../../utils/config";
 
 export default function ProfileScreen({navigation}: any) {
   const { userId } = useAuth();
@@ -18,6 +19,7 @@ export default function ProfileScreen({navigation}: any) {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const screenWidth = Dimensions.get('window').width;
+  const url = BASE_URL.slice(0, BASE_URL.length - 4);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -42,7 +44,7 @@ export default function ProfileScreen({navigation}: any) {
       
       AsyncStorage.setItem("userRole", response.data.role);
       AsyncStorage.setItem("userBalance", response.data.balance);
-      //console.log(response.data.avatar);
+
       setUserRole(response.data.role);
     } catch (error) {
       console.error('Error getting user:', error);
@@ -96,7 +98,7 @@ export default function ProfileScreen({navigation}: any) {
         <View style={styles.UserInfo}>
           <Image 
             style={styles.Avatar} 
-            source={{uri:user?.avatar || 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png'}} />
+            source={{uri: url + user?.avatar}} />
           <View style={styles.UserInfoTextBlock}>
             <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{(user?.name && user?.surname) ? (user?.name + " " + user.surname)  : 'Имя Фамилия'}</Text>
             <Text style={{ fontSize: 16, marginBottom: 5 }}>{user?.email}</Text>
