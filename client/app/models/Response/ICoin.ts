@@ -1,74 +1,28 @@
 export default interface ICoin {
-  id: number;
-  slug: string;
+  id: string;
   symbol: string;
   name: string;
-  type: string;
-  category: string;
-  rank: number;
-  volume24hBase: number;
-  values: {
-    USD: {
-      price: number;
-      marketCap: number;
-      volume24h: number;
-      high24h: number;
-      low24h: number;
-      percentChange24h: number;
-      percentChange7d: number;
-      percentChange30d: number;
-      percentChange3m: number;
-      percentChange6m: number;
-    };
-    BTC: {
-      price: number;
-      marketCap: number;
-      volume24h: number;
-      high24h: number;
-      low24h: number;
-      percentChange24h: number;
-      percentChange7d: number;
-      percentChange30d: number;
-      percentChange3m: number;
-      percentChange6m: number;
-    };
-    ETH: {
-      price: number;
-      marketCap: number;
-      volume24h: number;
-      high24h: number;
-      low24h: number;
-      percentChange24h: number;
-      percentChange7d: number;
-      percentChange30d: number;
-      percentChange3m: number;
-      percentChange6m: number;
-    };
-  };
-  tokens: [
-    {
-      tokenAddress: string;
-      platform: {
-        id: number;
-        slug: string;
-        name: string;
-      };
-    }
-  ];
-  links: [
-    {
-      type: string;
-      value: string;
-    }
-  ];
-  circulatingSupply: number;
-  totalSupply: number;
-  maxSupply: number;
-  lastUpdated: string;
-  images: {
-    '16x16': string;
-    '200x200': string;
-    '60x60': string;
-  };
+  image: string;
+  current_price: number;
+  market_cap: number;
+  market_cap_rank: number;
+  fully_diluted_valuation: number;
+  total_volume: number;
+  high_24h: number;
+  low_24h: number;
+  price_change_24h: number;
+  price_change_percentage_24h: number;
+  market_cap_change_24h: number;
+  market_cap_change_percentage_24h: number;
+  circulating_supply: number;
+  total_supply: number;
+  max_supply: number;
+  ath: number;
+  ath_change_percentage: number;
+  ath_date: string;
+  atl: number;
+  atl_change_percentage: number;
+  atl_date: string;
+  roi: any;
+  last_updated: string;
 }
-  

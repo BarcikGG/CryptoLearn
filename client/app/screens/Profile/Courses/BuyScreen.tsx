@@ -42,7 +42,7 @@ export default function BuyScreen({navigation, route}: any) {
           
           $api.post('/buy-course', {userId: userId, courseId: course.id, balance: balance, price: course.price})
             .then(response => {
-                console.log(response.data.newBalance);
+                //console.log(response.data.newBalance);
                 AsyncStorage.setItem("userBalance", response.data.newBalance);
                 navigation.replace("Courses", { type: "my" });
             })

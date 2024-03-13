@@ -1,4 +1,4 @@
-import { Alert, FlatList, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useAuth } from '../../../contexts/AuthContext';
 import $api from '../../../http';
@@ -50,11 +50,11 @@ export default function BalanceHistoryScreen({navigation, route}: any) {
     }
     
     return (
-        <View style={{ width: '100%', height: '100%'}}>
-            <View style={styles.balance}>
+        <View style={{ width: '100%', height: '100%', backgroundColor: 'white'}}>
+            <Pressable onPress={() => navigation.navigate("Deposit", {balance: balance})} style={styles.balance}>
                 <Text style={styles.text}>${balance}</Text>
                 <MaterialCommunityIcons name="wallet-plus" size={24} color="black" />
-            </View>
+            </Pressable>
             {balanceHistory ? 
                 <FlatList
                 data={balanceHistory?.sort((a,b) => Number(b.transaction_date) - Number(a.transaction_date)).map((trans, index) => ({ key: index, trans: trans }))}

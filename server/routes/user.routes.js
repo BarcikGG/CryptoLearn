@@ -1,7 +1,8 @@
 const Router = require('express');
 const router = new Router();
 const { body } = require('express-validator');
-const userController = require('../controller/user.controller')
+const userController = require('../controller/user.controller');
+const courseController = require('../controller/course.controller');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/registration', 
@@ -11,7 +12,8 @@ router.post('/registration',
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
-router.post('/buy-course', userController.buyCourse);
+router.post('/buy-course', courseController.buyCourse);
+router.post('/deposit', userController.deposit);
 
 router.get('/activation/:link', userController.activate);
 router.get('/balance/:userId', 
@@ -22,9 +24,9 @@ router.get('/user/:userId',
     userController.getUser);
 router.get('/courses/:type',
     authMiddleware, 
-    userController.getCourses);
+    courseController.getCourses);
 router.get('/courses-bought/:userId',
     authMiddleware, 
-    userController.getCoursesBought);
+    courseController.getCoursesBought);
 
 module.exports = router

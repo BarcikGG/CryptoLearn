@@ -3,19 +3,22 @@ import { StyleSheet, Alert, FlatList, RefreshControl } from 'react-native';
 import CryptoButton from '../../components/Trading/CryptoButton';
 import Loading from '../../components/elements/Loading';
 import ICoin from '../../models/Response/ICoin';
+import axios from 'axios';
 
 const TradingScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [ coins, setCoins ] = useState<ICoin[]>([]);
-  const key = '9e9d173e8aa8a75746c7000f1aa6692ee141dc85cbac9725c9a527d7e375';
 
   const fetchCoins = async() => {
     try {
-      fetch(`https://api.cryptorank.io/v1/currencies?api_key=${key}`)
-        .then(response => response.json())
-        .then(result => setCoins(result.data))
-        .catch(error => console.log('error', error));
+      const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd', {
+            headers: { 
+              'x-cg-demo-api-key': 'CG-rJcCTbMBPdFRgPNdC172kjNt'
+            }
+      });
+
+      setCoins(response.data);
     } catch (error) {
         console.error('Error getting coins:', error);
         Alert.alert('Ошибка', 'Не удалось загрузить монеты');

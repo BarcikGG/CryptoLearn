@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { primaryColor } from '../../constants/Colors'
 import { Feather } from '@expo/vector-icons';
 import IBalanceHistory from '../../models/IBalanceHistory'
 

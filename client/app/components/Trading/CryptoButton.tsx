@@ -1,13 +1,15 @@
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import ShadowView from 'react-native-shadow-view';
 import React from 'react'
 import ICoin from '../../models/Response/ICoin';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CryptoButton({coin}: {coin: ICoin}) {
+    const navigation = useNavigation();
     const screenWidth = Dimensions.get('window').width;
-    const percentColor = coin.values.USD.percentChange24h < 0 ? 'red' : 'green';
-    const iconName = coin.values.USD.percentChange24h < 0 ? 'caretdown' : 'caretup';
+    const percentColor = coin.price_change_percentage_24h < 0 ? 'red' : 'green';
+    const iconName = coin.price_change_percentage_24h < 0 ? 'caretdown' : 'caretup';
 
     const formatNumber = (number: number) => {
         return number.toFixed(2);
@@ -27,28 +29,28 @@ export default function CryptoButton({coin}: {coin: ICoin}) {
 
     return (
         <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.95}]}>   
-            <View style={styles.container}>
+            <Pressable onPress={() => navigation.navigate("CurrentCoin", {coin: coin})} style={styles.container}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Image source={{uri: `https://api.cryptorank.io/static/img/coins/60x60.bitcoin1524754012028.png`}} style={styles.image}/>
+                    <Image source={{uri: coin.image}} style={styles.image}/>
                     <View style={{marginLeft: 10, gap: 5}}>
                         <Text style={{fontSize: 18}}>{coin.name}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                             <View style={styles.rank}>
-                                <Text style={{fontSize: 14}}>{coin.rank}</Text>
+                                <Text style={{fontSize: 14}}>{coin.market_cap_rank}</Text>
                             </View>
                             <Text style={{fontSize: 16, color: 'gray'}}>{coin.symbol}</Text>
                             <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
                                 <AntDesign name={iconName} size={12} color={percentColor} style={{marginTop: 2}}/>
-                                <Text style={{fontSize: 14, color: percentColor}}>{coin.values.USD.percentChange24h.toFixed(2)}%</Text>
+                                <Text style={{fontSize: 14, color: percentColor}}>{coin.price_change_percentage_24h.toFixed(2)}%</Text>
                             </View>
                         </View>
                     </View>
                 </View>
                 <View style={{flexDirection: 'column', gap: 5}}>
-                    <Text style={{ fontSize: 18, textAlign: 'right' }}>${formatNumber(coin.values.USD.price)}</Text>
-                    <Text style={{ fontSize: 16, color: 'gray', textAlign: 'right' }}>Mcap: ${formatMarketCap(coin.values.USD.marketCap)}</Text>
+                    <Text style={{ fontSize: 18, textAlign: 'right' }}>${formatNumber(coin.current_price)}</Text>
+                    <Text style={{ fontSize: 16, color: 'gray', textAlign: 'right' }}>Mcap: ${formatMarketCap(coin.market_cap)}</Text>
                 </View>
-            </View>
+            </Pressable>
         </ShadowView>
     )
 }

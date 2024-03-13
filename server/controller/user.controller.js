@@ -117,35 +117,12 @@ class UserController {
         }
     }
 
-    async getCourses(req, res, next) {
+    async deposit(req, res, next) {
         try {
-            const type = req.params.type;
-            const courses = await userService.getCourses(type);
+            const {userId, balance, promo} = req.body;
+            const newBalance = await userService.deposit(userId, balance, promo);
             
-            return res.json(courses);
-        } catch(e) {
-            next(e);
-        }
-    }
-
-    async getCoursesBought(req, res, next) {
-        try {
-            const userId = req.params.userId;
-            const coursesId = await userService.getCoursesBought(userId);
-            
-            return res.json(coursesId);
-        } catch(e) {
-            next(e);
-        }
-    }
-
-    async buyCourse(req, res, next) {
-        try {
-            const { userId, courseId, balance, price } = req.body;
-            if (!courseId || !balance) return res.status(400).json({ error: 'Missing fields'});
-
-            const newBalance = await userService.buyCourse(courseId, balance, userId, price);
-            return res.json({newBalance});
+            return res.json(newBalance);
         } catch(e) {
             next(e);
         }

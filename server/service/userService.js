@@ -171,7 +171,7 @@ class UserService {
         const Query = 'SELECT * FROM "balance_history" WHERE user_id = $1';
         const Result = await db.query(Query, [userId]);
 
-        return Result.rows;
+        return Result.rows.reverse();
     }
 
     async getUser(userId) {
@@ -181,47 +181,29 @@ class UserService {
         return Result.rows[0];
     }
 
-    async getCourses(type) {
-        if(type == 'all') 
-        {
-            const Query = 'SELECT * FROM "Course"';
-            const Result = await db.query(Query);
+    async deposit(userId, balance, promo) {
+        const checkPromoQuery = 'SELECT * FROM "promos" WHERE promo = $1';
+        const checkPromoResult = await db.query(checkPromoQuery, [promo]);
 
-            return Result.rows;
+        if (checkPromoResult.rows.length == 0) {
+            return {
+                error: true,
+                message: "Неверный промокод!"
+            };
         }
 
-        const Query = 'SELECT * FROM "Course" WHERE theme = $1';
-        const Result = await db.query(Query, [type]);
+        const amount = checkPromoResult.rows[0].amount;
 
-        return Result.rows;
-    }
-
-    async getCoursesBought(userId) {
-        const Query = 'SELECT * FROM "UserBoughtCourses" WHERE userid = $1';
-        const Result = await db.query(Query, [userId]);
-
-        const courseIds = Result.rows.map(row => row.courseid);
-
-        return courseIds;
-    }
-
-    async buyCourse(courseId, balance, userId, price) {
-        await db.query(
-            'INSERT INTO "UserBoughtCourses" (userid, courseid) values ($1, $2) RETURNING *',
-            [userId, courseId]
-        );
-
-        const newBalance = balance - price;
-
+        const newBalance = Number(balance) + Number(amount);
         const updateQuery = 'UPDATE "User" SET balance = $1 WHERE id = $2';
         await db.query(updateQuery, [newBalance, userId]);
 
         await db.query(
             'INSERT INTO "balance_history" (user_id, amount, description, operation_type) values ($1, $2, $3, $4) RETURNING *',
-            [userId, price, "Покупка курса", "debit"]
+            [userId, amount, "промокод", "credit"]
         );
 
-        return newBalance.toString();
+        return newBalance;
     }
 }
 
