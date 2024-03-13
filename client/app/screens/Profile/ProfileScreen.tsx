@@ -42,6 +42,7 @@ export default function ProfileScreen({navigation}: any) {
       
       AsyncStorage.setItem("userRole", response.data.role);
       AsyncStorage.setItem("userBalance", response.data.balance);
+      //console.log(response.data.avatar);
       setUserRole(response.data.role);
     } catch (error) {
       console.error('Error getting user:', error);
@@ -97,7 +98,7 @@ export default function ProfileScreen({navigation}: any) {
             style={styles.Avatar} 
             source={{uri:user?.avatar || 'https://atg-prod-scalar.s3.amazonaws.com/studentpower/media/user%20avatar.png'}} />
           <View style={styles.UserInfoTextBlock}>
-            <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{user?.fullname ? user?.fullname  : 'Имя Фамилия'}</Text>
+            <Text style={{ fontSize: 22, fontWeight: '700', marginBottom: 5 }}>{(user?.name && user?.surname) ? (user?.name + " " + user.surname)  : 'Имя Фамилия'}</Text>
             <Text style={{ fontSize: 16, marginBottom: 5 }}>{user?.email}</Text>
             {user?.isverified 
               ?  <View style={styles.VerifyBlock}>

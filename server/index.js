@@ -1,11 +1,13 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
+const path = require('path');
 const userRouter = require('./routes/user.routes');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(cors({
     credentials: true,

@@ -14,8 +14,8 @@ function EditProfileScreen({navigation, route}: any) {
     const [ user ] = useState(route.params.user as IUser);
     const [username, setUsername] = useState<string>(user?.username || '');
     const [email, setEmail] = useState<string>(user?.email || '');
-    const [firstname, setFirstname] = useState<string>('');
-    const [surname, setSurname] = useState<string>('');
+    const [firstname, setFirstname] = useState<string>(user?.name || '');
+    const [surname, setSurname] = useState<string>(user?.surname || '');
     const [pickedImage, setPickedImage] = useState<string>('');
 
     const randomKey = new Date().getTime().toString();
@@ -38,12 +38,6 @@ function EditProfileScreen({navigation, route}: any) {
     });
 
     useEffect(() => {
-        if (user.fullname) {
-          const [name, last] = user.fullname.split(" ");
-          setFirstname(name || "");
-          setSurname(last || "");
-        }
-
         ensurePermissions();
     }, []);
 
@@ -69,53 +63,48 @@ function EditProfileScreen({navigation, route}: any) {
     };
 
     const UpdateProfile = async () => {
-        const user = {
-          id: userId,
-          username: username,
-          fullname: firstname + ' ' + surname,
-          email: email,
-        };
-
-        if(pickedImage) {
+        try {
             const formData = new FormData();
-            formData.append('image', {
-                uri: pickedImage,
-                type: 'image/jpeg',
-                name: 'photo.jpg',
-            });
-
-            if(userId) formData.append('id', userId);
-            formData.append('name', user.username);
-            formData.append('fullname', user.fullname);
-            formData.append('email', user.email);
     
-            fetch(`${BASE_URL}/user-update-image`, {
+            if (pickedImage) {
+                formData.append('image', {
+                    uri: pickedImage,
+                    type: 'image/jpeg',
+                    name: 'photo.jpg',
+                });
+            } else {
+                if (user.avatar) formData.append('image', user.avatar);
+            }
+    
+            formData.append('id', user.id.toString());
+            formData.append('username', username);
+            formData.append('name', firstname);
+            formData.append('surname', surname);
+            formData.append('email', email);
+    
+            const response = await fetch(`${BASE_URL}/user-update`, {
                 method: 'POST',
                 body: formData,
                 headers: {
-                  'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data'
                 },
-              })
-                .then(response => response.json())
-                .then(data => {
-                    navigation.replace('Profile');
-                })
-                .catch(error => {
-                  console.error('Error sending data to server:', error);
+            });
+    
+            const data = await response.json();
+            //console.log(data);
+
+            if (data.updatedUser.status == 404) {
+                Alert.alert("Ошибка обновления", data.updatedUser.message);
+            } else if (data.updatedUser.status == 401) {
+                Alert.alert("Ошибка обновления", data.updatedUser.message);
+            } else {
+                navigation.replace('Main');
             }
-            );
-        } else {
-            try {
-                const response = await $api.post('/user-update', user);
-            
-                if (response.status === 200) {
-                    navigation.replace('Profile');
-                }
-            } catch (error) {
-                console.log(error);
-            }
+        } catch (error) {
+            console.error('Error sending data to server:', error);
         }
-    };      
+    };
+         
 
     return (
         <KeyboardAwareScrollView style={{
@@ -153,13 +142,13 @@ function EditProfileScreen({navigation, route}: any) {
                         width: '85%',
                         marginBottom: 10}}>
                     <TextInput
-                        placeholder={user.fullname ? firstname : "Имя"}
+                        placeholder={user.name ? firstname : "Имя"}
                         value={firstname}
                         onChangeText={text => setFirstname(text)}
                         style={styles.input}
                     />
                     <TextInput
-                        placeholder={user.fullname ? surname : "Фамилия"}
+                        placeholder={user.surname ? surname : "Фамилия"}
                         value={surname}
                         onChangeText={text => setSurname(text)}
                         style={styles.inputLast}

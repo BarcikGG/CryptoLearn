@@ -3,7 +3,8 @@ export default interface IUser {
     username?: string;
     avatar?: string;
     balance: number;
-    fullname?: string;
+    name?: string;
+    surname?: string;
     email: string;
     isverified: boolean;
     role: 'user' | 'admin';

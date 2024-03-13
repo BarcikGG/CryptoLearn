@@ -95,40 +95,61 @@ class UserService {
         }
     }
 
-    async update(id, name, fullname, city, email, imageUrl) {
+    async update(id, username, name, surname, email, imageUrl) {
         try {
-            const user = await User.findOne({ _id: id });
-            const candidateEmail = await User.findOne({email})
-            const candidateUsername = await User.findOne({name})
-
-            if (!user) {
-                throw ApiError.NotFound("User isn't exist");
+            const checkIdQuery = 'SELECT * FROM "User" WHERE id = $1';
+            const checkIdResult = await db.query(checkIdQuery, [id]);
+            if (checkIdResult.rows.length == 0) {
+                return {
+                    error: true,
+                    status: 404,
+                    message: "Пользователь не найден"
+                };
             }
 
-            if(candidateEmail && candidateEmail._id.toString() !== id) {
-                throw ApiError.BadRequest('Email is already registered');
-            }
-            if(candidateUsername && candidateUsername._id.toString() !== id) {
-                throw ApiError.BadRequest('Username is already registered');
-            }
-      
-            if(user.email !== email) {
-                user.isVerified = false;
-                const activationLink = uuid.v4();
-                user.activationLink = activationLink;
-                await mailService.sendActivationMail(name, email, `${process.env.API_URL}/api/activation/${activationLink}`);
+            var userEmail = checkIdResult.rows[0].email;
+            var userUsername = checkIdResult.rows[0].username;
+            var isVerified = checkIdResult.rows[0].isverified;
+            var activationLink = checkIdResult.rows[0].activationlink;
+
+            if(userEmail !== email) {
+                const checkEmailQuery = 'SELECT * FROM "User" WHERE email = $1';
+                const checkEmailResult = await db.query(checkEmailQuery, [email]);
+    
+                if (checkEmailResult.rows.length > 0) {
+                    return {
+                        error: true,
+                        status: 401,
+                        message: "Пользователь с такой почтой уже существует"
+                    };
+                }
+
+                isVerified = false;
+                const _activationLink = uuid.v4();
+                activationLink = _activationLink;
+                userEmail = email;
+                //await mailService.sendActivationMail(name, email, `${process.env.API_URL}/api/activation/${activationLink}`);
             }
 
-            user.name = name;
-            user.fullname = fullname;
-            user.city = city;
-            user.email = email;
+            if(userUsername !== username) {
+                const checkUsernameQuery = 'SELECT * FROM "User" WHERE username = $1';
+                const checkUsernameResult = await db.query(checkUsernameQuery, [username]);
 
-            if(imageUrl) user.profileImage = imageUrl;
-        
-            await user.save();
-        
-            return user;
+                if (checkUsernameResult.rows.length > 0) {
+                    return {
+                        error: true,
+                        status: 401,
+                        message: "Пользователь с таким логином уже существует"
+                    };
+                }
+
+                userUsername = username;
+            }
+
+            const updateQuery = 'UPDATE "User" SET email = $1, username = $2, name = $3, surname = $4, avatar = $5, activationlink = $6, isverified = $7 WHERE id = $8';
+            const updatedUser = await db.query(updateQuery, [userEmail, userUsername, name, surname, imageUrl, activationLink, isVerified, id]);
+
+            return updatedUser;
         } catch (error) {
           console.error('Error updating user:', error);
           throw error;

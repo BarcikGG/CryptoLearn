@@ -1,5 +1,10 @@
 const Router = require('express');
 const router = new Router();
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const { body } = require('express-validator');
 const userController = require('../controller/user.controller');
 const courseController = require('../controller/course.controller');
@@ -14,6 +19,8 @@ router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
 router.post('/buy-course', courseController.buyCourse);
 router.post('/deposit', userController.deposit);
+router.post('/add-course', courseController.addCourse);
+router.post('/user-update', upload.single('image'), userController.update);
 
 router.get('/activation/:link', userController.activate);
 router.get('/balance/:userId', 

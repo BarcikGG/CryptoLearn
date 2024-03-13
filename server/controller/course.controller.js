@@ -34,6 +34,17 @@ class CourseController {
             next(e);
         }
     }
+
+    async addCourse(req, res, next) {
+        try {
+            const { title, price, about, theme, avatar } = req.body;
+
+            const course = await courseService.addCourse(title, price, about, theme, avatar);
+            return res.json(course);
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new CourseController();

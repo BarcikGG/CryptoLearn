@@ -1,4 +1,6 @@
 const userService = require('../service/userService');
+const fs = require('fs');
+const path = require('path');
 
 class UserController {
     async registration(req, res, next) {
@@ -29,21 +31,31 @@ class UserController {
         }
     }
 
-    // async update(req, res, next) {
-    //     try {
-    //         const id = req.body.id;
-    //         const username = req.body.name;
-    //         const fullname = req.body.fullname;
-    //         const email = req.body.email;
-    //         const imageUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    async update(req, res, next) {
+        try {
+            const id = req.body.id;
+            const username = req.body.username;
+            const name = req.body.name;
+            const surname = req.body.surname;
+            const email = req.body.email;
+            var imageUrl = req.body.image;
 
-    //         const updateUser = await userService.update(id, username, fullname, email, imageUrl);
+            
+            if(req.file) {
+                const uploadedFileName = `${id}-${req.file.originalname}`;
+                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads', uploadedFileName);
+                fs.writeFileSync(uploadPath, req.file.buffer);
+                
+                imageUrl = `https://977a-95-24-151-180.ngrok-free.app/uploads/${uploadedFileName}`;
+            }
+            
+            const updatedUser = await userService.update(id, username, name, surname, email, imageUrl);
 
-    //         return res.json(updateUser);
-    //     } catch(e) {
-    //         next(e);
-    //     }
-    // }
+            return res.json({updatedUser});
+        } catch(e) {
+            next(e);
+        }
+    }
 
     // async updateNoImg(req, res, next) {
     //     try {
@@ -55,7 +67,7 @@ class UserController {
     //         const {id, usernname, fullname, email } = req.body;
     //         const imageUrl = null;
 
-    //         const updateUser = await userService.update(id, name, fullname, email, imageUrl);
+    //         const updateUser = await userService.update(id, username, name, surname, email, imageUrl);
 
     //         return res.json(updateUser);
     //     } catch(e) {

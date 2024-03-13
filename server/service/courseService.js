@@ -45,6 +45,15 @@ class CourseService {
 
         return newBalance.toString();
     }
+
+    async addCourse(title, price, about, theme, avatar) {
+        const course = await  db.query(
+            'INSERT INTO "Course" (price, title, lessonscount, about, theme, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [price, title, 0, about, theme, avatar]
+        );
+
+        return course;
+    }
 }
 
 module.exports = new CourseService();
