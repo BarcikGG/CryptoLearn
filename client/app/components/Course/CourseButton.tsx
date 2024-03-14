@@ -23,7 +23,7 @@ export default function CourseButton({navigation, isBought, course}: {navigation
                 </View>
             </Pressable>
             {isBought ? 
-                <Pressable style={styles.button} >
+                <Pressable style={styles.button} onPress={() => navigation.navigate("Lessons", {course: course})}>
                     <Ionicons name="play" size={24} color={primaryColor} />
                     <Text style={{fontWeight: '400', color: primaryColor, fontSize: 16}}>Продолжить учиться</Text>
                     <View style={{ width: 24 }}></View>

@@ -15,6 +15,17 @@ class CourseController {
         }
     }
 
+    async getLessons(req, res, next) {
+        try {
+            const id = req.params.courseId;
+            const lessons = await courseService.getLessons(id);
+            
+            return res.json(lessons);
+        } catch(e) {
+            next(e);
+        }
+    }
+
     async getCoursesBought(req, res, next) {
         try {
             const userId = req.params.userId;

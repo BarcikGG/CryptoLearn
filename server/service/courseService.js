@@ -18,6 +18,22 @@ class CourseService {
         return Result.rows;
     }
 
+    async getLessons(id) {
+        const Query = 'SELECT * FROM "CourseCourseItemRelation" WHERE courseid = $1';
+        const Result = await db.query(Query, [id]);
+
+        if(Result.rows.length == 0) return;
+        
+        const courseItemIds = (Result.rows.map(row => row.courseitemid));
+        const conditions = courseItemIds.map(id => `id = ${id}`);
+        const conditionsString = conditions.join(' OR ');
+
+        const QueryLessons = `SELECT * FROM "CourseItem" WHERE ${conditionsString}`;
+        const Lessons = await db.query(QueryLessons);
+
+        return Lessons.rows;
+    }
+
     async getCoursesBought(userId) {
         const Query = 'SELECT * FROM "UserBoughtCourses" WHERE userid = $1';
         const Result = await db.query(Query, [userId]);
