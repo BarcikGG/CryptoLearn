@@ -10,7 +10,7 @@ export default function LessonButton({navigation, lesson}: {navigation: any, les
 
   return (
     <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.90}]}>
-        <Pressable style={styles.container} onPress={() => {}}>
+        <Pressable style={styles.container} onPress={() => navigation.navigate("Lesson", {lesson: lesson})}>
             <View style={styles.info} >
                 <View style={styles.about}>
                     <Text style={{ fontWeight: '600', fontSize: 18 }}>{lesson.title}</Text>

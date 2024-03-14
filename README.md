@@ -1,5 +1,7 @@
 # CryptoLearn project
 
+## !Run start.bat *or:
+
 ## Start client: 
 - cd client
 - expo start --tunnel
