@@ -4,13 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 
+import { primaryColor } from '../constants/Colors';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import RegistrationForm from '../screens/Auth/RegistrationForm';
 import AuthForm from '../screens/Auth/AuthForm';
 import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
-import { primaryColor } from '../constants/Colors';
 import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
 import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScreen';
 import CoursesScreen from '../screens/Profile/Courses/CoursesScreen';
@@ -72,8 +72,8 @@ export default function StackNavigator() {
             <Stack.Screen name="Deposit" component={DepositScreen}/>
             <Stack.Screen name="Add course" component={AddCourseScreen} />
             <Stack.Screen name="Add lesson" component={AddLessonScreen} />
-            <Stack.Screen name='Lessons' component={LessonsScreen}/>
-            <Stack.Screen name='Lesson' component={LessonScreen}/>
+            <Stack.Screen name="Lessons" component={LessonsScreen}/>
+            <Stack.Screen name="Lesson" component={LessonScreen}/>
 
             <Stack.Screen name="Courses" component={CoursesScreen}/>
             <Stack.Screen name="AboutCourse" component={AboutScreen}/>

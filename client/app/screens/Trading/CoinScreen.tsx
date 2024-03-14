@@ -59,7 +59,19 @@ export default function CoinScreen({navigation, route}: any) {
                     <Text style={{fontSize: 14, color: percentColor}}>({percentChange.toFixed(2)}%)</Text>
                 </View>
             </View>
+            
             {/* <ChartComponent data={data}/> */}
+            
+            <View style={[styles.subContainer, {gap: 8}]}>
+                <View style={{flexDirection: 'row', gap: 5}}>
+                    <Text style={{color: 'gray', fontSize: 18}}>Макс. цена за 24ч:</Text>
+                    <Text style={{color: 'green', fontSize: 18}}>${coin.high_24h.toFixed(2)}</Text>
+                </View>
+                <View style={{flexDirection: 'row', gap: 5}}>
+                    <Text style={{color: 'gray', fontSize: 18}}>Мин.   цена за 24ч:</Text>
+                    <Text style={{color: 'red', fontSize: 18}}>${coin.low_24h.toFixed(2)}</Text>
+                </View>
+            </View>
         </ScrollView>
     )
 }

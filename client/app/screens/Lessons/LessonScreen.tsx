@@ -19,13 +19,21 @@ export default function LessonScreen({route}: any) {
         <View style={{alignItems: 'center', backgroundColor: 'white', width: '100%', height: '100%'}}>
             <ScrollView style={{width: '100%'}}>
                 <Text style={styles.title}>{lesson.title}</Text>
-                {lesson.image && <Image source={{uri: url + lesson.image}} style={[
-                    styles.img, 
-                    {width: screenWidth * 0.95, height: screenWidth * 0.95}]}/>}
-
+                {lesson.image && 
+                    <Image 
+                        source={{uri: url + lesson.image}}
+                        style={[
+                            styles.img, 
+                            {width: screenWidth * 0.95, height: screenWidth * 0.95}]}
+                    />
+                }
                 <View style={{paddingHorizontal: 15}}>
                     <Text style={styles.text}>{lesson.description}</Text>
                 </View>
+
+                {/* TODO: 
+                    add "complete" btn which sends req to server (add lesson to completed lessons) 
+                */}
             </ScrollView>
         </View>
     )
