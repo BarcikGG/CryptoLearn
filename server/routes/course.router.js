@@ -10,6 +10,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/buy-course', courseController.buyCourse);
 router.post('/add-course', upload.single('image'), courseController.addCourse);
+router.post('/add-lesson', upload.single('image'), courseController.addLesson);
 
 router.get('/courses/:type',
     authMiddleware, 

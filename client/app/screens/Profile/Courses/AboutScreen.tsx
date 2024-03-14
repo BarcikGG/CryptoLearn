@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Pressable, TouchableOpacity } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 import { BASE_URL } from '../../../utils/config';
+import { useRole } from '../../../contexts/RoleContext';
 
 export default function AboutScreen({route}: any) {
+    const { userRole } = useRole();
     const navigation = useNavigation();
     const { course } = route.params;
     const isNewCourse = course.avatar.startsWith("/uploads") ? true : false;
@@ -12,6 +15,15 @@ export default function AboutScreen({route}: any) {
     useLayoutEffect(() => {
         navigation.setOptions({
           headerTitle: 'Курс',
+          headerRight: () => {
+            if (userRole === 'admin') {
+                return (
+                    <TouchableOpacity style={{flexDirection: "row", gap: 16, alignItems: "center"}}>
+                        <Ionicons onPress={() => navigation.navigate("Add lesson", {id: course.id})} name="add-circle-outline" size={24} color="black" />
+                    </TouchableOpacity>
+                )
+            } else return null;
+          },
         })
     });
 

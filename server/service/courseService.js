@@ -54,6 +54,27 @@ class CourseService {
 
         return course.rows[0];
     }
+
+    async addLesson(courseID, title, about, avatar) {
+        const lesson = await db.query(
+            'INSERT INTO "CourseItem" (image, description, title) VALUES ($1, $2, $3) RETURNING *',
+            [avatar, about, title]
+        );
+
+        const lessonID = lesson.rows[0].id;
+
+        await db.query(
+            'INSERT INTO "CourseCourseItemRelation" (courseid, courseitemid) VALUES ($1, $2) RETURNING *',
+            [courseID, lessonID]
+        );
+
+        await db.query(
+            'UPDATE "Course" SET lessonscount=lessonscount+1 WHERE id=$1',
+            [courseID]
+        );
+
+        return lesson.rows[0];
+    }
 }
 
 module.exports = new CourseService();

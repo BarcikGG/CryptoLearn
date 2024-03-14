@@ -3,16 +3,13 @@ import { View, Text, Image, TextInput, StyleSheet, Alert, SafeAreaView } from "r
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
-import { BASE_URL } from "../../../utils/config";
-import { primaryColor } from "../../../constants/Colors";
-import SelectDropdown from "react-native-select-dropdown";
+import { primaryColor } from "../../constants/Colors";
+import { BASE_URL } from "../../utils/config";
 
-function AddCourseScreen({navigation}: any) {
-    const themes = ['crypto', 'trading', 'all'];
+function AddLessonScreen({navigation, route}: any) {
+    const { id } = route.params;
     const [title, setTitle] = useState<string>('');
-    const [price, setPrice] = useState<string>('');
     const [about, setAbout] = useState<string>('');
-    const [theme, setTheme] = useState<string>('');
     const [pickedImage, setPickedImage] = useState<string>('');
     
     const imageUri = useMemo(() => {
@@ -77,37 +74,39 @@ function AddCourseScreen({navigation}: any) {
     };
 
     const AddCourse = async () => {
-        if (!title || !about || !price || !theme) return;
+        if (!title || !about) return;
         try {
             const formData = new FormData();
-    
+
             if (pickedImage) {
                 const imageBlob: Blob = {
                     uri: pickedImage,
                     type: 'image/jpeg',
                     name: 'photo.jpg',
                 };
-            
+
                 formData.append('image', imageBlob);
-                formData.append('title', title);
-                formData.append('about', about);
-                formData.append('price', price);
-                formData.append('theme', theme);
-        
-                const response = await fetch(`${BASE_URL}/add-course`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                });
-        
-                const data = await response.json();
-                if (data.course.status == 404 ||  data.course.status == 401) {
-                    Alert.alert("Ошибка добавления", data.course.message);
-                } else {
-                    navigation.replace('Courses', {type: 'all'});
-                }
+            } else {
+                formData.append('image', '');
+            }
+            
+            formData.append('id', id);
+            formData.append('title', title);
+            formData.append('about', about);
+    
+            const response = await fetch(`${BASE_URL}/add-lesson`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            });
+    
+            const data = await response.json();
+            if (data.lesson.status == 404 ||  data.lesson.status == 401) {
+                Alert.alert("Ошибка добавления", data.lesson.message);
+            } else {
+                navigation.goBack();
             }
         } catch (error) {
             console.error('Error sending data to server:', error);
@@ -126,7 +125,7 @@ function AddCourseScreen({navigation}: any) {
                     alignItems: 'center'}}>
                 
                 <TextInput
-                    placeholder="Название курса"
+                    placeholder="Название урока"
                     value={title}
                     onChangeText={text => setTitle(text)}
                     style={[styles.inputContainer]}
@@ -144,33 +143,11 @@ function AddCourseScreen({navigation}: any) {
                 </Text>
                 
                 <TextInput
-                    placeholder="Описание курса"
+                    placeholder="Содержимое урока"
                     value={about}
+                    multiline={true}
                     onChangeText={text => setAbout(text)}
                     style={[styles.inputContainer, {height: 'auto', minHeight: 45}]}
-                />
-                <TextInput
-                    placeholder="Цена $"
-                    keyboardType="numeric"
-                    value={price}
-                    onChangeText={text => setPrice(text)}
-                    style={[styles.inputContainer]}
-                />
-
-                <SelectDropdown
-                        defaultButtonText="Выберите тип курса"
-                        buttonStyle={styles.dropBtn}
-                        dropdownStyle={styles.drop}
-                        data={themes}
-                        onSelect={(selectedItem) => {
-                            setTheme(selectedItem);
-                        }}
-                        buttonTextAfterSelection={(selectedItem, index) => {
-                            return selectedItem;
-                        }}
-                        rowTextForSelection={(item, index) => {
-                            return item;
-                        }}
                 />
             </SafeAreaView>
         </KeyboardAwareScrollView>
@@ -233,4 +210,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AddCourseScreen;
+export default AddLessonScreen;

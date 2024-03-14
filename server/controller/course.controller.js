@@ -61,6 +61,29 @@ class CourseController {
             next(e);
         }
     }
+
+    async addLesson(req, res, next) {
+        try {
+            const id = req.body.id;
+            const title = req.body.title;
+            const about = req.body.about;
+
+            var imageUrl = req.body.image;
+
+            if(req.file) {
+                const uploadedFileName = `${uuid.v4()}-${req.file.originalname}`;
+                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads\\courses\\lessons', uploadedFileName);
+                fs.writeFileSync(uploadPath, req.file.buffer);
+                
+                imageUrl = `/uploads/courses/lessons/${uploadedFileName}`;
+            }
+
+            const lesson = await courseService.addLesson(id, title, about, imageUrl);
+            return res.json({lesson});
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new CourseController();
