@@ -6,7 +6,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/buy-crypto', cryptoController.buyCrypto);
 
-router.get('/crypto/:userId',
+router.get('/coins/:userId',
     authMiddleware, 
     cryptoController.getCrypto);
 

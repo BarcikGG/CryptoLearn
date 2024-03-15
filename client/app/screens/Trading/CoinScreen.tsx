@@ -81,6 +81,7 @@ export default function CoinScreen({navigation, route}: any) {
                   AsyncStorage.setItem("userBalance", newBalance.toString());
                   setBalance(newBalance);
                   setAmount('');
+                  setAvalable(avalable + Number(amount));
                   Alert.alert(`${coin.symbol} успешно куплен!`,'Монета добавлена в ваш портфель');
               })
               .catch(error => {

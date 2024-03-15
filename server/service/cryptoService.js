@@ -1,17 +1,9 @@
 const db = require('../db');
 
 class CyptoService {
-    async getCrypto(type) {
-        if(type == 'all') 
-        {
-            const Query = 'SELECT * FROM "Course"';
-            const Result = await db.query(Query);
-
-            return Result.rows;
-        }
-
-        const Query = 'SELECT * FROM "Course" WHERE theme = $1';
-        const Result = await db.query(Query, [type]);
+    async getCrypto(id) {
+        const Query = 'SELECT * FROM "UserCoins" WHERE userid = $1';
+        const Result = await db.query(Query, [id]);
 
         return Result.rows;
     }
