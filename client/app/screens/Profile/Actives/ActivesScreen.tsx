@@ -61,7 +61,7 @@ export default function ActivesScreen() {
         <View style={{backgroundColor: 'white', width: '100%'}}>
             {coins ? 
                 <FlatList
-                data={coins.map((coin, index) => ({ key: index, coin: coin }))}
+                data={coins.filter((item: Coin) => item.amount > 0).map((coin, index) => ({ key: index, coin: coin }))}
                 keyExtractor={(item) => item.key.toString()}
                 renderItem={({ item }: {item: Coin}) => {
                     return (

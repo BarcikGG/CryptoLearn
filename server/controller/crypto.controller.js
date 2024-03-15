@@ -42,6 +42,24 @@ class CryptoController {
             next(e);
         }
     }
+
+    async sellCrypto(req, res, next) {
+        try {
+            const { userId, coin, amount, balance } = req.body;
+
+            if (!userId || !coin || !amount || !balance) {
+                return res.status(401).json({ error: "Не все поля заполнены" });
+            }    
+
+            const _amount = Number(amount.replace(',', '.'));
+            const _newBalance = Number(balance.replace(',', '.'));
+
+            const _balance = await cryptoService.sellCrypto(userId, coin, _amount, _newBalance);
+            return res.json({_balance});
+        } catch(e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new CryptoController();

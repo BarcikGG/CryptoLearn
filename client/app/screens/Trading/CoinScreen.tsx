@@ -91,7 +91,35 @@ export default function CoinScreen({navigation, route}: any) {
               );
               });
         } catch (error) {
-        console.error("Ошибка при покупке курса:", error);
+            console.error("Ошибка при покупке монеты:", error);
+        }
+    }
+
+    const sellCrypto = () => {
+        try {
+            if (avalable < Number(amount)) {
+              Alert.alert("Ошибка", "Недостаточно монет");
+              return;
+            }
+
+            const newBalance = balance + (coin.current_price * Number(amount));
+            
+            $api.post('/sell-crypto', {userId: userId, coin: coin.id, amount: amount, balance: newBalance.toFixed(2).toString()})
+              .then(response => {
+                  AsyncStorage.setItem("userBalance", newBalance.toString());
+                  setBalance(newBalance);
+                  setAmount('');
+                  setAvalable(avalable - Number(amount));
+                  Alert.alert(`${coin.symbol} успешно продан!`,'Ваш баланс пополнен');
+              })
+              .catch(error => {
+                  Alert.alert(
+                  'Ошибка продажи',
+                  `${error.response.data.message}`
+              );
+              });
+        } catch (error) {
+            console.error("Ошибка при продажи монеты:", error);
         }
     }
 
@@ -149,6 +177,10 @@ export default function CoinScreen({navigation, route}: any) {
                     <Pressable onPress={setMax} style={{alignSelf: 'flex-end'}}>
                         <Text style={{color: primaryColor, fontSize: 16}}>макс.</Text>
                     </Pressable>
+
+                    {!isBuy && <Text style={{fontSize: 16}}>
+                        Доступно к продаже: {avalable > 0 ? avalable.toString().replace(/\.?0+$/, '') : 0} шт.
+                    </Text>}
                 </View>
             </ScrollView>
             
@@ -159,7 +191,7 @@ export default function CoinScreen({navigation, route}: any) {
                     ? <Pressable style={[styles.button, {backgroundColor: 'green'}]} onPress={buyCrypto}>
                         <Text style={styles.btnText}>Купить</Text>
                     </Pressable>
-                    : <Pressable style={[styles.button, {backgroundColor: 'red'}]}>
+                    : <Pressable style={[styles.button, {backgroundColor: 'red'}]} onPress={sellCrypto}>
                         <Text style={styles.btnText}>Продать</Text>
                     </Pressable>}
                 </View>

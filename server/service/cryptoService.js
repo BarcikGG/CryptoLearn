@@ -39,6 +39,30 @@ class CyptoService {
     
         return newBalance;
     }
+
+    async sellCrypto(userId, coin, amount, newBalance) {
+        const avalable = await this.getCurrentCrypto(userId, coin);
+    
+        if (avalable < amount) {
+            return {
+                error: true,
+                status: 401,
+                message: "Недостаточно средств"
+            };
+        }
+
+        await db.query(
+            'UPDATE "UserCoins" SET amount = amount - $1 WHERE userId = $2 AND coinname = $3',
+            [amount, userId, coin]
+        );
+
+        await db.query(
+            'UPDATE "User" SET balance = $1 WHERE id = $2',
+            [newBalance, userId]
+        );
+    
+        return newBalance;
+    }
 }
 
 module.exports = new CyptoService();
