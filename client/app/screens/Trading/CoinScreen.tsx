@@ -74,7 +74,8 @@ export default function CoinScreen({navigation, route}: any) {
               return;
             }
 
-            const newBalance = balance - (coin.current_price * Number(amount));
+            //fix then amount p.g 0.5 balance = NaN
+            const newBalance = balance - (coin.current_price * Number(amount.replace(',', '.')));
             
             $api.post('/buy-crypto', {userId: userId, coin: coin.id, symbol: coin.symbol, amount: amount, image: coin.image, balance: newBalance.toFixed(2).toString()})
               .then(response => {
@@ -102,7 +103,7 @@ export default function CoinScreen({navigation, route}: any) {
               return;
             }
 
-            const newBalance = balance + (coin.current_price * Number(amount));
+            const newBalance = balance + (coin.current_price * Number(amount.replace(',', '.')));
             
             $api.post('/sell-crypto', {userId: userId, coin: coin.id, amount: amount, balance: newBalance.toFixed(2).toString()})
               .then(response => {
