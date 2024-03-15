@@ -135,8 +135,8 @@ export default function ProfileScreen({navigation}: any) {
 
         <View style={styles.Bar}></View>
 
-        <CustomButton IconName="chat-bubble" ButtonName="Чат с поддержкой"
-                      navigation={navigation} to={"Chat"} Type={"chat"}/>
+        <CustomButton IconName="cases" ButtonName="Портфель"
+                      navigation={navigation} to={"Actives"} Type={"actives"}/>
         <CustomButton IconName="settings" ButtonName="Настройки"
                       navigation={navigation} to={"Settings"} Type={"settings"}/>
 

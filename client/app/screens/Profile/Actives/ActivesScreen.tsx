@@ -2,19 +2,19 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 
-export default function ChatScreen() {
+export default function ActivesScreen() {
     const navigation = useNavigation();
     const [isLoading, setIsLoading] = useState(true);
     
     useLayoutEffect(() => {
         navigation.setOptions({
-          headerTitle: 'Чат',
+          headerTitle: 'Мои монеты',
         })
     });
 
     return (
         <View>
-            <Text>ChatScreen</Text>
+            <Text>Портфель</Text>
         </View>
     )
 }

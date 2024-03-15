@@ -16,7 +16,6 @@ import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScree
 import CoursesScreen from '../screens/Profile/Courses/CoursesScreen';
 import ValuesScreen from '../screens/Profile/Courses/ValuesScreen';
 import SettingsScreen from '../screens/Profile/SettingsScreen';
-import ChatScreen from '../screens/Profile/Chat/ChatScreen';
 import AboutScreen from '../screens/Profile/Courses/AboutScreen';
 import BuyScreen from '../screens/Profile/Courses/BuyScreen';
 import CoinScreen from '../screens/Trading/CoinScreen';
@@ -25,6 +24,7 @@ import AddCourseScreen from '../screens/Profile/Courses/AddCourseScreen';
 import AddLessonScreen from '../screens/Lessons/AddLessonScreen';
 import LessonsScreen from '../screens/Lessons/LessonsScreen';
 import LessonScreen from '../screens/Lessons/LessonScreen';
+import ActivesScreen from '../screens/Profile/Actives/ActivesScreen';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -80,7 +80,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Buy" component={BuyScreen}/>
             <Stack.Screen name="Values" component={ValuesScreen}/>
             <Stack.Screen name="Settings" component={SettingsScreen}/>
-            <Stack.Screen name="Chat" component={ChatScreen}/>
+            <Stack.Screen name="Actives" component={ActivesScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     );
