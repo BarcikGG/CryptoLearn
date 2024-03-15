@@ -1,32 +1,35 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
+import moment from 'moment';
 import { LineChart } from 'react-native-chart-kit';
+import { primaryColor } from '../../constants/Colors';
+
+export const {width: SIZE} = Dimensions.get('window');
 
 const ChartComponent = ({ data }: any) => {
-    if (!data || !data.prices) {
-        return <View />;
-    }
+  if (!data) {
+    return <View />;
+  }
 
-    const marketCaps = data.prices;
-    console.log(marketCaps);
-    const chartData = {
-        labels: marketCaps.map((item: (string | number | Date)[]) => new Date(item[0]).toLocaleTimeString()),
-        datasets: [
-        {
-            data: marketCaps.map((item: any) => item[1]),
-        },
-        ],
-    };
+  const chartData = data && data.prices ? data.prices.map((item: any) => ({
+    x: item[0],
+    y: item[1],
+  })) : [];
+
+  console.log(chartData);
 
   return (
-    <View>
+    <View style={{ height: SIZE / 2, flexDirection: 'row', width: SIZE }}>
       <LineChart
-        data={chartData}
-        width={Dimensions.get('window').width}
+        data={{
+          labels: ['date', 'price'],
+          datasets: chartData,
+        }}
+        width={400}
         height={220}
         yAxisLabel="$"
-        yAxisSuffix="k"
-        yAxisInterval={1}
+        xAxisLabel="Date"
+        xLabelsOffset={-10}
         chartConfig={{
           backgroundColor: '#e26a00',
           backgroundGradientFrom: '#fb8c00',
@@ -38,8 +41,8 @@ const ChartComponent = ({ data }: any) => {
             borderRadius: 16,
           },
           propsForDots: {
-            r: '6',
-            strokeWidth: '2',
+            r: 6,
+            strokeWidth: 2,
             stroke: '#ffa726',
           },
         }}

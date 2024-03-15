@@ -1,4 +1,4 @@
-import { Text, StyleSheet, View, ScrollView, Alert } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Alert, Pressable, SafeAreaView } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import ICoin from '../../models/Response/ICoin'
 import axios from 'axios';
@@ -20,17 +20,14 @@ export default function CoinScreen({navigation, route}: any) {
     }, []);
 
     const fetchData= async() => {
-        const from = 1710306000;
-        const to = 1710307830;
         try {
-            // const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart/range?vs_currency=usd&from=${from}&to=${to}`, {
-            //     headers: { 
-            //     'x-cg-demo-api-key': 'CG-rJcCTbMBPdFRgPNdC172kjNt'
-            //     }
-            // });
+            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=7&interval=daily`, {
+                headers: { 
+                'x-cg-demo-api-key': 'CG-rJcCTbMBPdFRgPNdC172kjNt'
+                }
+            });
 
-            // console.log(response.data);
-            // if(response) setData(response.data);
+            if(response) setData(response.data);
         } catch (error) {
             console.error('Error getting coins:', error);
             Alert.alert('Ошибка', 'Не удалось график монеты');
@@ -50,29 +47,40 @@ export default function CoinScreen({navigation, route}: any) {
     const priceChange = coin.price_change_24h;
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.subContainer}>
-                <Text style={{color: 'gray', fontSize: 18}}>{formattedDate(coin.last_updated)}</Text>
-                <Text style={{fontSize: 30, marginVertical: 5}}>${initialPrice.toFixed(2).toLocaleString()}</Text>
-                <View style={{flexDirection: 'row', gap: 5}}>
-                    <Text style={{fontSize: 14, color: percentColor}}>${priceChange.toFixed(2)}</Text>
-                    <Text style={{fontSize: 14, color: percentColor}}>({percentChange.toFixed(2)}%)</Text>
+        <SafeAreaView style={{height: '100%', backgroundColor: 'white'}}>
+            <ScrollView style={styles.container}>
+                <View style={styles.subContainer}>
+                    <Text style={{color: 'gray', fontSize: 18}}>{formattedDate(coin.last_updated)}</Text>
+                    <Text style={{fontSize: 30, marginVertical: 5}}>${initialPrice.toFixed(2).toLocaleString()}</Text>
+                    <View style={{flexDirection: 'row', gap: 5}}>
+                        <Text style={{fontSize: 14, color: percentColor}}>${priceChange.toFixed(2)}</Text>
+                        <Text style={{fontSize: 14, color: percentColor}}>({percentChange.toFixed(2)}%)</Text>
+                    </View>
                 </View>
-            </View>
+                
+                {/* <ChartComponent data={data}/> */}
+                
+                <View style={[styles.subContainer, {gap: 8}]}>
+                    <View style={{flexDirection: 'row', gap: 5}}>
+                        <Text style={{color: 'gray', fontSize: 18}}>Макс. цена за 24ч:</Text>
+                        <Text style={{color: 'green', fontSize: 18}}>${coin.high_24h.toFixed(2)}</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', gap: 5}}>
+                        <Text style={{color: 'gray', fontSize: 18}}>Мин.   цена за 24ч:</Text>
+                        <Text style={{color: 'red', fontSize: 18}}>${coin.low_24h.toFixed(2)}</Text>
+                    </View>
+                </View>
+            </ScrollView>
             
-            {/* <ChartComponent data={data}/> */}
-            
-            <View style={[styles.subContainer, {gap: 8}]}>
-                <View style={{flexDirection: 'row', gap: 5}}>
-                    <Text style={{color: 'gray', fontSize: 18}}>Макс. цена за 24ч:</Text>
-                    <Text style={{color: 'green', fontSize: 18}}>${coin.high_24h.toFixed(2)}</Text>
-                </View>
-                <View style={{flexDirection: 'row', gap: 5}}>
-                    <Text style={{color: 'gray', fontSize: 18}}>Мин.   цена за 24ч:</Text>
-                    <Text style={{color: 'red', fontSize: 18}}>${coin.low_24h.toFixed(2)}</Text>
-                </View>
+            <View style={{flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around'}}>
+                <Pressable style={[styles.button, {backgroundColor: 'green'}]}>
+                    <Text style={styles.btnText}>Купить</Text>
+                </Pressable>
+                <Pressable style={[styles.button, {backgroundColor: 'red'}]}>
+                    <Text style={styles.btnText}>Продать</Text>
+                </Pressable>
             </View>
-        </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -91,4 +99,16 @@ const styles = StyleSheet.create({
         height: 'auto',
         flexDirection: 'column'
     },
+    button: {
+        height: 50,
+        width: '47%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    btnText: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '600'
+    }
 })
