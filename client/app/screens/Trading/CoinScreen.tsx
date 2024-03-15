@@ -1,38 +1,96 @@
-import { Text, StyleSheet, View, ScrollView, Alert, Pressable, SafeAreaView } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Alert, Pressable, SafeAreaView, TextInput } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import ICoin from '../../models/Response/ICoin'
-import axios from 'axios';
-import ChartComponent from '../../components/Trading/ChartComponent';
+import $api from '../../http';
+import { useAuth } from '../../contexts/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { primaryColor } from '../../constants/Colors';
 
 export default function CoinScreen({navigation, route}: any) {
     const { coin } = route.params as { coin: ICoin };
-    const [data, setData] = useState();
+    const { userId } = useAuth();
+    const [balance, setBalance] = useState<number>(0);
+    const [amount, setAmount] = useState('');
+    const [avalable, setAvalable] = useState<number>(0);
+    const [isBuy, setIsBuy] = useState(true);
+    //const [data, setData] = useState();
     const percentColor = coin.price_change_percentage_24h < 0 ? 'red' : 'green';
 
     useLayoutEffect(() => {
         navigation.setOptions({
-          headerTitle: coin.symbol + '/usd'
+          headerTitle: coin.symbol.toUpperCase() + '/USD'
         }, [])
     });
 
     useEffect(() => {
-        fetchData();
+        getCrypto();
+        getBalance();
     }, []);
 
-    const fetchData= async() => {
+    const getBalance = async() => {
+        const balance = await AsyncStorage.getItem("userBalance");
+        setBalance(Number(balance));
+    }
+
+    const getCrypto = async() => {
         try {
-            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=7&interval=daily`, {
-                headers: { 
-                'x-cg-demo-api-key': 'CG-rJcCTbMBPdFRgPNdC172kjNt'
-                }
-            });
-
-            if(response) setData(response.data);
+            const response = await $api.get(`/current-crypto/${userId}/${coin.id}`);
+            setAvalable(response.data);
         } catch (error) {
-            console.error('Error getting coins:', error);
-            Alert.alert('Ошибка', 'Не удалось график монеты');
-        } finally {
+            console.error('Error getting user`s coin:', error);
+        }
+    }
 
+    // const fetchData= async() => {
+    //     try {
+    //         const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin.id}/market_chart?vs_currency=usd&days=7&interval=daily`, {
+    //             headers: { 
+    //             'x-cg-demo-api-key': 'CG-rJcCTbMBPdFRgPNdC172kjNt'
+    //             }
+    //         });
+
+    //         if(response) setData(response.data);
+    //     } catch (error) {
+    //         console.error('Error getting coins:', error);
+    //         Alert.alert('Ошибка', 'Не удалось график монеты');
+    //     } finally {
+
+    //     }
+    // }
+
+    const setMax = () => {
+        if(isBuy) {
+            const amount = (balance / coin.current_price).toFixed(4);
+            setAmount(amount.toString());
+        } else {
+            setAmount(avalable.toString());
+        }
+    }
+
+    const buyCrypto = () => {
+        try {
+            if (balance < (Number(amount) * coin.current_price)) {
+              Alert.alert("Ошибка", "Недостаточно средств");
+              return;
+            }
+
+            const newBalance = balance - (coin.current_price * Number(amount));
+            
+            $api.post('/buy-crypto', {userId: userId, coin: coin.id, symbol: coin.symbol, amount: amount, image: coin.image, balance: newBalance.toFixed(2).toString()})
+              .then(response => {
+                  AsyncStorage.setItem("userBalance", newBalance.toString());
+                  setBalance(newBalance);
+                  setAmount('');
+                  Alert.alert(`${coin.symbol} успешно куплен!`,'Монета добавлена в ваш портфель');
+              })
+              .catch(error => {
+                  Alert.alert(
+                  'Ошибка покупки',
+                  `${error.response.data.message}`
+              );
+              });
+        } catch (error) {
+        console.error("Ошибка при покупке курса:", error);
         }
     }
 
@@ -48,6 +106,15 @@ export default function CoinScreen({navigation, route}: any) {
 
     return (
         <SafeAreaView style={{height: '100%', backgroundColor: 'white'}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', height: 45}}>
+                <Pressable onPress={() => setIsBuy(true)} style={[styles.topBtn, {borderBottomWidth: isBuy ? 1 : 0}]}>
+                    <Text style={styles.text}>покупка</Text>
+                </Pressable>
+                <Pressable onPress={() => setIsBuy(false)} style={[styles.topBtn, {borderBottomWidth: isBuy ? 0 : 1}]}>
+                    <Text style={styles.text}>продажа</Text>
+                </Pressable>
+            </View>
+
             <ScrollView style={styles.container}>
                 <View style={styles.subContainer}>
                     <Text style={{color: 'gray', fontSize: 18}}>{formattedDate(coin.last_updated)}</Text>
@@ -69,22 +136,49 @@ export default function CoinScreen({navigation, route}: any) {
                         <Text style={{color: 'gray', fontSize: 18}}>Мин.   цена за 24ч:</Text>
                         <Text style={{color: 'red', fontSize: 18}}>${coin.low_24h.toFixed(2)}</Text>
                     </View>
+
+                    <TextInput
+                        placeholder='Количество монет'
+                        value={amount}
+                        keyboardType='numeric'
+                        onChangeText={text => setAmount(text)}
+                        style={styles.inputContainer}
+                    />
+
+                    <Pressable onPress={setMax} style={{alignSelf: 'flex-end'}}>
+                        <Text style={{color: primaryColor, fontSize: 16}}>макс.</Text>
+                    </Pressable>
                 </View>
             </ScrollView>
             
-            <View style={{flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around'}}>
-                <Pressable style={[styles.button, {backgroundColor: 'green'}]}>
-                    <Text style={styles.btnText}>Купить</Text>
-                </Pressable>
-                <Pressable style={[styles.button, {backgroundColor: 'red'}]}>
-                    <Text style={styles.btnText}>Продать</Text>
-                </Pressable>
+            <View style={{flexDirection: 'column'}}>
+                
+                <View style={{flexDirection: 'row', marginBottom: 10, justifyContent: 'space-around'}}>
+                    {isBuy 
+                    ? <Pressable style={[styles.button, {backgroundColor: 'green'}]} onPress={buyCrypto}>
+                        <Text style={styles.btnText}>Купить</Text>
+                    </Pressable>
+                    : <Pressable style={[styles.button, {backgroundColor: 'red'}]}>
+                        <Text style={styles.btnText}>Продать</Text>
+                    </Pressable>}
+                </View>
             </View>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    inputContainer: {
+        fontSize: 16,
+        marginTop: 10,
+        paddingStart: 5,
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 5,
+        height: 35,
+        width: '100%'
+    },
     container: {
         width: '100%',
         height: 'auto',
@@ -101,7 +195,7 @@ const styles = StyleSheet.create({
     },
     button: {
         height: 50,
-        width: '47%',
+        width: '95%',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
@@ -110,5 +204,14 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 22,
         fontWeight: '600'
+    },
+    topBtn: {
+        width: '50%',
+        height: 30,
+        alignContent: 'center',
+    },
+    text: {
+        textAlign: 'center',
+        fontSize: 18
     }
 })

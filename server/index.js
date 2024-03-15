@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const userRouter = require('./routes/user.routes');
 const courseRouter = require('./routes/course.router');
+const cryptoRouter = require('./routes/crypto.router');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -16,4 +17,5 @@ app.use(cors({
 }));
 app.use('/api', userRouter);
 app.use('/api', courseRouter);
+app.use('/api', cryptoRouter);
 app.listen(PORT, () => console.log(`server started on ${PORT} port`));

@@ -1,6 +1,4 @@
-const User = require('../models/user');
 const db = require('../db');
-const ApiError = require('../exceptions/apiError');
 
 class CourseService {
     async getCourses(type) {

@@ -1,4 +1,3 @@
-const User = require('../models/user');
 const db = require('../db');
 const uuid = require('uuid');
 const mailService = require('./mailService');
