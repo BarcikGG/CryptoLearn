@@ -76,9 +76,10 @@ export default function CoinScreen({navigation, route}: any) {
             }
 
             //fix then amount p.g 0.5 balance = NaN
-            const newBalance = balance - (coin.current_price * Number(amount.replace(',', '.')));
+            const spent = coin.current_price * Number(amount.replace(',', '.'))
+            const newBalance = balance - spent;
             
-            $api.post('/buy-crypto', {userId: userId, coin: coin.id, symbol: coin.symbol, amount: amount, image: coin.image, balance: newBalance.toFixed(2).toString()})
+            $api.post('/buy-crypto', {userId: userId, coin: coin.id, symbol: coin.symbol, amount: amount, image: coin.image, balance: newBalance.toFixed(2).toString(), spent: spent.toString()})
               .then(response => {
                   AsyncStorage.setItem("userBalance", newBalance.toString());
                   setBalance(newBalance);
@@ -104,9 +105,10 @@ export default function CoinScreen({navigation, route}: any) {
               return;
             }
 
-            const newBalance = balance + (coin.current_price * Number(amount.replace(',', '.')));
+            const reward = coin.current_price * Number(amount.replace(',', '.'));
+            const newBalance = balance + reward;
             
-            $api.post('/sell-crypto', {userId: userId, coin: coin.id, amount: amount, balance: newBalance.toFixed(2).toString()})
+            $api.post('/sell-crypto', {userId: userId, coin: coin.id, symbol: coin.symbol, amount: amount, balance: newBalance.toFixed(2).toString(), reward: reward.toString()})
               .then(response => {
                   AsyncStorage.setItem("userBalance", newBalance.toString());
                   setBalance(newBalance);

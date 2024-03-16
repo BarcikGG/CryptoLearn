@@ -17,7 +17,7 @@ class CyptoService {
         return 0;
     }
 
-    async buyCrypto(userId, coin, symbol, amount, image, newBalance) {
+    async buyCrypto(userId, coin, symbol, amount, image, newBalance, spent) {
         const avalable = await this.getCurrentCrypto(userId, coin);
     
         if (avalable) {
@@ -36,11 +36,16 @@ class CyptoService {
             'UPDATE "User" SET balance = $1 WHERE id = $2',
             [newBalance, userId]
         );
+
+        await db.query(
+            'INSERT INTO "balance_history" (user_id, amount, description, operation_type) values ($1, $2, $3, $4) RETURNING *',
+            [userId, spent, `Покупка ${symbol}`, "debit"]
+        );
     
         return newBalance;
     }
 
-    async sellCrypto(userId, coin, amount, newBalance) {
+    async sellCrypto(userId, coin, symbol, amount, newBalance, reward) {
         const avalable = await this.getCurrentCrypto(userId, coin);
     
         if (avalable < amount) {
@@ -59,6 +64,11 @@ class CyptoService {
         await db.query(
             'UPDATE "User" SET balance = $1 WHERE id = $2',
             [newBalance, userId]
+        );
+
+        await db.query(
+            'INSERT INTO "balance_history" (user_id, amount, description, operation_type) values ($1, $2, $3, $4) RETURNING *',
+            [userId, reward, `Продажа ${symbol}`, "credit"]
         );
     
         return newBalance;

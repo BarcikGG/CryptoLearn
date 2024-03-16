@@ -27,16 +27,17 @@ class CryptoController {
 
     async buyCrypto(req, res, next) {
         try {
-            const { userId, coin, symbol, amount, image, balance } = req.body;
+            const { userId, coin, symbol, amount, image, balance, spent } = req.body;
 
-            if (!userId || !coin || !symbol || !amount || !image || !balance) {
+            if (!userId || !coin || !symbol || !amount || !image || !balance || !spent) {
                 return res.status(401).json({ error: "Не все поля заполнены" });
             }    
 
             const _amount = Number(amount.replace(',', '.'));
             const _newBalance = Number(balance.replace(',', '.'));
+            const _spent = Number(spent.replace(',', '.'))
 
-            const _balance = await cryptoService.buyCrypto(userId, coin, symbol, _amount, image, _newBalance);
+            const _balance = await cryptoService.buyCrypto(userId, coin, symbol, _amount, image, _newBalance, _spent);
             return res.json({_balance});
         } catch(e) {
             next(e);
@@ -45,16 +46,17 @@ class CryptoController {
 
     async sellCrypto(req, res, next) {
         try {
-            const { userId, coin, amount, balance } = req.body;
+            const { userId, coin, symbol, amount, balance, reward } = req.body;
 
-            if (!userId || !coin || !amount || !balance) {
+            if (!userId || !coin || !amount || !balance || !reward) {
                 return res.status(401).json({ error: "Не все поля заполнены" });
             }    
 
             const _amount = Number(amount.replace(',', '.'));
             const _newBalance = Number(balance.replace(',', '.'));
+            const _reward = Number(reward.replace(',', '.'));
 
-            const _balance = await cryptoService.sellCrypto(userId, coin, _amount, _newBalance);
+            const _balance = await cryptoService.sellCrypto(userId, coin, symbol, _amount, _newBalance, _reward);
             return res.json({_balance});
         } catch(e) {
             next(e);
