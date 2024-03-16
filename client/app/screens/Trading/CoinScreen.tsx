@@ -1,5 +1,6 @@
-import { Text, StyleSheet, View, ScrollView, Alert, Pressable, SafeAreaView, TextInput } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Alert, Pressable, SafeAreaView, TextInput, Image, Dimensions } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
+import ShadowView from 'react-native-shadow-view';
 import ICoin from '../../models/Response/ICoin'
 import $api from '../../http';
 import { useAuth } from '../../contexts/AuthContext';
@@ -13,7 +14,7 @@ export default function CoinScreen({navigation, route}: any) {
     const [amount, setAmount] = useState('');
     const [avalable, setAvalable] = useState<number>(0);
     const [isBuy, setIsBuy] = useState(true);
-    //const [data, setData] = useState();
+    const screenWidth = Dimensions.get('window').width;
     const percentColor = coin.price_change_percentage_24h < 0 ? 'red' : 'green';
 
     useLayoutEffect(() => {
@@ -182,6 +183,27 @@ export default function CoinScreen({navigation, route}: any) {
                     {!isBuy && <Text style={{fontSize: 16}}>
                         Доступно к продаже: {avalable > 0 ? avalable.toString().replace(/\.?0+$/, '') : 0} шт.
                     </Text>}
+
+                    <Text style={{fontSize: 20, fontWeight: '600', marginTop: 15}}>Ваш портфель:</Text>
+                    {avalable > 0 && 
+                        <ShadowView style={[styles.shadowContainer, {width: screenWidth * 0.95}]}>
+                                <View style={styles.coinContainer}>
+                                    <View style={styles.subCoinContainer}>
+                                        <Image source={{uri: coin.image}} style={{ width: 40, height: 40 }}/>
+                                        <Text style={{fontSize: 20}}>{coin.symbol.toUpperCase()}</Text>
+                                    </View>
+
+                                    <View style={{flexDirection: 'column', alignItems: 'flex-end', gap: 5}}>
+                                        <Text>
+                                            ${coin.current_price * avalable}
+                                        </Text>
+                                        <Text style={{color: 'gray'}}>
+                                            {avalable.toString().replace(/\.?0+$/, '')} шт.
+                                        </Text>
+                                    </View>
+                                </View>
+                        </ShadowView>
+                    }
                 </View>
             </ScrollView>
             
@@ -212,6 +234,32 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         height: 35,
         width: '100%'
+    },
+    shadowContainer: {
+        marginTop: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    coinContainer: {
+        paddingHorizontal: 10,
+        width: '100%',
+        height: 65,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    subCoinContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10
     },
     container: {
         width: '100%',
