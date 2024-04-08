@@ -62,6 +62,28 @@ class UserController {
         }
     }
 
+    async send_code(req, res, next) {
+        try {
+            const email = req.params.email;
+            const code = await userService.send_code(email);
+
+            return res.json(code);
+        } catch(e) {
+            next(e);
+        }
+    }
+
+    async reset(req, res, next) {
+        try {
+            const { email, password}  = req.body;
+            await userService.reset(email, password);
+
+            return res.json();
+        } catch(e) {
+            next(e);
+        }
+    }
+
     async activate(req, res, next) {
         try {
             const activationLink = req.params.link;

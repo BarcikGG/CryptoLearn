@@ -5,21 +5,25 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const userController = require('../controller/user.controller');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/registration', 
     body('email').isEmail(), 
-    body('username').isLength({min: 1, max: 18}),
+    body('username').isLength({min: 4, max: 18}),
     userController.registration);
 router.post('/login', userController.login);
+router.post('/reset',
+    body('password').isLength({min: 4, max: 18}), 
+    userController.reset)
 router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
 router.post('/deposit', userController.deposit);
 router.post('/user-update', upload.single('image'), userController.update);
 
 router.get('/activation/:link', userController.activate);
+router.get('/send-code/:email', param('email').isEmail(), userController.send_code);
 router.get('/balance/:userId', 
     authMiddleware,
     userController.getHostoryBalance);

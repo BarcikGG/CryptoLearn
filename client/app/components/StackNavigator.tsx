@@ -8,6 +8,7 @@ import { primaryColor } from '../constants/Colors';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import RegistrationForm from '../screens/Auth/RegistrationForm';
+import ResetForm from '../screens/Auth/ResetForm';
 import AuthForm from '../screens/Auth/AuthForm';
 import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
@@ -65,6 +66,7 @@ export default function StackNavigator() {
             <Stack.Screen name="Main" component={BottomTabs} options={{headerShown: false}}/>
             <Stack.Screen name="Login" component={AuthForm} options={{headerShown: false}}/>
             <Stack.Screen name="Register" component={RegistrationForm} options={{headerShown: false}}/>
+            <Stack.Screen name="Reset" component={ResetForm} options={{headerShown: false}}/>
             <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} />
             <Stack.Screen name="CurrentCoin" component={CoinScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />

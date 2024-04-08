@@ -10,7 +10,6 @@ router.post('/sell-crypto', cryptoController.sellCrypto);
 router.get('/coins/:userId',
     authMiddleware, 
     cryptoController.getCrypto);
-
 router.get('/current-crypto/:userId/:coin',
     authMiddleware, 
     cryptoController.getAvalableCrypto);

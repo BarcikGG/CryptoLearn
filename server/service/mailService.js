@@ -18,13 +18,29 @@ class mailService {
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to: to,
-            subject: 'Account activation on CryptoLearn',
+            subject: 'Активация аккаунты CryptoLearn',
             html: 
                 `
                     <div>
-                        <h1>Hello ${name}!</h1>
-                        <p>Please click on the following link to activate your account.</p>
+                        <h1>Привет, ${name}!</h1>
+                        <p>Перейдите по ссылке ниже, чтобы подтвердить свой аккаунт.</p>
                         <a href="${link}">${link}</a>
+                    </div>
+                `
+        })
+    }
+
+    async sendCode(name, to, code) {
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: to,
+            subject: 'Сброс пароля',
+            html: 
+                `
+                    <div>
+                        <h1>${name}!</h1>
+                        <p>Вы начали процесс восстановления пароля, код подтверждения 👇</p>
+                        <h2>${code}</h2>
                     </div>
                 `
         })

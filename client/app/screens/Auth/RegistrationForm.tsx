@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert, SafeAreaView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native';
 import hashPassword from '../../utils/HashPassword';
@@ -50,45 +50,48 @@ const RegistrationForm = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.Text}>
-          {"Создание аккаунта"}
-        </Text>
-        <TextInput
-          placeholder="Username"
-          value={username}
-          onChangeText={text => setUsername(text)}
-          style={styles.inputContainer}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
-          style={styles.inputContainer}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.inputContainer}
-        />
-        <Pressable onPress={() => navigation.navigate('Login')}>
-          <Text style={{ textAlign: 'center', color: 'gray' }}>
-            Уже есть аккаунт?{' '}
-            <Text style={{ color: 'blue' }}>Войти</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.formContainer}>
+          <Text style={styles.Text}>
+            {"Создание аккаунта"}
           </Text>
-        </Pressable>
-      </View>
-      <View style={styles.formContainer}>
-        <Button
-            title="РЕГИСТРАЦИЯ"
-            buttonStyle={styles.button}
-            onPress={handleRegistration}
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChangeText={text => setUsername(text)}
+            style={styles.inputContainer}
           />
-      </View>
-    </SafeAreaView>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            style={styles.inputContainer}
+          />
+          <TextInput
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={text => setPassword(text)}
+            style={styles.inputContainer}
+          />
+          <Pressable onPress={() => navigation.navigate('Login')}>
+            <Text style={{ textAlign: 'center', color: 'gray' }}>
+              Уже есть аккаунт?{' '}
+              <Text style={{ color: 'blue' }}>Войти</Text>
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.formContainer}>
+          <Button
+              title="РЕГИСТРАЦИЯ"
+              buttonStyle={styles.button}
+              onPress={handleRegistration}
+            />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
+    
   );
 };
 

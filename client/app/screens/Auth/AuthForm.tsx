@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert, ActivityIndicator, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert, ActivityIndicator, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -73,39 +73,47 @@ const AuthForm = ({ navigation }: any) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.Text}>
-          {"Crypto Learn"}
-        </Text>
-        <TextInput
-          placeholder="Username"
-          value={username}
-          onChangeText={text => setUsername(text)}
-          style={styles.inputContainer}
-        />
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.inputContainer}
-        />
-        <Pressable onPress={() => navigation.navigate('Register')}>
-          <Text style={{ textAlign: 'center', color: 'gray' }}>
-            Нет аккаунта?{' '}
-            <Text style={{ color: 'blue' }}>Создать</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.formContainer}>
+          <Text style={styles.Text}>
+            {"Crypto Learn"}
           </Text>
-        </Pressable>
-      </View>
-      <View style={styles.formContainer}>
-        <Button
-            title="ВОЙТИ"
-            buttonStyle={styles.button}
-            onPress={handleAuthorize}
+          <TextInput
+            placeholder="Username"
+            value={username}
+            onChangeText={text => setUsername(text)}
+            style={styles.inputContainer}
           />
-      </View>
-    </SafeAreaView>
+          <TextInput
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={text => setPassword(text)}
+            style={styles.inputContainer}
+          />
+          <Pressable onPress={() => navigation.navigate('Reset')}>
+            <Text style={{ textAlign: 'center', color: 'gray' }}>
+                Забыли пароль?{' '}
+              <Text style={{ color: primaryColor }}>Восстановить</Text>
+            </Text>
+          </Pressable>
+          <Pressable style={{marginTop: 30}} onPress={() => navigation.navigate('Register')}>
+              <Text style={{ textAlign: 'center', color: 'gray' }}>
+                Нет аккаунта?{' '}
+              <Text style={{ color: primaryColor }}>Создать</Text>
+            </Text>
+          </Pressable>
+        </View>
+        <View style={styles.formContainer}>
+          <Button
+              title="ВОЙТИ"
+              buttonStyle={styles.button}
+              onPress={handleAuthorize}
+            />
+        </View>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -3,8 +3,8 @@ const express = require("express");
 const cors = require('cors');
 const path = require('path');
 const userRouter = require('./routes/user.routes');
-const courseRouter = require('./routes/course.router');
-const cryptoRouter = require('./routes/crypto.router');
+const courseRoutes = require('./routes/course.routes');
+const cryptoRoutes = require('./routes/crypto.routes');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -16,6 +16,6 @@ app.use(cors({
     origin: '*'
 }));
 app.use('/api', userRouter);
-app.use('/api', courseRouter);
-app.use('/api', cryptoRouter);
+app.use('/api', courseRoutes);
+app.use('/api', cryptoRoutes);
 app.listen(PORT, () => console.log(`server started on ${PORT} port`));

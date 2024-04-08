@@ -47,6 +47,28 @@ class UserService {
         return this.generateToken(userDTO);
     }
 
+    async generateRandomCode() {
+        const min = 1000;
+        const max = 9999;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    async send_code(email) {
+        const code = await this.generateRandomCode();
+
+        const Result = await db.query('SELECT * FROM "User" WHERE email = $1', [email]);
+        const username = Result.rows[0].username;
+
+        await mailService.sendCode(username, email, code);
+
+        return code;
+    }
+
+    async reset(email, newPassword) {
+        const updateQuery = 'UPDATE "User" SET password = $1 WHERE email = $2';
+        await db.query(updateQuery, [newPassword, email]);
+    }
+
     async activate(activationLink) {
         const checkUserQuery = 'SELECT * FROM "User" WHERE activationlink = $1';
         const Result = await db.query(checkUserQuery, [activationLink]);
