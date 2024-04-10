@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button } from 'react-native-elements';
 import $api from '../../../http';
 import hashPassword from '../../../utils/HashPassword';
-import { styles } from './styles';
+import { styles } from '../styles';
 
 const NewPasswordForm = ({navigation, route}: any) => {
     const {email} = route.params;

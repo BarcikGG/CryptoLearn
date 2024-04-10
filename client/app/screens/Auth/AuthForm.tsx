@@ -9,6 +9,7 @@ import axios from 'axios';
 import { BASE_URL } from '../../utils/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { primaryColor } from '../../constants/Colors';
+import { styles } from './styles';
 
 const AuthForm = ({ navigation }: any) => {
   const { userId, setUserId  } = useAuth();
@@ -63,7 +64,7 @@ const AuthForm = ({ navigation }: any) => {
 
   if (isLoading) {
     return (
-      <View style={styles.containerLoading}>
+      <View style={stylesLoading.containerLoading}>
         <ActivityIndicator size="large" color="orange" />
       </View>
     );
@@ -71,9 +72,9 @@ const AuthForm = ({ navigation }: any) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, {marginTop: 20}]}>
         <View style={styles.formContainer}>
-          <Text style={styles.Text}>
+          <Text style={[styles.Text, {fontSize: 50}]}>
             {"Crypto Learn"}
           </Text>
           <TextInput
@@ -114,41 +115,7 @@ const AuthForm = ({ navigation }: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    marginTop: 20
-  },
-  Text: {
-    fontSize: 50,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: 50,
-  },
-  formContainer: {
-    marginTop: 20,
-    width: '80%',
-  },
-  inputContainer: {
-    fontSize: 20,
-    marginBottom: 20,
-    paddingStart: 10,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
-    height: 50,
-  },
-  button: {
-    marginBottom: 50,
-    backgroundColor: primaryColor,
-    borderRadius: 30,
-    width: '100%',
-    height: 50,
-  },
+const stylesLoading = StyleSheet.create({
   containerLoading: {
     flex: 1,
     backgroundColor: '#fff',

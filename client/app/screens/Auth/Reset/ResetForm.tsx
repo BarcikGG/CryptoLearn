@@ -3,7 +3,7 @@ import { View, Text, Alert, SafeAreaView, Keyboard, TouchableWithoutFeedback } f
 import { Button } from 'react-native-elements';
 import { TextInput } from 'react-native';
 import $api from '../../../http';
-import { styles } from './styles';
+import { styles } from '../styles';
 
 const RegistrationForm = ({ navigation }: any) => {
   const [code, setCode] = useState<string>('');

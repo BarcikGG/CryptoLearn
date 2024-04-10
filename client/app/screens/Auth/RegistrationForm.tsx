@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import $api from '../../http';
 import { useAuth } from '../../contexts/AuthContext';
 import { primaryColor } from '../../constants/Colors';
+import { styles } from './styles';
 
 const RegistrationForm = ({ navigation }: any) => {
   const { setUserId  } = useAuth();
@@ -59,7 +60,7 @@ const RegistrationForm = ({ navigation }: any) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.container}>
         <View style={styles.formContainer}>
-          <Text style={styles.Text}>
+          <Text style={[styles.Text, {fontSize: 32}]}>
             {"Создание аккаунта"}
           </Text>
           <TextInput
@@ -100,42 +101,5 @@ const RegistrationForm = ({ navigation }: any) => {
     
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'white'
-  },
-  Text: {
-    fontSize: 32,
-    fontWeight: '800',
-    textAlign: 'center',
-    marginBottom: 50,
-  },
-  formContainer: {
-    marginTop: 50,
-    width: '80%',
-  },
-  inputContainer: {
-    fontSize: 20,
-    marginBottom: 20,
-    paddingStart: 10,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
-    height: 50,
-  },
-  button: {
-    marginBottom: 50,
-    backgroundColor: primaryColor,
-    borderRadius: 30,
-    width: '100%',
-    height: 50,
-  },
-});
-
 
 export default RegistrationForm;
