@@ -16,12 +16,17 @@ const RegistrationForm = ({ navigation }: any) => {
   
   const handleRegistration = () => {
     if(!username || !password || !email) return;
+    if(password.length < 4) {
+      Alert.alert('Минимальная длина пароля 4 символа');
+      return;
+    }
+
     $api.post('/registration', {username: username, email: email, password: hashPassword(password)})
       .then(response => {
-        if (response.status === 400) {
+        if (response.data.userData.status == 400) {
           Alert.alert(
             'Неверные данные',
-            `${response.data.message}`
+            `${response.data.userData.message}`
         );
         } else {
           Alert.alert(
@@ -42,9 +47,10 @@ const RegistrationForm = ({ navigation }: any) => {
         }
       })
       .catch(error => {
+        console.log(error.response.data.errors[0].msg);
         Alert.alert(
           'Ошибка регистрации',
-          `${error.response.data.message}`
+          `${error.response.data.errors[0].msg}`
       );
       });
   };

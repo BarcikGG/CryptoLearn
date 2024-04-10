@@ -12,6 +12,7 @@ class UserService {
 
         if (checkEmailResult.rows.length > 0) {
             return {
+                status: 400,
                 error: true,
                 message: "Пользователь с такой почтой уже существует"
             };
@@ -22,6 +23,7 @@ class UserService {
 
         if (checkUsernameResult.rows.length > 0) {
             return {
+                status: 400,
                 error: true,
                 message: "Пользователь с таким логином уже существует"
             };
@@ -57,8 +59,15 @@ class UserService {
         const code = await this.generateRandomCode();
 
         const Result = await db.query('SELECT * FROM "User" WHERE email = $1', [email]);
-        const username = Result.rows[0].username;
+        
+        if(Result.rows.length == 0) {
+            return {
+                error: true,
+                message: "Пользователь с такой почтой не найден"
+            };
+        }
 
+        const username = Result.rows[0].username;
         await mailService.sendCode(username, email, code);
 
         return code;

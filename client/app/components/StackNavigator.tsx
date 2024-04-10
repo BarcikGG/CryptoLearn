@@ -8,7 +8,7 @@ import { primaryColor } from '../constants/Colors';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import RegistrationForm from '../screens/Auth/RegistrationForm';
-import ResetForm from '../screens/Auth/ResetForm';
+import ResetForm from '../screens/Auth/Reset/ResetForm';
 import AuthForm from '../screens/Auth/AuthForm';
 import TradingScreen from '../screens/Trading/TradingScreen';
 import NewsScreen from '../screens/News/NewsScreen';
@@ -26,6 +26,7 @@ import AddLessonScreen from '../screens/Lessons/AddLessonScreen';
 import LessonsScreen from '../screens/Lessons/LessonsScreen';
 import LessonScreen from '../screens/Lessons/LessonScreen';
 import ActivesScreen from '../screens/Profile/Actives/ActivesScreen';
+import NewPasswordForm from '../screens/Auth/Reset/NewPasswordForm';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
@@ -67,6 +68,8 @@ export default function StackNavigator() {
             <Stack.Screen name="Login" component={AuthForm} options={{headerShown: false}}/>
             <Stack.Screen name="Register" component={RegistrationForm} options={{headerShown: false}}/>
             <Stack.Screen name="Reset" component={ResetForm} options={{headerShown: false}}/>
+            <Stack.Screen name="NewPassword" component={NewPasswordForm} options={{headerShown: false}}/>
+
             <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} />
             <Stack.Screen name="CurrentCoin" component={CoinScreen} />
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />

@@ -1,12 +1,21 @@
 const userService = require('../service/userService');
+const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 const path = require('path');
 
 class UserController {
+
     async registration(req, res, next) {
         try {
             const { username, email, password} = req.body;
-            if (!username || !email || !password) return res.status(400).json({ error: 'Missing fields'});
+
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                console.log(errors);
+                return res.status(400).json({ errors: errors.array() });
+            }
+
+            if (!username || !email || !password) return res.status(400).json({ error: 'Не все поля заполнены'});
 
             const userData = await userService.registration(email, password, username);
             return res.json({userData});
@@ -67,7 +76,7 @@ class UserController {
             const email = req.params.email;
             const code = await userService.send_code(email);
 
-            return res.json(code);
+            return res.json({code});
         } catch(e) {
             next(e);
         }

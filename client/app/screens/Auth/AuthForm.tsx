@@ -7,9 +7,8 @@ import hashPassword from '../../utils/HashPassword';
 import $api from '../../http';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/config';
-import decodeToken from '../../utils/decodeToken';
 import { useAuth } from '../../contexts/AuthContext';
-import Colors, { primaryColor } from '../../constants/Colors';
+import { primaryColor } from '../../constants/Colors';
 
 const AuthForm = ({ navigation }: any) => {
   const { userId, setUserId  } = useAuth();
@@ -52,7 +51,6 @@ const AuthForm = ({ navigation }: any) => {
 
         navigation.replace('Main');
       } else {
-        console.error("Invalid response format", response);
         Alert.alert("Ошибка входа", "Неверный формат данных");
       }
     }).catch((error) => {
@@ -60,7 +58,6 @@ const AuthForm = ({ navigation }: any) => {
         "Ошибка входа",
         "Неверный логин или пароль"
       );
-      console.log(error);
     });
   }
 

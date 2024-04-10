@@ -10,13 +10,11 @@ const userController = require('../controller/user.controller');
 const authMiddleware = require('../middleware/authMiddleware');
 
 router.post('/registration', 
-    body('email').isEmail(), 
-    body('username').isLength({min: 4, max: 18}),
+    body('email').isEmail().withMessage('Неверный формат email'), 
+    body('username').isLength({min: 2, max: 18}).withMessage('Длина логина должна быть от 2 до 18 символов'),
     userController.registration);
 router.post('/login', userController.login);
-router.post('/reset',
-    body('password').isLength({min: 4, max: 18}), 
-    userController.reset)
+router.post('/reset', userController.reset)
 router.post('/logout', userController.logout);
 router.post('/refresh', userController.refresh);
 router.post('/deposit', userController.deposit);
