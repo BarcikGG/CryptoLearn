@@ -45,7 +45,7 @@ export default function StackNavigator() {
               } else if (route.name === 'Трейдинг') {
                 iconName = focused ? 'podium' : 'podium-outline';
               } else if (route.name === 'Профиль') {
-                iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
+                iconName = focused ? 'person-circle' : 'person-circle-outline';
               }
     
               return <Ionicons name={iconName as any} size={size} color={color} />;
@@ -70,22 +70,21 @@ export default function StackNavigator() {
             <Stack.Screen name="Reset" component={ResetForm} options={{headerShown: false}}/>
             <Stack.Screen name="NewPassword" component={NewPasswordForm} options={{headerShown: false}}/>
 
-            <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} />
-            <Stack.Screen name="CurrentCoin" component={CoinScreen} />
+            <Stack.Screen name="CurrentNews" component={CurrentNewsScreen} options={{headerBackTitle: "Главная"}}/>
+            <Stack.Screen name="CurrentCoin" component={CoinScreen} options={{headerBackTitle: "Главная"}}/>
             <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-            <Stack.Screen name="Balance history" component={BalanceHistoryScreen}/>
+            <Stack.Screen name="Balance history" component={BalanceHistoryScreen} options={{headerBackTitle: "Главная"}}/>
             <Stack.Screen name="Deposit" component={DepositScreen}/>
             <Stack.Screen name="Add course" component={AddCourseScreen} />
             <Stack.Screen name="Add lesson" component={AddLessonScreen} />
             <Stack.Screen name="Lessons" component={LessonsScreen}/>
             <Stack.Screen name="Lesson" component={LessonScreen}/>
 
-            <Stack.Screen name="Courses" component={CoursesScreen}/>
+            <Stack.Screen name="Courses" component={CoursesScreen} options={{headerBackTitle: "Главная"}}/>
             <Stack.Screen name="AboutCourse" component={AboutScreen}/>
-            <Stack.Screen name="Buy" component={BuyScreen}/>
-            <Stack.Screen name="Values" component={ValuesScreen}/>
-            <Stack.Screen name="Settings" component={SettingsScreen}/>
-            <Stack.Screen name="Actives" component={ActivesScreen}/>
+            <Stack.Screen name="Buy" component={BuyScreen} options={{headerBackTitle: "Главная"}}/>
+            <Stack.Screen name="Values" component={ValuesScreen} options={{headerBackTitle: "Главная"}}/>
+            <Stack.Screen name="Actives" component={ActivesScreen} options={{headerBackTitle: "Главная"}}/>
           </Stack.Navigator>
       </NavigationContainer>
     );

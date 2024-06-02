@@ -26,7 +26,7 @@ export default function ProfileScreen({navigation}: any) {
       headerTitle: user?.username,
       headerRight: () => (
         <View style={{flexDirection: "row", gap: 16, alignItems: "center", paddingEnd: 20}}>
-          <Ionicons onPress={() => handleLogout()} name="ios-exit-outline" size={24} color="black" />
+          <Ionicons onPress={() => handleLogout()} name="exit-outline" size={24} color="black" />
         </View>
       ),
       headerLeft: () => (

@@ -4,7 +4,7 @@
 
 ## Start client: 
 - cd client
-- expo start --tunnel
+- npx expo start --tunnel
 
 ## Start server:
 - cd server

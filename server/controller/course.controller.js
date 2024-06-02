@@ -60,7 +60,7 @@ class CourseController {
 
             if(req.file) {
                 const uploadedFileName = `${uuid.v4()}-${req.file.originalname}`;
-                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads\\courses', uploadedFileName);
+                const uploadPath = path.join(__dirname, '..', 'uploads', 'courses', uploadedFileName);
                 fs.writeFileSync(uploadPath, req.file.buffer);
                 
                 imageUrl = `/uploads/courses/${uploadedFileName}`;
@@ -83,7 +83,7 @@ class CourseController {
 
             if(req.file) {
                 const uploadedFileName = `${uuid.v4()}-${req.file.originalname}`;
-                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads\\courses\\lessons', uploadedFileName);
+                const uploadPath = path.join(__dirname, '..', 'uploads', 'courses', 'lessons', uploadedFileName);
                 fs.writeFileSync(uploadPath, req.file.buffer);
                 
                 imageUrl = `/uploads/courses/lessons/${uploadedFileName}`;

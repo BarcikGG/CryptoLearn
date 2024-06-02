@@ -47,7 +47,7 @@ class UserController {
             
             if(req.file) {
                 const uploadedFileName = `${id}-${req.file.originalname}`;
-                const uploadPath = path.join('C:\\Users\\danil\\Desktop\\CryptoLearn\\server', 'uploads', uploadedFileName);
+                const uploadPath = path.join(__dirname, '..', 'uploads', uploadedFileName);
                 fs.writeFileSync(uploadPath, req.file.buffer);
                 
                 imageUrl = `/uploads/${uploadedFileName}`;
