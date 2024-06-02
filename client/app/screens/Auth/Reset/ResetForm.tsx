@@ -51,7 +51,7 @@ const RegistrationForm = ({ navigation }: any) => {
           </Text>
           
           {!isSend && <TextInput
-            placeholder="Email"
+            placeholder="Почта"
             value={email}
             onChangeText={text => setEmail(text)}
             style={styles.inputContainer}

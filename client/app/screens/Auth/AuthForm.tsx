@@ -78,13 +78,13 @@ const AuthForm = ({ navigation }: any) => {
             {"Crypto Learn"}
           </Text>
           <TextInput
-            placeholder="Username"
+            placeholder="Логин"
             value={username}
             onChangeText={text => setUsername(text)}
             style={styles.inputContainer}
           />
           <TextInput
-            placeholder="Password"
+            placeholder="Пароль"
             secureTextEntry
             value={password}
             onChangeText={text => setPassword(text)}

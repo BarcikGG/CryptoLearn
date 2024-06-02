@@ -64,19 +64,19 @@ const RegistrationForm = ({ navigation }: any) => {
             {"Создание аккаунта"}
           </Text>
           <TextInput
-            placeholder="Username"
+            placeholder="Логин"
             value={username}
             onChangeText={text => setUsername(text)}
             style={styles.inputContainer}
           />
           <TextInput
-            placeholder="Email"
+            placeholder="Почта"
             value={email}
             onChangeText={text => setEmail(text)}
             style={styles.inputContainer}
           />
           <TextInput
-            placeholder="Password"
+            placeholder="Пароль"
             secureTextEntry
             value={password}
             onChangeText={text => setPassword(text)}
@@ -85,7 +85,7 @@ const RegistrationForm = ({ navigation }: any) => {
           <Pressable onPress={() => navigation.navigate('Login')}>
             <Text style={{ textAlign: 'center', color: 'gray' }}>
               Уже есть аккаунт?{' '}
-              <Text style={{ color: 'blue' }}>Войти</Text>
+              <Text style={{ color: primaryColor }}>Войти</Text>
             </Text>
           </Pressable>
         </View>
