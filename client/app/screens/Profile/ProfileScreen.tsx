@@ -137,8 +137,6 @@ export default function ProfileScreen({navigation}: any) {
 
         <CustomButton IconName="cases" ButtonName="Портфель"
                       navigation={navigation} to={"Actives"} Type={"actives"}/>
-        <CustomButton IconName="settings" ButtonName="Настройки"
-                      navigation={navigation} to={"Settings"} Type={"settings"}/>
 
       </ScrollView>
     </View>
