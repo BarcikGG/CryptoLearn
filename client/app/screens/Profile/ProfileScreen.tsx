@@ -48,7 +48,7 @@ export default function ProfileScreen({navigation}: any) {
       setUserRole(response.data.role);
     } catch (error) {
       console.error('Error getting user:', error);
-      Alert.alert('Error', 'Failed to get user information');
+      Alert.alert('Ошибка', 'Не удалось получить информацию о пользователе');
     } finally {
       setIsLoading(false);
       setRefreshing(false);
@@ -68,7 +68,7 @@ export default function ProfileScreen({navigation}: any) {
       navigation.replace('Login');
     } catch (error) {
       console.error('Logout error:', error);
-      Alert.alert('Error', 'Failed to logout');
+      Alert.alert('Ошибка', 'Не удалось выйти');
     }
   };
 

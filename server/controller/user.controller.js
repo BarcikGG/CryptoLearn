@@ -98,7 +98,7 @@ class UserController {
             const activationLink = req.params.link;
             await userService.activate(activationLink);
 
-            return res.redirect('https://vk.com');
+            return res.redirect('https://t.me/BarcikGG');
         } catch(e) {
             next(e);
         }
