@@ -119,7 +119,6 @@ class UserService {
         const tokens = tokenService.generateToken({...user});
         await tokenService.saveToken(user.id, tokens.refreshToken);
 
-        //console.log(tokens.accessToken);
         return {
             ...tokens,
             user: user

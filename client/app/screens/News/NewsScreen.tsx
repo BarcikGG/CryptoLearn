@@ -28,7 +28,8 @@ export default function NewsScreen ({navigation}: any) {
         q: query,
         language: 'ru',
         apiKey: apiKey,
-        page: 1
+        page: 1,
+        limit: 150
       },
     })
       .then(response => {

@@ -86,6 +86,7 @@ export default function CoinScreen({navigation, route}: any) {
                   setAmount('');
                   setAvalable(avalable + Number(amount));
                   Alert.alert(`${coin.symbol} успешно куплен!`,'Монета добавлена в ваш портфель');
+                  getCrypto();
               })
               .catch(error => {
                   Alert.alert(
@@ -115,6 +116,7 @@ export default function CoinScreen({navigation, route}: any) {
                   setAmount('');
                   setAvalable(avalable - Number(amount));
                   Alert.alert(`${coin.symbol} успешно продан!`,'Ваш баланс пополнен');
+                  getCrypto();
               })
               .catch(error => {
                   Alert.alert(
