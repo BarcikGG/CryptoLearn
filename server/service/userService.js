@@ -233,15 +233,21 @@ class UserService {
     }
 
     async deposit(userId, balance, promo) {
-        const checkPromoQuery = 'SELECT * FROM "promos" WHERE promo = $1';
-        const checkPromoResult = await db.query(checkPromoQuery, [promo]);
-
+        const checkPromoResult = await db.query('SELECT * FROM "promos" WHERE promo = $1', [promo]);
         if (checkPromoResult.rows.length == 0) {
             return {
                 error: true,
                 message: "Неверный промокод!"
             };
-        }
+        };
+
+        const checkUserResult = await db.query('SELECT * FROM "User" WHERE id = $1', [userId]);
+        if (checkUserResult.rows[0].isverified == false) {
+            return {
+                error: true,
+                message: "Необходимо пройти верификацию!"
+            };
+        };
 
         const amount = checkPromoResult.rows[0].amount;
 
