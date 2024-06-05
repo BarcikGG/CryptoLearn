@@ -1,11 +1,12 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Alert, FlatList, RefreshControl, TextInput, View } from 'react-native';
+import { StyleSheet, Alert, FlatList, RefreshControl, TextInput, View, Animated } from 'react-native';
 import CryptoButton from '../../components/Trading/CryptoButton';
 import Loading from '../../components/elements/Loading';
 import ICoin from '../../models/Response/ICoin';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import SearchBar from '../../components/SearchBar';
 
 const TradingScreen = () => {
   const navigation = useNavigation();
@@ -14,6 +15,9 @@ const TradingScreen = () => {
   const [ coins, setCoins ] = useState<ICoin[]>([]);
   const [searchText, setSearchText] = useState('');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [showSearch, setShowSearch] = useState(true);
+  const searchOpacity = useRef(new Animated.Value(1)).current;
+  const prevScrollY = useRef(0);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,6 +70,32 @@ const TradingScreen = () => {
     coin?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const handleScroll = (event: any) => {
+    const currentOffset = event.nativeEvent.contentOffset.y;
+    const direction = currentOffset > prevScrollY.current ? 'down' : 'up';
+
+    if (direction === 'down' && currentOffset > 0) {
+      if (showSearch) {
+        Animated.timing(searchOpacity, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }).start(() => setShowSearch(false));
+      }
+    } else if (direction === 'up' || currentOffset === 0) {
+      if (!showSearch) {
+        setShowSearch(true);
+        Animated.timing(searchOpacity, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+
+    prevScrollY.current = currentOffset;
+  };
+
   const onRefresh = () => {
       setRefreshing(true);
   };
@@ -78,12 +108,7 @@ const TradingScreen = () => {
 
   return (
       <View style={{backgroundColor: 'white', minHeight: '100%', paddingBottom: 90}}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Поиск по названию"
-          onChangeText={setSearchText}
-          value={searchText}
-        />
+        <SearchBar searchOpacity={searchOpacity} searchText={searchText} setSearchText={setSearchText} />
         <FlatList
           data={filteredCoins.map((coin, index) => ({ key: index, coin: coin }))}
           keyExtractor={(item) => item.key.toString()}
@@ -94,7 +119,9 @@ const TradingScreen = () => {
           showsVerticalScrollIndicator={true}
           refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
+          }
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
         />
       </View>
   );
@@ -106,7 +133,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     padding: 10,
-    gap: 10
+    gap: 10,
+    paddingTop: 60
   },
   searchInput: {
     height: 40,

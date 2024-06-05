@@ -1,8 +1,6 @@
 import React from 'react';
 import { Dimensions, View } from 'react-native';
-import moment from 'moment';
 import { LineChart } from 'react-native-chart-kit';
-import { primaryColor } from '../../constants/Colors';
 
 export const {width: SIZE} = Dimensions.get('window');
 

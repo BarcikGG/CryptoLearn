@@ -1,4 +1,4 @@
-import { Image, View, Text } from 'react-native'
+import { Image, View } from 'react-native'
 
 export default function Loading() {
     return (

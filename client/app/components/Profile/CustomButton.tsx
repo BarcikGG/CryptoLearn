@@ -1,7 +1,7 @@
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native'
-import React, { Component } from 'react'
+import React from 'react'
 import { primaryColor } from '../../constants/Colors'
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function CustomButton({IconName, ButtonName, navigation, to, Type}: {IconName: any, ButtonName: string, navigation: any, to: string, Type: string}) {
     return (

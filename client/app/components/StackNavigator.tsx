@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react'
 
-import { primaryColor } from '../constants/Colors';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen';
 import RegistrationForm from '../screens/Auth/RegistrationForm';
@@ -16,7 +15,6 @@ import CurrentNewsScreen from '../screens/News/CurrentNewsScreen';
 import BalanceHistoryScreen from '../screens/Profile/Balance/BalanceHistoryScreen';
 import CoursesScreen from '../screens/Profile/Courses/CoursesScreen';
 import ValuesScreen from '../screens/Profile/Courses/ValuesScreen';
-import SettingsScreen from '../screens/Profile/SettingsScreen';
 import AboutScreen from '../screens/Profile/Courses/AboutScreen';
 import BuyScreen from '../screens/Profile/Courses/BuyScreen';
 import CoinScreen from '../screens/Trading/CoinScreen';
@@ -27,6 +25,7 @@ import LessonsScreen from '../screens/Lessons/LessonsScreen';
 import LessonScreen from '../screens/Lessons/LessonScreen';
 import ActivesScreen from '../screens/Profile/Actives/ActivesScreen';
 import NewPasswordForm from '../screens/Auth/Reset/NewPasswordForm';
+import { primaryColor } from '../constants/Colors';
 
 export default function StackNavigator() {
     const Stack = createNativeStackNavigator();
