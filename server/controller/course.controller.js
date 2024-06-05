@@ -15,6 +15,28 @@ class CourseController {
         }
     }
 
+    async deleteCourses(req, res, next) {
+        try {
+            const id = req.params.type;
+            const course = await courseService.deleteCourses(id);
+            
+            return res.json(course);
+        } catch(e) {
+            next(e);
+        }
+    }
+
+    async deleteLesson(req, res, next) {
+        try {
+            const id = req.params.type;
+            const lesson = await courseService.deleteLesson(id);
+            
+            return res.json(lesson);
+        } catch(e) {
+            next(e);
+        }
+    }
+
     async getLessons(req, res, next) {
         try {
             const id = req.params.courseId;
