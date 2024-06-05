@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Pressable, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Pressable, TouchableOpacity, Alert } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { BASE_URL } from '../../../utils/config';
 import { useRole } from '../../../contexts/RoleContext';
+import $api from '../../../http';
 
 export default function AboutScreen({route}: any) {
     const { userRole } = useRole();
@@ -24,8 +25,45 @@ export default function AboutScreen({route}: any) {
                 )
             } else return null;
           },
+          headerLeft: () => {
+            if (userRole === 'admin') {
+                return (
+                    <TouchableOpacity style={{flexDirection: "row", gap: 16, alignItems: "center"}}>
+                        <Ionicons onPress={deleteCourse} name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                )
+            } else return null;
+          },
         })
     });
+
+    const deleteCourse = async () => {
+        Alert.alert(
+            'Подтверждение удаления',
+            'Вы уверены, что хотите удалить этот курс?',
+            [
+                {
+                    text: 'Отмена',
+                    onPress: () => console.log('Удаление отменено'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Удалить',
+                    onPress: async () => {
+                        try {
+                            const response = await $api.delete(`/course/${course.id}`);
+                            Alert.alert('Успех!', 'Курс удален');
+                            navigation.replace('Courses', {type: 'all'});
+                        } catch (error) {
+                            Alert.alert('Ошибка', 'Не удалось удалить курс');
+                        }
+                    },
+                    style: 'destructive',
+                },
+            ],
+            { cancelable: true }
+        );
+    };
 
     return (
         <View style={{alignItems: 'center', backgroundColor: 'white', width: '100%', height: '100%'}}>

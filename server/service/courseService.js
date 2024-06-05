@@ -10,33 +10,37 @@ class CourseService {
             return Result.rows;
         }
 
-        const Query = 'SELECT * FROM "Course" WHERE theme = $1';
+        const Query = 'SELECT FROM "Course" WHERE theme = $1';
         const Result = await db.query(Query, [type]);
 
         return Result.rows;
     }
 
     async deleteCourses(id) {
-        const deleteCourseItemsQuery = 'DELETE FROM "CourseCourseItemRelation" WHERE "courseid" = $1';
-        await db.query(deleteCourseItemsQuery, [id]);
+        try {
+            const deleteCourseItemsQuery = 'DELETE FROM "CourseCourseItemRelation" WHERE "courseid" = $1';
+            await db.query(deleteCourseItemsQuery, [id]);
 
-        const deleteBought = 'DELETE FROM "UserBoughtCourses" WHERE "courseid" = $1';
-        await db.query(deleteBought, [id]);
+            const deleteBought = 'DELETE FROM "UserBoughtCourses" WHERE "courseid" = $1';
+            await db.query(deleteBought, [id]);
 
-        const Query = 'DELETE * FROM "Course" WHERE id = $1';
-        const Result = await db.query(Query, [id]);
+            const Query = 'DELETE FROM "Course" WHERE id = $1';
+            const Result = await db.query(Query, [id]);
 
-        return Result.rows;
+            return Result.rows[0];
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async deleteLesson(id) {
         const deleteCourseItemsQuery = 'DELETE FROM "CourseCourseItemRelation" WHERE "courseitemid" = $1';
         await db.query(deleteCourseItemsQuery, [id]);
 
-        const Query = 'DELETE * FROM "CourseItem" WHERE id = $1';
+        const Query = 'DELETE FROM "CourseItem" WHERE id = $1';
         const Result = await db.query(Query, [id]);
 
-        return Result.rows;
+        return Result.rows[0];
     }
 
     async getLessons(id) {

@@ -15,10 +15,10 @@ router.post('/add-lesson', upload.single('image'), courseController.addLesson);
 router.get('/courses/:type',
     authMiddleware, 
     courseController.getCourses);
-router.get('/course/:id',
+router.delete('/course/:id',
     authMiddleware, 
     courseController.deleteCourses);
-router.get('/lesson/:id',
+router.delete('/lesson/:id',
     authMiddleware, 
     courseController.deleteLesson);
 router.get('/courses-bought/:userId',

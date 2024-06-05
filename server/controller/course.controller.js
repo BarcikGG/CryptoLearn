@@ -17,7 +17,7 @@ class CourseController {
 
     async deleteCourses(req, res, next) {
         try {
-            const id = req.params.type;
+            const id = req.params.id;
             const course = await courseService.deleteCourses(id);
             
             return res.json(course);
@@ -28,7 +28,7 @@ class CourseController {
 
     async deleteLesson(req, res, next) {
         try {
-            const id = req.params.type;
+            const id = req.params.id;
             const lesson = await courseService.deleteLesson(id);
             
             return res.json(lesson);
