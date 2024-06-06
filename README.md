@@ -1,17 +1,5 @@
 # CryptoLearn project
 
-## !Run start.bat *or:
-
 ## Start client: 
 - cd client
-- npx expo start --tunnel
-
-## Start server:
-- cd server
-- npm run dev
-## CMD:
-- cd server
-- ngrok http 8080
-
-## Update client/utils/config
-- paste new BASE_URL from CMD
+- npx expo start --tunnel -c
