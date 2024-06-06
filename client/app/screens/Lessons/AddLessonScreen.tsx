@@ -47,7 +47,7 @@ function AddLessonScreen({navigation, route}: any) {
         try {
           const manipResult = await ImageManipulator.manipulateAsync(
             uri,
-            [{ resize: { width: 600, height: 600 } }],
+            [],
             { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
           );
       

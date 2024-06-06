@@ -1,9 +1,13 @@
-import { StyleSheet, Text, View, Image, ScrollView, Pressable, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Alert } from 'react-native'
 import React, { useLayoutEffect } from 'react'
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { BASE_URL } from '../../utils/config';
+import $api from '../../http';
+import { useRole } from '../../contexts/RoleContext';
 
 export default function LessonScreen({route}: any) {
+    const { userRole } = useRole();
     const screenWidth = Dimensions.get('window').width;
     const navigation = useNavigation();
     const url = BASE_URL.slice(0, BASE_URL.length - 4);
@@ -11,9 +15,46 @@ export default function LessonScreen({route}: any) {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-          headerTitle: ''
+          headerTitle: '',
+          headerRight: () => {
+            if (userRole === 'admin') {
+                return (
+                    <TouchableOpacity style={{flexDirection: "row", gap: 16, alignItems: "center"}}>
+                        <Ionicons onPress={deleteCourse} name="trash-outline" size={24} color="red" />
+                    </TouchableOpacity>
+                )
+            } else return null;
+          },
         })
     });
+
+    const deleteCourse = async () => {
+        Alert.alert(
+            'Подтверждение удаления',
+            'Вы уверены, что хотите удалить этот урок?',
+            [
+                {
+                    text: 'Отмена',
+                    onPress: () => console.log('Удаление отменено'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Удалить',
+                    onPress: async () => {
+                        try {
+                            const response = await $api.delete(`/lesson/${lesson.id}`);
+                            Alert.alert('Успех!', 'Урок удален');
+                            navigation.goBack();
+                        } catch (error) {
+                            Alert.alert('Ошибка', 'Не удалось удалить урок');
+                        }
+                    },
+                    style: 'destructive',
+                },
+            ],
+            { cancelable: true }
+        );
+    };
 
     return (
         <View style={{alignItems: 'center', backgroundColor: 'white', width: '100%', height: '100%'}}>
@@ -43,7 +84,8 @@ const styles = StyleSheet.create({
     img: {
         alignSelf: 'center',
         marginHorizontal: 10,
-        marginVertical: 20
+        marginVertical: 20,
+        resizeMode: 'contain'
     },
     title: {
         fontSize: 24,
@@ -53,7 +95,8 @@ const styles = StyleSheet.create({
     },
     text: { 
         textAlign: 'left', 
-        fontSize: 20
+        fontSize: 20,
+        paddingBottom: 30
     },
     lessons: {
         fontSize: 20,

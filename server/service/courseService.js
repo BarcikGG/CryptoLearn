@@ -34,11 +34,19 @@ class CourseService {
     }
 
     async deleteLesson(id) {
+        const courseIdResult = await db.query('SELECT "courseid" FROM "CourseCourseItemRelation" WHERE "courseitemid" = $1', [id]);
+        console.log(courseIdResult);
+        
         const deleteCourseItemsQuery = 'DELETE FROM "CourseCourseItemRelation" WHERE "courseitemid" = $1';
         await db.query(deleteCourseItemsQuery, [id]);
 
         const Query = 'DELETE FROM "CourseItem" WHERE id = $1';
         const Result = await db.query(Query, [id]);
+
+        await db.query(
+            'UPDATE "Course" SET lessonscount=lessonscount-1 WHERE id=$1',
+            [courseIdResult.rows[0].courseid]
+        );
 
         return Result.rows[0];
     }
